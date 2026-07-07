@@ -33,8 +33,25 @@ A production-grade enterprise web app built with:
 ```
 
 ## Getting started
-_App does not exist yet — we are still in Phase 0 (Initialization). Setup steps will be
-added here once the Architecture phase scaffolds the Next.js app._
+```bash
+npm install --ignore-scripts        # install deps
+npm run cf:migrate contentful/migrations/001-oral-health-page-types.js   # create content types
+npm run cf:seed                     # create the oral-health page entries
+npm run dev                         # http://localhost:3000
+```
+Requires env vars in `.env` (see `.env.example`): `CONTENTFUL_SPACE_ID`,
+`CONTENTFUL_ENVIRONMENT_ID`, `CONTENTFUL_MANAGEMENT_ACCESS_TOKEN` (migrate/seed),
+`CONTENTFUL_DELIVERY_ACCESS_TOKEN` (runtime). First page:
+`/members/oral-health-education/everyday-oral-health`.
+
+**Images/assets live in Contentful, not in the repo.** `npm run cf:assets`
+(`contentful/seed/upload-assets.mjs`) was the one-time upload that moved the page images
+into Contentful and re-linked the `media` entries. To move content+assets between
+environments, use `contentful space export/import` — not git.
+
+## Structure
+Application code lives under `src/` (`src/app`, `src/components`, `src/lib`); project
+scaffolding stays at the root (`contentful/`, `docs/`, config, `.env`).
 
 ## Phase roadmap
 Phase 0 (Initialization) → Planning → Architecture → Content Modeling → Design System →

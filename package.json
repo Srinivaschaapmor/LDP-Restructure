@@ -1,0 +1,31 @@
+{
+  "name": "enterprise-app-test",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "cf:migrate": "contentful-migration -s $CONTENTFUL_SPACE_ID -e $CONTENTFUL_ENVIRONMENT_ID -a $CONTENTFUL_MANAGEMENT_ACCESS_TOKEN -y",
+    "cf:seed": "node contentful/seed/seed-oral-health-page.mjs",
+    "cf:assets": "node contentful/seed/upload-assets.mjs"
+  },
+  "dependencies": {
+    "next": "14.2.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "contentful": "10.15.0",
+    "@contentful/rich-text-react-renderer": "15.22.11",
+    "@contentful/rich-text-types": "16.8.5",
+    "bootstrap": "5.3.3"
+  },
+  "devDependencies": {
+    "typescript": "5.5.4",
+    "@types/node": "20.14.14",
+    "@types/react": "18.3.3",
+    "@types/react-dom": "18.3.0",
+    "sass": "1.77.8",
+    "contentful-management": "11.31.5"
+  }
+}
