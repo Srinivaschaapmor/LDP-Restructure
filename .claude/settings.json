@@ -1,0 +1,4 @@
+{
+  "enabledMcpjsonServers": ["figma-dev-mode"],
+  "enabledPlugins": { "figma@claude-plugins-official": true }
+}

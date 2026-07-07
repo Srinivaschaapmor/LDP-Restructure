@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "figma-dev-mode": {
+      "type": "http",
+      "url": "http://127.0.0.1:3845/mcp"
+    },
+    "contentful": {
+      "command": "npx",
+      "args": ["-y", "@contentful/mcp-server"],
+      "env": {
+        "CONTENTFUL_MANAGEMENT_ACCESS_TOKEN": "${CONTENTFUL_MANAGEMENT_ACCESS_TOKEN}",
+        "SPACE_ID": "${CONTENTFUL_SPACE_ID}",
+        "ENVIRONMENT_ID": "${CONTENTFUL_ENVIRONMENT_ID:-master}"
+      }
+    }
+  }
+}
