@@ -16,7 +16,7 @@ export interface MediaFields {
   externalUrl?: string;
   width?: number;
   height?: number;
-  asset?: { fields?: { file?: { url?: string }; title?: string } };
+  asset?: { fields?: { title?: string; file?: { url?: string; details?: { image?: { width?: number; height?: number } } } } };
 }
 export type Media = CFNode<MediaFields>;
 
@@ -48,3 +48,8 @@ export type PageEntry = CFNode<PageFields>;
 
 export const ctId = (e?: { sys?: { contentType?: { sys?: { id?: string } } } }): string =>
   e?.sys?.contentType?.sys?.id ?? "";
+
+// Single, documented boundary cast. The Contentful CDA returns loosely-typed
+// `fields`; each section knows its own shape, so we assert once here (with a
+// justification) instead of scattering `as unknown as` across components.
+export const asFields = <T,>(fields: Section["fields"]): T => fields as unknown as T;

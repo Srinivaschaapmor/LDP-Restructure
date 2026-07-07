@@ -8,6 +8,15 @@ description: The final quality gate before any change is considered complete or 
 A change is **not done** until every box below is checked. This is the enforceable summary of
 the project's standards — run it before finishing or opening a PR.
 
+## Before starting
+- [ ] Loaded the relevant skills for the task (e.g. [contentful-development], [nextjs-development],
+      [figma-mcp-workflow]) — don't build from memory when a skill exists.
+
+## Design fidelity (see [figma-mcp-workflow])
+- [ ] Verified against **every breakpoint** — desktop, tablet, AND mobile
+- [ ] Interactive states checked (e.g. mobile hamburger opens; menus/toggles work)
+- [ ] Built from all responsive frames, not just desktop
+
 ## Code quality (see [sonarqube-compliance], [coding-standards])
 - [ ] External/Contentful data is optional-chained everywhere
 - [ ] React hooks are above all early returns

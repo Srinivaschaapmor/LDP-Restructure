@@ -29,6 +29,9 @@ SiteImprove-clean · tested · documented in the same change · **ask when uncle
 | Commit format + branching + PR standards | [`git-workflow`](../../.claude/skills/git-workflow/SKILL.md) |
 | Required documentation types | [`documentation-standards`](../../.claude/skills/documentation-standards/SKILL.md) |
 | Final quality gate (ties all together) | [`definition-of-done`](../../.claude/skills/definition-of-done/SKILL.md) |
+| Contentful modeling / migrations / fetching | [`contentful-development`](../../.claude/skills/contentful-development/SKILL.md) |
+| Next.js layout / routing / section renderer | [`nextjs-development`](../../.claude/skills/nextjs-development/SKILL.md) |
+| Building from a Figma design | [`figma-mcp-workflow`](../../.claude/skills/figma-mcp-workflow/SKILL.md) |
 
 ## By task (quick routing)
 - **Writing/refactoring TS/React** → `coding-standards` + `sonarqube-compliance`

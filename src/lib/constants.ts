@@ -1,0 +1,34 @@
+// Centralized constants — no hardcoded/duplicated string literals in components
+// (coding-standards §5, sonarqube-compliance rule 7).
+
+// CardCollection layout enum -> Bootstrap column classes.
+export const COLLECTION_COL_CLASS: Record<string, string> = {
+  "grid-2": "col-12 col-md-6",
+  "grid-3": "col-12 col-md-6 col-lg-4",
+  "grid-4": "col-6 col-lg-3",
+  list: "col-12",
+  split: "col-12 col-md-6",
+  carousel: "col-12 col-md-6 col-lg-4",
+};
+
+// Variant defaults (mirror the design-system enums in the content-model spec).
+export const DEFAULTS = {
+  collectionLayout: "grid-3",
+  bannerHeight: "md",
+  bannerVariant: "image",
+  mediaPlacement: "top",
+  tone: "default",
+  richTextWidth: "default",
+  backToTop: "Back to top",
+} as const;
+
+// Responsive `sizes` hints for next/image (avoid over-fetching large images).
+export const IMAGE_SIZES = {
+  hero: "100vw",
+  content: "(max-width: 992px) 100vw, 820px",
+  card: "(max-width: 768px) 100vw, 400px",
+  logo: "170px",
+} as const;
+
+// The id of the top landmark, used by the footer "back to top" link.
+export const TOP_ANCHOR_ID = "top";

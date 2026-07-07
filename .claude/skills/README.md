@@ -18,6 +18,13 @@ Claude loads automatically when its `description` matches the task.
 | `git-workflow` | Commit format + branching strategy |
 | `definition-of-done` | Final gate tying all standards together |
 
-## Planned (batch 2 — tech-specific, not yet created)
-`nextjs-development`, `typescript-standards`, `bootstrap-development`,
-`contentful-development`, `figma-mcp-workflow`, `performance-optimization`.
+## Skills (batch 2 — tech-specific, created from real build lessons)
+| Skill | Purpose |
+|---|---|
+| `nextjs-development` | App Router layout (`src/`), CMS-driven routing, section registry, tooling gotchas |
+| `contentful-development` | Modeling, migrations, entries, assets, CDA fetching; key-by-`internalName` rule |
+| `figma-mcp-workflow` | Build from Figma: inspect all breakpoints, tokens, asset handling, verify fidelity |
+
+## Planned (batch 2 — not yet created)
+`typescript-standards`, `bootstrap-development`, `performance-optimization`
+(interim performance rules live in `docs/01-standards/performance.md`).

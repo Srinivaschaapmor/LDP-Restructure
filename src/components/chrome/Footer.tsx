@@ -1,5 +1,6 @@
-import type { Link, LinkGroup, Media, Section } from "@/lib/types";
+import { asFields, type Link, type LinkGroup, type Media, type Section } from "@/lib/types";
 import { MediaImg } from "@/components/primitives/MediaImg";
+import { DEFAULTS, IMAGE_SIZES, TOP_ANCHOR_ID } from "@/lib/constants";
 
 interface FooterFields {
   logo?: Media; columns?: LinkGroup[]; socialLinks?: Link[]; legalLinks?: Link[];
@@ -15,13 +16,13 @@ const SOCIAL: Record<string, string> = {
 };
 
 export function Footer({ fields }: { fields: Section["fields"] }) {
-  const f = fields as unknown as FooterFields;
+  const f = asFields<FooterFields>(fields);
   return (
     <footer className="ld-footer">
       <div className="container">
         <div className="row ld-footer__top">
           <div className="col-12 col-lg-3 ld-footer__brandcol">
-            {f.logo ? <MediaImg media={f.logo} className="ld-footer__logo" /> : null}
+            {f.logo ? <MediaImg media={f.logo} className="ld-footer__logo" sizes={IMAGE_SIZES.logo} /> : null}
             <div className="ld-footer__social">
               {(f.socialLinks ?? []).map((s) => (
                 <a key={s?.sys?.id} href={s?.fields?.href ?? "#"} aria-label={s?.fields?.label} target="_blank" rel="noreferrer">
@@ -45,11 +46,11 @@ export function Footer({ fields }: { fields: Section["fields"] }) {
           ))}
 
           <div className="col-12 col-lg-3 ld-footer__totopcol">
-            <a href="#" className="ld-footer__totop">
+            <a href={`#${TOP_ANCHOR_ID}`} className="ld-footer__totop">
               <span className="ld-footer__totop-icon" aria-hidden="true">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 15l-6-6-6 6" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </span>
-              {f.backToTopLabel ?? "Back to top"}
+              {f.backToTopLabel ?? DEFAULTS.backToTop}
             </a>
           </div>
         </div>

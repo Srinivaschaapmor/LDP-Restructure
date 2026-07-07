@@ -36,6 +36,11 @@ export default async function Page({ params }: { params: Params }) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        // Article structured data for search engines (seo skill).
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd(page.fields.title, page.fields.meta?.fields?.description)) }}
+      />
       {page.fields.header ? <Header fields={page.fields.header.fields} /> : null}
       <main>
         <SectionRenderer sections={page.fields.sections} />
@@ -43,4 +48,13 @@ export default async function Page({ params }: { params: Params }) {
       {page.fields.footer ? <Footer fields={page.fields.footer.fields} /> : null}
     </>
   );
+}
+
+function articleJsonLd(title?: string, description?: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title,
+    description,
+  };
 }
