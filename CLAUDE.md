@@ -24,7 +24,7 @@ TypeScript + Bootstrap 5 + SCSS**, with content from **Contentful** and designs 
 ## Where things live (single source of truth = this repo)
 - Project charter & scope → `docs/00-overview/project-charter.md`
 - Glossary / domain terms → `docs/00-overview/glossary.md`
-- Engineering standards → `docs/01-standards/` (finalized in Phase 0 · Step 5)
+- Engineering standards → authored as skills in `.claude/skills/`; mapped in `docs/01-standards/` (see ADR-0003)
 - Architecture → `docs/02-architecture/`
 - Content model → `docs/03-content-model/`
 - Design system → `docs/04-design-system/`

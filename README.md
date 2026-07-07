@@ -1,7 +1,8 @@
 # Enterprise Web Application (Test Scaffold)
 
-> **Status:** Phase 0 · Step 3 complete (scaffold + skills + Figma MCP verified).
-> Next: Step 4. This is a validation scaffold to test the mentored enterprise workflow. Not production.
+> **Status:** Phase 0 · Step 5 complete — scaffold + skills + Figma MCP + Contentful MCP + standards map.
+> Phase 0 (Initialization) essentially done; next is the Planning phase (starting with the project charter).
+> This is a validation scaffold to test the mentored enterprise workflow. Not production.
 
 ## What this is
 A production-grade enterprise web app built with:

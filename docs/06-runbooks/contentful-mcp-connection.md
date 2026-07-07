@@ -73,5 +73,10 @@ curl -s -H "Authorization: Bearer $CONTENTFUL_MANAGEMENT_ACCESS_TOKEN" \
 
 ## Verification log
 - **2026-07-07** — Server configured in `.mcp.json` (env-var based, no secrets committed).
-  Live verification PENDING confirmation that env vars are set + a session launched in the
-  project root. Update this entry with the result of check A and/or B.
+- **2026-07-07 — Credential smoke-test (check A) PASSED.** Sourced `.env` and called the CMA
+  API: `GET /spaces/{id}` → `200`, space name **"Development"**; environments `master` + `ready`
+  present; `master` currently has **0 content types** (empty content model — expected pre-modeling).
+  CMA token + Space ID + environment confirmed reachable. Token value never surfaced.
+  STILL PENDING (check B): loading the server *inside Claude Code* — requires the env vars in
+  Claude Code's process environment AND a session launched in the project root so `.mcp.json`
+  loads. Not yet exercised (this session's cwd is the Desktop).
