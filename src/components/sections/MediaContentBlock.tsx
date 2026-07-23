@@ -20,7 +20,11 @@ export function MediaContentBlock({ fields }: { fields: Section["fields"] }) {
         {f.eyebrow ? <p className="ld-mcb__eyebrow">{f.eyebrow}</p> : null}
         {/* The article title is the page's single h1. */}
         {f.heading ? <Heading level={1} className="ld-mcb__heading">{f.heading}</Heading> : null}
-        {f.media ? <MediaImg media={f.media} className="ld-mcb__media" sizes={IMAGE_SIZES.content} /> : null}
+        {f.media ? (
+          <div className="ld-mcb__media">
+            <MediaImg media={f.media} sizes={IMAGE_SIZES.content} fill />
+          </div>
+        ) : null}
         {f.body ? <div className="ld-mcb__body"><RichText doc={f.body} /></div> : null}
       </div>
     </section>

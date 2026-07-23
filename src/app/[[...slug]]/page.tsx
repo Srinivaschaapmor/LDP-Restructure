@@ -41,7 +41,9 @@ export default async function Page({ params }: { params: Params }) {
         // Article structured data for search engines (seo skill).
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd(page.fields.title, page.fields.meta?.fields?.description)) }}
       />
-      {page.fields.header ? <Header fields={page.fields.header.fields} /> : null}
+      {page.fields.header ? (
+        <Header fields={page.fields.header.fields} primaryNav={page.fields.primaryNav} />
+      ) : null}
       <main>
         <SectionRenderer sections={page.fields.sections} />
       </main>

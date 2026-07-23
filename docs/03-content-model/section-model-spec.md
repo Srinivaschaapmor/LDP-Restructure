@@ -275,6 +275,25 @@ Fallback chain: requested locale → **default `en-US`**.
 - **Type safety:** generated TS types per content type; `zod` validation at the CMS boundary.
 - **Contract test:** every content-type id and every enum value has a matching renderer/variant.
 
+## 12a. Navigation menu (migrations 003 + 004)
+A multi-level, responsive nav menu, reusing existing primitives (no per-variation types):
+- **`navigationMenu`** = `{ internalName, title?, items[] }`; each item is a **`link`** or a
+  **`linkGroup`**. **`linkGroup.links` is recursive** (`[link, linkGroup]`) → multi-level menus.
+- **Contextual, per-section (migrations 005 + 006).** One `Page.primaryNav` → `navigationMenu`.
+  Each item is a **section** — a `linkGroup` with a **`href`** (navigable label) that **owns its
+  sub-menu** (its `links`). `linkGroup.href` (migration 006) lets a group be a link too; the old
+  separate `subNav` field was removed.
+- **Rendering** (chrome, not the section registry), all driven by the current route (`usePathname`):
+  - **Desktop header** = the section labels as **plain links, no dropdowns**; the link whose href
+    matches the route is **underlined** (`is-active`).
+  - **Desktop sub-bar** = the **active section's** children, on a solid light band (dropdowns for
+    grandchildren). It is contextual — Members shows Member's sub-menu, Providers shows Provider's, etc.
+  - **Tablet/mobile** (< `lg`) = hamburger **drawer**: sections **drill down** (slide) into their
+    sub-menus; deeper groups expand inline. The header CTA ("Find a dentist") stays visible.
+- Item type is branched by `isLinkGroup()` (content-type id, never `sys.id`). Because `link`/
+  `linkGroup` fields are all-optional they overlap structurally, so the plain-link branch casts
+  `as Link` (documented at each site).
+
 ## 12. Open decisions
 1. **Header/Footer** — confirm they stay page-chrome refs on `Page` (vs sections). *(recommend: chrome)*
 2. **Card vs Person** — fold people into `Card` (title=name, subtitle=designation)? *(recommend: yes)*

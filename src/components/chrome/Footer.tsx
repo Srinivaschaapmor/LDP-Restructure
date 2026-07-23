@@ -38,9 +38,10 @@ export function Footer({ fields }: { fields: Section["fields"] }) {
             <div key={col?.sys?.id} className="col-6 col-md-4 col-lg-2 ld-footer__group">
               <p className="ld-footer__group-title">{col?.fields?.title}</p>
               <ul>
-                {(col?.fields?.links ?? []).map((l) => (
-                  <li key={l?.sys?.id}><a href={l?.fields?.href ?? "#"}>{l?.fields?.label}</a></li>
-                ))}
+                {(col?.fields?.links ?? []).map((l) => {
+                  const lk = l as Link; // footer columns hold plain Links
+                  return <li key={lk?.sys?.id}><a href={lk?.fields?.href ?? "#"}>{lk?.fields?.label}</a></li>;
+                })}
               </ul>
             </div>
           ))}

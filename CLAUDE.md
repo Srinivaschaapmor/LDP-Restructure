@@ -34,5 +34,9 @@ TypeScript + Bootstrap 5 + SCSS**, with content from **Contentful** and designs 
 
 ## Working agreement
 - Work **one phase at a time**; wait for explicit approval before advancing.
+- **Before writing or changing code, load the _relevant_ skill(s)** via the routing table in
+  `enterprise-engineering-standards` (not all of them — just the ones that apply to the task).
+- **Run `definition-of-done`** before declaring any change complete or ready for PR.
+- When a mistake recurs, encode it as a rule in the **owning skill** so it can't happen again.
 - Record every significant decision as an **ADR** in `docs/05-decisions/`.
 - Update the relevant doc in the **same change** that alters behavior.
