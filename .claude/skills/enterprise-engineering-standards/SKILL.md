@@ -17,7 +17,11 @@ enforce the non-negotiables that apply to every change.
 5. **Clean-gate** — passes SonarQube with no new smells/hotspots. See [sonarqube-compliance].
 6. **Documented** — update the relevant doc in the same change. See [documentation-standards].
 7. **Tested** — meaningful unit tests. See [testing-standards].
-8. **No assumed requirements** — if unclear, ask.
+8. **Design-system-exact** — when Figma is connected, match it pixel-for-pixel (tokens, type,
+   spacing, radius, borders, shadows, icons, states, variants, responsive). Pull exact per-node
+   values; never invent/approximate/substitute. Baseline: `docs/04-design-system/design-tokens.md`;
+   process: [figma-mcp-workflow]. Missing value → STOP and ask.
+9. **No assumed requirements** — if unclear, ask.
 
 ## Which skill to use when
 | You are… | Use skill |

@@ -32,3 +32,17 @@ export const IMAGE_SIZES = {
 
 // The id of the top landmark, used by the footer "back to top" link.
 export const TOP_ANCHOR_ID = "top";
+
+// Accordion / document rendering.
+// External links open in a new tab; rel prevents reverse-tabnabbing (seo/a11y).
+export const EXTERNAL_LINK_TARGET = "_blank";
+export const EXTERNAL_LINK_REL = "noopener noreferrer";
+export const DOC_LABELS = {
+  pdfBadge: "PDF",
+  newTab: "(opens in a new tab)",
+} as const;
+
+// Resource library (state selector) + breadcrumbs.
+export const RL_SELECT_LABEL = "Select your state to access Liberty forms and documents";
+export const RL_SELECT_PLACEHOLDER = "Select state";
+export const HOME_LABEL = "Home";

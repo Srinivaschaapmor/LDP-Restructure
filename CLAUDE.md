@@ -19,6 +19,12 @@ TypeScript + Bootstrap 5 + SCSS**, with content from **Contentful** and designs 
 - **Content compliance:** SiteImprove clean (broken links, a11y, misspellings).
 - **Type safety:** `strict` TypeScript. No `any` without a written justification.
 - **Reusability first:** Prefer composable, single-responsibility components.
+- **Design-system fidelity:** When Figma is connected, follow it **exactly** — colors, typography
+  (family/size/line-height/weight/letter-spacing), spacing, radius, borders, shadows, opacity,
+  icons, component states, variants, responsive behavior. **Pull exact per-node tokens; never
+  invent, approximate, simplify, replace icons, or use a foreign-library lookalike.** Baseline:
+  `docs/04-design-system/design-tokens.md`; process + implementation-report format:
+  [figma-mcp-workflow]. If a required design value is missing, **STOP and ask** — do not assume.
 - **No assumed requirements:** If a requirement is unclear, ask — do not guess.
 
 ## Where things live (single source of truth = this repo)

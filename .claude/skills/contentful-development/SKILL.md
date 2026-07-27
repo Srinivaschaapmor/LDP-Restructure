@@ -44,5 +44,28 @@ External data is never guaranteed. Cast the SDK response once at the boundary
 Use `RichText` fields (they embed links/assets/entries) instead of wrapper content types.
 Fewer entries, shallower payloads.
 
+## 7. One page + selector, NOT a page per variant
+When content varies by a user choice (state, plan, region, language), model **one** page with a
+selector section that references multiple **reusable** entries (one per option); the client
+swaps which one renders. Reuse existing section types — e.g. each US state = one `accordion`
+whose `heading` is the state name, composed by a `resourceLibrary` section. Don't clone types or
+create a page per option.
+*(Real mistake: seeded `/providers/resource-library/alabama` per state; correct model is a single
+`/providers/resource-library` with a "Select state" dropdown, no content shown until a state is
+picked.)*
+
+## 8. Windows: run the migration binary directly (npm `$VAR` scripts fail)
+`npm run cf:migrate` uses `$CONTENTFUL_SPACE_ID` shell syntax. On Windows npm runs scripts via
+**cmd.exe**, which does NOT expand `$VAR`, so the space id/token arrive literally and auth fails
+("space does not exist or you do not have access"). Run the binary directly from Git Bash with
+the env sourced from `.env`:
+```bash
+set -a; . ./.env; set +a; \
+node_modules/.bin/contentful-migration -s "$CONTENTFUL_SPACE_ID" \
+  -e "$CONTENTFUL_ENVIRONMENT_ID" -a "$CONTENTFUL_MANAGEMENT_ACCESS_TOKEN" -y <migration-file>
+```
+`.env` is not auto-loaded by node either — source it (`set -a; . ./.env; set +a`) before running
+seed scripts too. Delete superseded pages/entries fully (unpublish → delete) when a model changes.
+
 See also: [nextjs-development] (rendering/registry), the content-model spec in
-`docs/03-content-model/`, and [figma-mcp-workflow] (assets originate from Figma).
+`docs/03-content-model/`, and [figma-mcp-workflow] (design fidelity; assets originate from Figma).

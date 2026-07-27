@@ -13,9 +13,17 @@ the project's standards — run it before finishing or opening a PR.
       [figma-mcp-workflow]) — don't build from memory when a skill exists.
 
 ## Design fidelity (see [figma-mcp-workflow])
+- [ ] **Exact Figma tokens** applied — font-size, line-height, font-weight, colors, padding,
+      margins, gap, border, radius, widths (pulled from Figma, not approximated)
+- [ ] **Real Figma icons/assets** used (exported SVG/image), not hand-drawn approximations
+- [ ] **Content width + common page padding** match the design (container capped to the design
+      column; shared 60px content padding below breadcrumbs / above footer)
+- [ ] **Whole page wired**: header + `primaryNav` (contextual sub-menu/drawer) + breadcrumbs +
+      banner + footer — not just the named section
+- [ ] Correct **default/initial states** (e.g. selector on its placeholder; accordions collapsed)
 - [ ] Verified against **every breakpoint** — desktop, tablet, AND mobile
-- [ ] Interactive states checked (e.g. mobile hamburger opens; menus/toggles work)
-- [ ] Built from all responsive frames, not just desktop
+- [ ] Interactive states checked (dropdown open, accordion toggle, mobile drawer, variant switch)
+- [ ] Built from all responsive frames, not just desktop; superseded pages/entries/files removed
 
 ## Code quality (see [sonarqube-compliance], [coding-standards])
 - [ ] External/Contentful data is optional-chained everywhere

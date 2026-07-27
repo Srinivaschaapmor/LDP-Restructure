@@ -14,25 +14,26 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "next": "14.2.5",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "contentful": "10.15.0",
     "@contentful/rich-text-react-renderer": "15.22.11",
     "@contentful/rich-text-types": "16.8.5",
-    "bootstrap": "5.3.3"
+    "bootstrap": "5.3.3",
+    "contentful": "10.15.0",
+    "next": "14.2.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   },
   "devDependencies": {
-    "typescript": "5.5.4",
+    "@testing-library/jest-dom": "6.4.8",
+    "@testing-library/react": "16.0.0",
     "@types/node": "20.14.14",
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
-    "sass": "1.77.8",
-    "contentful-management": "11.31.5",
-    "vitest": "2.0.5",
-    "jsdom": "24.1.1",
     "@vitejs/plugin-react": "4.3.1",
-    "@testing-library/react": "16.0.0",
-    "@testing-library/jest-dom": "6.4.8"
+    "contentful-management": "11.31.5",
+    "contentful-migration": "^5.1.0",
+    "jsdom": "24.1.1",
+    "sass": "1.77.8",
+    "typescript": "5.5.4",
+    "vitest": "2.0.5"
   }
 }

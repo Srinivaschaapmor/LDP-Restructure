@@ -11,7 +11,8 @@ export function Banner({ fields }: { fields: Section["fields"] }) {
   return (
     <section className={`ld-banner ld-banner--${height}`} aria-label={f.heading || "Banner"}>
       <MediaImg media={f.backgroundImage} className="ld-banner__bg" sizes={IMAGE_SIZES.hero} priority fill />
-      <span className="ld-banner__overlay" aria-hidden="true" />
+      {/* Overlay only when there's text to keep readable — a text-less banner stays a clean photo. */}
+      {f.heading ? <span className="ld-banner__overlay" aria-hidden="true" /> : null}
       {f.heading ? (
         <div className="container ld-banner__inner">
           {/* h2: the page's h1 is the article title in the content block below */}

@@ -59,6 +59,23 @@ export interface CardFields {
 }
 export type Card = CFNode<CardFields>;
 
+// A single downloadable document (resolved PDF Asset in `file`) OR an external doc
+// link (`externalUrl`). `kind`/`isExternal` drive the icon + new-tab behaviour.
+export interface DocumentEntryFields {
+  internalName?: string;
+  label?: string;
+  file?: { fields?: { title?: string; file?: { url?: string; contentType?: string; details?: { size?: number } } } };
+  externalUrl?: string;
+  isExternal?: boolean;
+  kind?: string;
+}
+export type DocumentEntry = CFNode<DocumentEntryFields>;
+
+// One expandable accordion group. `content` (rich text) and `documents` are BOTH
+// optional so a single type covers documents-only, content-only, and combination items.
+export interface AccordionItemFields { internalName?: string; title?: string; content?: Document; documents?: DocumentEntry[] }
+export type AccordionItem = CFNode<AccordionItemFields>;
+
 export type Section = CFNode<Record<string, unknown>>;
 
 export interface PageFields {
