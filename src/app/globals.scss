@@ -285,6 +285,8 @@ main { display: block; }
     border-radius: 20px; overflow: hidden;
     img { object-fit: cover; } }
   &__body { color: $body; font-size: 1.125rem; line-height: 1.7; max-width: 820px; }
+  &__bullets { color: $body; font-size: 1.125rem; line-height: 1.7; max-width: 820px; margin-top: 1rem;
+    ul, ol { padding-left: 1.25rem; } }
   &.ld-tone--inverse { background: $navy; color: #fff; .ld-mcb__heading { color: #fff; } }
   &.ld-tone--subtle { background: rgba(51,82,163,0.05); }
 }
@@ -293,6 +295,7 @@ main { display: block; }
 .ld-collection {
   padding: 0 0 clamp(2rem, 5vw, 3.75rem);
   &__heading { color: $blue; margin-bottom: 1.5rem; }
+  &__intro { color: $body; font-size: 1.125rem; line-height: 1.7; max-width: 820px; margin-bottom: 1.5rem; }
 }
 .ld-card {
   &__title { color: $deep-blue; font-size: 1.5rem; font-weight: 500; margin-bottom: .5rem; }
@@ -305,7 +308,6 @@ main { display: block; }
 .ld-richtext {
   padding: 0 0 clamp(2rem, 5vw, 3.75rem);
   &__inner { color: $body; font-size: 1.125rem; line-height: 1.7; }
-  &--narrow .ld-richtext__inner { max-width: 640px; }
   a { color: $blue; }
 }
 

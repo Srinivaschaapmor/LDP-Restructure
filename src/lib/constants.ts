@@ -19,7 +19,6 @@ export const DEFAULTS = {
   bannerOverlay: "left",
   mediaPlacement: "top",
   tone: "default",
-  richTextWidth: "default",
   backToTop: "Back to top",
 } as const;
 

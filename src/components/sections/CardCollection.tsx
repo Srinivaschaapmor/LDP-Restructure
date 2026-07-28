@@ -12,7 +12,7 @@ function CardItem({ card, titleLevel }: { card: Card; titleLevel: HeadingLevel }
       {f.media ? <MediaImg media={f.media} className="ld-card__media" sizes={IMAGE_SIZES.card} /> : null}
       {f.title ? <Heading level={titleLevel} className="ld-card__title">{f.title}</Heading> : null}
       {f.subtitle ? <p className="ld-card__subtitle">{f.subtitle}</p> : null}
-      {f.body ? <div className="ld-card__body"><RichText doc={f.body} /></div> : null}
+      {f.body?.fields?.content ? <div className="ld-card__body"><RichText doc={f.body.fields.content} /></div> : null}
     </article>
   );
 }
@@ -28,6 +28,7 @@ export function CardCollection({ fields }: { fields: Section["fields"] }) {
     <section className={`ld-collection ld-collection--${layout}`}>
       <div className="container-xxl">
         {f.heading ? <Heading level={2} className="ld-collection__heading">{f.heading}</Heading> : null}
+        {f.intro?.fields?.content ? <div className="ld-collection__intro"><RichText doc={f.intro.fields.content} /></div> : null}
         <div className="row g-4">
           {(f.cards ?? []).map((card) => (
             <div key={card?.sys?.id} className={colClass}>

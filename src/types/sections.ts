@@ -2,23 +2,20 @@
 // `asFields<T>()` casts the CMS payload at its boundary (see content.ts). Grouped
 // here (not inline per-component) so every field shape a page can contain is
 // visible from one place (coding-standards: categorized, not scattered).
-import type { Document } from "@contentful/rich-text-types";
-import type { AccordionItem, Button, Card, Link, LinkGroup, Media, Section } from "./content";
+import type { AccordionItem, Button, Card, Link, LinkGroup, Media, RichTextItem, Section } from "./content";
 
 export interface BannerFields {
-  heading?: string; subheading?: Document; backgroundImage?: Media; logo?: Media;
+  heading?: string; subheading?: RichTextItem; backgroundImage?: Media; logo?: Media;
   cta?: Button; variant?: string; height?: string;
   overlay?: string; overlayColor?: string;
 }
 
 export interface MediaContentBlockFields {
-  eyebrow?: string; heading?: string; body?: Document; media?: Media;
+  eyebrow?: string; heading?: string; body?: RichTextItem; bullets?: RichTextItem; media?: Media;
   mediaPlacement?: string; tone?: string;
 }
 
-export interface CardCollectionFields { heading?: string; layout?: string; cards?: Card[] }
-
-export interface RichTextBlockFields { content?: Document; width?: string }
+export interface CardCollectionFields { heading?: string; intro?: RichTextItem; layout?: string; cards?: Card[] }
 
 export interface AccordionFields { heading?: string; items?: AccordionItem[]; allowMultipleOpen?: boolean }
 

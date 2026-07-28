@@ -31,6 +31,11 @@ export interface MediaFields {
 }
 export type Media = CFNode<MediaFields>;
 
+// Reusable rich text block (ADR-0007): a standalone, referenceable entry rather than
+// an inline field, so the same block can be shared across multiple entries/pages.
+export interface RichTextItemFields { internalName?: string; content?: Document }
+export type RichTextItem = CFNode<RichTextItemFields>;
+
 export interface LinkFields { internalName?: string; label?: string; href?: string; isExternal?: boolean; icon?: Media }
 export type Link = TaggedNode<"link", LinkFields>;
 
@@ -55,7 +60,7 @@ export interface ButtonFields { label?: string; link?: Link; variant?: string }
 export type Button = CFNode<ButtonFields>;
 
 export interface CardFields {
-  media?: Media; title?: string; subtitle?: string; body?: Document; links?: Link[]; cta?: Button; order?: number;
+  media?: Media; title?: string; subtitle?: string; body?: RichTextItem; links?: Link[]; cta?: Button; order?: number;
 }
 export type Card = CFNode<CardFields>;
 
@@ -73,7 +78,7 @@ export type DocumentEntry = CFNode<DocumentEntryFields>;
 
 // One expandable accordion group. `content` (rich text) and `documents` are BOTH
 // optional so a single type covers documents-only, content-only, and combination items.
-export interface AccordionItemFields { internalName?: string; title?: string; content?: Document; documents?: DocumentEntry[] }
+export interface AccordionItemFields { internalName?: string; title?: string; content?: RichTextItem; documents?: DocumentEntry[] }
 export type AccordionItem = CFNode<AccordionItemFields>;
 
 export type Section = CFNode<Record<string, unknown>>;

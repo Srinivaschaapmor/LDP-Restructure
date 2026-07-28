@@ -15,7 +15,8 @@ const richTextDoc = {
 
 describe("SectionRenderer", () => {
   it("renders a known section type from the registry", () => {
-    render(<SectionRenderer sections={[section("richTextBlock", { content: richTextDoc })]} />);
+    // richTextItem is used directly as a page section now (removed the richTextBlock wrapper).
+    render(<SectionRenderer sections={[section("richTextItem", { content: richTextDoc })]} />);
     expect(screen.getByText("Hello world")).toBeInTheDocument();
   });
 

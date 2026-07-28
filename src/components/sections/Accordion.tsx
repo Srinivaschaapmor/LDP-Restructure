@@ -30,7 +30,7 @@ function AccordionGroup({
         </button>
       </Heading>
       <div id={panelId} role="region" aria-labelledby={btnId} className="ld-accordion__panel" hidden={!isOpen}>
-        {f.content ? <div className="ld-accordion__content"><RichText doc={f.content} /></div> : null}
+        {f.content?.fields?.content ? <div className="ld-accordion__content"><RichText doc={f.content.fields.content} /></div> : null}
         {docs.length ? (
           <ul className="ld-accordion__docs">
             {docs.map((d) => <li key={d?.sys?.id}><DocumentLink doc={d} /></li>)}

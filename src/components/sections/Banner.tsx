@@ -71,7 +71,7 @@ export function Banner({ fields }: { fields: Section["fields"] }) {
           ) : (
             <Heading level={headingLevel} className="ld-banner__heading">{f.heading}</Heading>
           )}
-          {f.subheading ? <div className="ld-banner__subheading"><RichText doc={f.subheading} /></div> : null}
+          {f.subheading?.fields?.content ? <div className="ld-banner__subheading"><RichText doc={f.subheading.fields.content} /></div> : null}
           {f.cta?.fields ? (
             <a className="ld-btn ld-btn--primary ld-banner__cta" href={f.cta.fields.link?.fields?.href ?? "#"}>{f.cta.fields.label}</a>
           ) : null}

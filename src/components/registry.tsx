@@ -3,7 +3,7 @@ import type { Section } from "@/types";
 import { Banner } from "@/components/sections/Banner";
 import { MediaContentBlock } from "@/components/sections/MediaContentBlock";
 import { CardCollection } from "@/components/sections/CardCollection";
-import { RichTextBlock } from "@/components/sections/RichTextBlock";
+import { RichTextItemSection } from "@/components/sections/RichTextItem";
 import { Accordion } from "@/components/sections/Accordion";
 import { ResourceLibrary } from "@/components/sections/ResourceLibrary";
 
@@ -13,7 +13,7 @@ export const registry: Record<string, ComponentType<{ fields: Section["fields"] 
   banner: Banner,
   mediaContentBlock: MediaContentBlock,
   cardCollection: CardCollection,
-  richTextBlock: RichTextBlock,
+  richTextItem: RichTextItemSection,
   accordion: Accordion,
   resourceLibrary: ResourceLibrary,
 };

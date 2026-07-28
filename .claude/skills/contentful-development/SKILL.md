@@ -40,9 +40,20 @@ enforce `Meta` char ranges (title 40–75, description 110–160) and `Media.alt
 External data is never guaranteed. Cast the SDK response once at the boundary
 (`getPageBySlug`) and optional-chain everywhere downstream. See [sonarqube-compliance] rule 1.
 
-## 6. Prefer rich text fields directly
-Use `RichText` fields (they embed links/assets/entries) instead of wrapper content types.
-Fewer entries, shallower payloads.
+## 6. Rich text lives in the reusable `richTextItem` type, referenced — never an inline field
+**Superseded by ADR-0007** (this rule used to say "prefer inline `RichText` fields instead of
+wrapper content types" — that was reversed on purpose, for reuse: the same block can now be
+shared across multiple entries/pages, which an inline field structurally cannot do). Every
+rich-text-bearing field is `Link → Entry` validated to `["richTextItem"]`, with the same
+validation every such field has always had — `enabledMarks: [bold, italic, underline]`,
+`enabledNodeTypes: [ordered-list, unordered-list, hyperlink]` (rule 9 still applies in full).
+When adding a NEW rich-text field to any content type, reference `richTextItem` — do not add
+another inline `RichText` field.
+On the frontend, resolve one extra hop: `field.fields.content` (a `Document`), not `field`
+directly — see `RichTextItem`/`RichTextItemFields` in `src/types/content.ts` and any of
+`Banner`/`MediaContentBlock`/`Card`/`Accordion` for the pattern. The one exception: a page
+section that is *just* rich text uses `richTextItem` directly as the section entry (no wrapper
+type — see ADR-0008), so `RichTextItemSection` reads `field.content` with no extra hop.
 
 ## 7. One page + selector, NOT a page per variant
 When content varies by a user choice (state, plan, region, language), model **one** page with a
@@ -102,7 +113,7 @@ recommends, and what we already did: `card` not 10 near-duplicate card types).
 2. For each visual block, look up the matching row(s) in `restructure-source.md` to see what
    fields/references the client's analysis identified for that component shape.
 3. Map it onto an **existing** consolidated type (`banner`, `mediaContentBlock`, `cardCollection`
-   + `card`, `richTextBlock`, `accordion`, `resourceLibrary`, primitives) wherever the shape
+   + `card`, `richTextItem`, `accordion`, `resourceLibrary`, primitives) wherever the shape
    matches — even if the Excel names it differently (e.g. Excel's `ImageDescriptionCard` /
    `IconWithContentCard` / `ActionCard` / `BrushCard` / `LoginCard` / `BrokerPlanCard` are all our
    single `card` type with different field values/variants).

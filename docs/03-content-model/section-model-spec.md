@@ -22,7 +22,7 @@
 ```
 Primitives      Media · Link · Button · Meta · ContactInformation        (referenced everywhere)
 Framework       Page · Header · Footer                                   (route + chrome)
-Sections (~12)  Banner · MediaContentBlock · CardCollection · RichTextBlock · Accordion
+Sections (~12)  Banner · MediaContentBlock · CardCollection · richTextItem · Accordion
                 Tabs · Form · Embed · ContactSection · NotificationBanner · LayoutGroup
 Item types      Card · AccordionItem · FormField · Tab                   (only inside a section)
 ```
@@ -85,11 +85,18 @@ Each value MUST map to a design-system variant; a build test asserts every value
 | canonicalUrl | Short Text (URL) | optional |
 | noindex | Boolean | default false |
 
+**richTextItem** (ADR-0007 — reusable rich text block, referenced by other content types)
+| internalName | Short Text | required, entry title |
+| content | Rich Text | required; `enabledMarks: [bold, italic, underline]`, `enabledNodeTypes: [ordered-list, unordered-list, hyperlink]` |
+
+Every other field in this doc marked **Ref → richTextItem** points here — link once, use
+everywhere, per [contentful-development] rule 6.
+
 **ContactInformation** (replaces CommunicationChannels / Icon Text / Contact column / Contact Address)
 | type | Enum: `phone`·`email`·`fax`·`address` | required |
 | label | Short Text | e.g. "Member services" |
 | value | Short Text | phone/email/etc. |
-| richValue | Rich Text | optional (multi-line address) |
+| richValue | Ref → richTextItem | optional (multi-line address) |
 | icon | Ref → Media | optional |
 
 ## 6. Framework
@@ -116,7 +123,7 @@ reuse the primitives above; they are page chrome, referenced by every `Page`.
 ### 7.1 Banner
 Hero/banner. **Covers:** `Banner`.
 | heading | Short Text | required |
-| subheading | Rich Text | optional |
+| subheading | Ref → richTextItem | optional |
 | backgroundImage | Ref → Media | optional |
 | logo | Ref → Media | optional |
 | cta | Ref → Button | optional |
@@ -136,8 +143,8 @@ ImageDescriptionCard, IconWithContentCard, ImageWithContentCTA, ImageWithCTACard
 InfoContentCard, ContentWithPDFCard, ContentWithBackgroundColor, generic `Content`, TeleDentistry.
 | eyebrow | Short Text | optional |
 | heading | Short Text | optional |
-| body | Rich Text | optional (embed links/assets inline) |
-| bullets | Rich Text | optional |
+| body | Ref → richTextItem | optional |
+| bullets | Ref → richTextItem | optional |
 | media | Ref → Media | optional |
 | ctas | Ref (many) → Button | optional |
 | mediaPlacement | Enum `mediaPlacement` | |
@@ -147,7 +154,7 @@ InfoContentCard, ContentWithPDFCard, ContentWithBackgroundColor, generic `Conten
 Grid/list/carousel of cards. **Covers:** CardsCollection, BaseCardComponent, BrushCard/BrushSection,
 LeadershipCard (+Person), NewsArticles/Collection, PdfLinkCollection (card variant), Accrediations.
 | heading | Short Text | optional |
-| intro | Rich Text | optional |
+| intro | Ref → richTextItem | optional |
 | layout | Enum `collectionLayout` | |
 | cards | Ref (many) → **Card** | required |
 
@@ -155,15 +162,19 @@ LeadershipCard (+Person), NewsArticles/Collection, PdfLinkCollection (card varia
 | media | Ref → Media | optional |
 | title | Short Text | |
 | subtitle | Short Text | optional (e.g. person designation) |
-| body | Rich Text | optional |
+| body | Ref → richTextItem | optional |
 | links | Ref (many) → Link | optional (incl. PDF links) |
 | cta | Ref → Button | optional |
 | order | Number | optional manual ordering |
 
-### 7.4 RichTextBlock
-Standalone formatted copy. **Covers:** RichTextItem/RichTextItemCollection usage.
-| content | Rich Text | required (embed entries/assets) |
-| width | Enum `contentWidth` | |
+### 7.4 richTextItem (used directly as a section)
+Standalone formatted copy. **Covers:** the old sheet's `RichTextItem`/`RichTextItemCollection`
+usage as a standalone section. **ADR-0008:** there is no separate wrapper section type here —
+the `richTextItem` primitive (§5) is whitelisted directly in `Page.sections` and rendered as-is
+by `RichTextItemSection`. The earlier `richTextBlock` wrapper (content + width) was removed once
+`richTextItem` existed as a real reference type, since it added a hop with no remaining purpose.
+| internalName | Short Text | required, entry title |
+| content | Rich Text | required |
 
 ### 7.5 Accordion (+ AccordionItem)
 Expandable list; emits FAQ structured data. **Covers:** AccordionList, Accordion.
@@ -171,7 +182,7 @@ Expandable list; emits FAQ structured data. **Covers:** AccordionList, Accordion
 | items | Ref (many) → **AccordionItem** | required |
 | allowMultipleOpen | Boolean | default false |
 
-**AccordionItem:** `title` (Short Text) · `content` (Rich Text; may embed sections).
+**AccordionItem:** `title` (Short Text) · `content` (Ref → richTextItem).
 
 ### 7.6 Tabs (+ Tab)
 Tabbed content. **Covers:** DynamicTabs, Tab.
@@ -185,10 +196,10 @@ hard-coded to grievance types).
 Data-driven forms with conditional fields. **Covers:** DynamicForms, GrievanceAddress/Links,
 GlobalSearch, SecureDocumentPortal (form part), InputForms/SelectorForms.
 | heading | Short Text | optional |
-| intro | Rich Text | optional |
+| intro | Ref → richTextItem | optional |
 | fields | Ref (many) → **FormField** | required |
 | submitButton | Ref → Button | required |
-| successMessage / failureMessage | Rich Text | |
+| successMessage / failureMessage | Ref → richTextItem | |
 | action | Short Text | endpoint/handler key |
 
 **FormField**
@@ -217,7 +228,7 @@ StateSitesCommunicationChannels.
 
 ### 7.10 NotificationBanner
 Timed/dismissible banner. **Covers:** BannerNotification.
-| message | Rich Text | required |
+| message | Ref → richTextItem | required |
 | tone | Enum: `info`·`warn`·`success` | |
 | icon | Ref → Media | optional |
 | showFrom / showTo | Date & time | optional |
@@ -239,18 +250,19 @@ dedicated type. Not part of the core reusable set.
 ## 8. Reference whitelists (guardrails)
 | Slot | Accepts |
 |---|---|
-| `Page.sections` | Banner, MediaContentBlock, CardCollection, RichTextBlock, Accordion, Tabs, Form, Embed, ContactSection, NotificationBanner, LayoutGroup |
+| `Page.sections` | Banner, MediaContentBlock, CardCollection, richTextItem, Accordion, Tabs, Form, Embed, ContactSection, NotificationBanner, LayoutGroup |
 | `LayoutGroup.items` | all of the above **except** LayoutGroup |
 | `Tab.content` | same as `Page.sections` except Tabs, LayoutGroup |
 | `CardCollection.cards` | Card only |
 | `Accordion.items` | AccordionItem only |
 | `Form.fields` | FormField only |
+| Every `Ref → richTextItem` field (subheading, body, bullets, intro, content, message, etc.) | richTextItem only |
 Plus: slug `unique` + regex; `Media.altText` required; `Meta` char-range validations; all enums use `in`-list validation.
 
 ## 9. Localization matrix
 | Localized | Not localized |
 |---|---|
-| heading, subheading, body, bullets, intro, labels, card/tab/accordion text | all enums (variant/tone/layout/placement) |
+| heading, labels, card/tab/accordion text; `richTextItem.content` (subheading/body/bullets/intro resolve to it, ADR-0007) | all enums (variant/tone/layout/placement) |
 | CTA/link labels, form labels/placeholders/messages | booleans, numbers, structural references |
 | `slug` (per-locale, with fallback) | `internalName` (Entry Key) |
 | Media alt text; Media asset **only if it contains text** | Media asset (shared by default) |
@@ -262,7 +274,7 @@ Fallback chain: requested locale → **default `en-US`**.
 |---|---|
 | GraphicAsset | **Media** (primitive) |
 | Link, Button, Meta | **Link / Button / Meta** (primitives) |
-| RichTextItem, RichTextItemCollection, Heading | **Rich Text fields** directly / heading on block |
+| RichTextItem, RichTextItemCollection, Heading | **richTextItem** (ADR-0007 — reintroduced as a single, validated, deliberately reusable reference primitive; not the old unbounded wrapper/collection pair; ADR-0008 — used both as a field reference and directly as a `Page.sections` entry, no separate wrapper section) / heading on block |
 | ImageWithContent, BackgroundImageWithContent, ImageDescriptionCard, IconWithContentCard, ImageWithContentCTA, ImageWithCTACard, InfoContentCard, ContentWithPDFCard, ContentWithBackgroundColor, Content, TeleDentistry | **MediaContentBlock** (variants) |
 | CardsCollection, BaseCardComponent, BrushCard, LeadershipCard(+Person), NewsArticles(+Collection), PdfLinkCollection(+PdfLinkCard), Accrediations(+ImageWithLink) | **CardCollection + Card** (variants) |
 | AccordionList, Accordion | **Accordion + AccordionItem** |

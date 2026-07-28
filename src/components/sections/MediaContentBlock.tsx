@@ -19,7 +19,8 @@ export function MediaContentBlock({ fields }: { fields: Section["fields"] }) {
             <MediaImg media={f.media} sizes={IMAGE_SIZES.content} fill />
           </div>
         ) : null}
-        {f.body ? <div className="ld-mcb__body"><RichText doc={f.body} /></div> : null}
+        {f.body?.fields?.content ? <div className="ld-mcb__body"><RichText doc={f.body.fields.content} /></div> : null}
+        {f.bullets?.fields?.content ? <div className="ld-mcb__bullets"><RichText doc={f.bullets.fields.content} /></div> : null}
       </div>
     </section>
   );
