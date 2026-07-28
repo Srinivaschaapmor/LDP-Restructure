@@ -1,11 +1,9 @@
 "use client";
 import { useState } from "react";
-import { asFields, type AccordionItem, type Section } from "@/lib/types";
-import { RichText } from "@/components/primitives/RichText";
-import { Heading, type HeadingLevel } from "@/components/primitives/Heading";
-import { DocumentLink } from "@/components/primitives/DocumentLink";
-
-interface AccordionFields { heading?: string; items?: AccordionItem[]; allowMultipleOpen?: boolean }
+import { asFields, type AccordionFields, type AccordionItem, type Section } from "@/types";
+import { RichText } from "@/components/ui/RichText";
+import { Heading, type HeadingLevel } from "@/components/ui/Heading";
+import { DocumentLink } from "@/components/ui/DocumentLink";
 
 // One group: a heading-wrapped disclosure button controlling a labelled region
 // (WCAG accordion pattern). Content and/or a document list render inside the region.
@@ -69,7 +67,7 @@ export function Accordion({ fields }: { fields: Section["fields"] }) {
 
   return (
     <section className="ld-accordion">
-      <div className="container">
+      <div className="container-xxl">
         {f.heading ? <Heading level={2} className="ld-accordion__heading">{f.heading}</Heading> : null}
         <div className="ld-accordion__list">
           {items.map((item) => (

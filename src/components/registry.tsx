@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import type { Section } from "@/lib/types";
+import type { Section } from "@/types";
 import { Banner } from "@/components/sections/Banner";
 import { MediaContentBlock } from "@/components/sections/MediaContentBlock";
 import { CardCollection } from "@/components/sections/CardCollection";

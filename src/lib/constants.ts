@@ -16,6 +16,7 @@ export const DEFAULTS = {
   collectionLayout: "grid-3",
   bannerHeight: "md",
   bannerVariant: "image",
+  bannerOverlay: "left",
   mediaPlacement: "top",
   tone: "default",
   richTextWidth: "default",
@@ -28,6 +29,7 @@ export const IMAGE_SIZES = {
   content: "(max-width: 992px) 100vw, 820px",
   card: "(max-width: 768px) 100vw, 400px",
   logo: "170px",
+  icon: "24px",
 } as const;
 
 // The id of the top landmark, used by the footer "back to top" link.
@@ -46,3 +48,16 @@ export const DOC_LABELS = {
 export const RL_SELECT_LABEL = "Select your state to access Liberty forms and documents";
 export const RL_SELECT_PLACEHOLDER = "Select state";
 export const HOME_LABEL = "Home";
+
+// Structural chrome copy — not CMS-authored content, but still centralized here
+// rather than inlined in components (coding-standards §5, sonarqube-compliance rule 7).
+export const UI_TEXT = {
+  bannerFallbackLabel: "Banner",
+  primaryNavLabel: "Primary",
+  openMenuLabel: "Open menu",
+  closeMenuLabel: "Close menu",
+  menuDialogLabel: "Menu",
+  searchLabel: "Search",
+  searchPlaceholder: "Search",
+  breadcrumbNavLabel: "Breadcrumb",
+} as const;

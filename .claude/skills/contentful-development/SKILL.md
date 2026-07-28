@@ -67,5 +67,55 @@ node_modules/.bin/contentful-migration -s "$CONTENTFUL_SPACE_ID" \
 `.env` is not auto-loaded by node either — source it (`set -a; . ./.env; set +a`) before running
 seed scripts too. Delete superseded pages/entries fully (unpublish → delete) when a model changes.
 
+## 9. Constrain every new RichText / URL / Asset field — don't leave them open
+Apply these validations when creating a field, not after a review flags them (see ADR-0005):
+- **RichText:** restrict to `enabledMarks: [bold, italic, underline]` +
+  `enabledNodeTypes: [ordered-list, unordered-list, hyperlink]` unless the field is genuinely a
+  standalone long-form article (then confirm with product before allowing headings/embeds —
+  embedded headings fight the code-derived heading hierarchy in rule below, and embeds reopen
+  include-depth bloat).
+- **URL/href Symbol fields:** add a `regexp` validation matching the field's real purpose — nav
+  links (`^(https?://|/|mailto:|tel:|#).+`), canonical/external-doc URLs
+  (`^https?://.+` absolute only), or media externalUrl (`^(https?://|/).+`).
+- **Asset link fields:** add `linkMimetypeGroup` — `["image"]` for images, `["pdfdocument"]` for
+  document uploads — so editors can't attach the wrong file type.
+
+## 10. Heading text is inline; heading level is code-derived, never a CMS field
+Every component's heading is a plain `Symbol` field on that component — never a linked `Heading`
+entry (an anti-pattern flagged in ADR-0005 review finding #1). Do **not** add a `headingLevel`
+dropdown either: an editor-chosen level can produce duplicate `<h1>`s or skipped levels, breaking
+WCAG 2.2 AA. Instead thread a `level` prop through the `Heading` primitive
+(`src/components/primitives/Heading.tsx`), computed by each section from its position in the page
+(page title → h1, section heading → h2, nested item title → h3, …) so the outline is always valid.
+
+## 11. Before building ANY page: consult the restructure reference, then map onto OUR consolidated types
+`docs/03-content-model/reference/` (`restructure-source.md` + `analysis-notes.md`) is the
+**mandatory field/requirement inventory** — the client's full ~65-content-type analysis of every
+component across the ~200+ Figma pages. **Consult it every time**, for every page, so nothing is
+missed and the whole team builds consistently. But it is an **inventory of what data each
+component needs, not a literal 1:1 content-type spec** — our model deliberately consolidates it
+to ~18 reusable types with variant enums (this is what ADR-0005 / the SA review's own finding #5
+recommends, and what we already did: `card` not 10 near-duplicate card types).
+
+**Process for every new page:**
+1. Read the Figma design fully (all breakpoints) — [figma-mcp-workflow].
+2. For each visual block, look up the matching row(s) in `restructure-source.md` to see what
+   fields/references the client's analysis identified for that component shape.
+3. Map it onto an **existing** consolidated type (`banner`, `mediaContentBlock`, `cardCollection`
+   + `card`, `richTextBlock`, `accordion`, `resourceLibrary`, primitives) wherever the shape
+   matches — even if the Excel names it differently (e.g. Excel's `ImageDescriptionCard` /
+   `IconWithContentCard` / `ActionCard` / `BrushCard` / `LoginCard` / `BrokerPlanCard` are all our
+   single `card` type with different field values/variants).
+4. Only propose a **new** content type when the shape is genuinely not covered by an existing one
+   — and follow the same consolidation discipline (variant enums, not a new type per look).
+5. **Known issues in the source sheet** (don't propagate them): `Button` and `breadcrumbs` are
+   referenced but never defined there — we already have both, correctly, in our model (`button`
+   type; breadcrumbs are code-derived from the slug, no CT needed). Several references are
+   case/spacing mismatches (`footer`↔`Footer`, `link`↔`Link`, etc.) — use **our** existing
+   camelCase content-type IDs, never the sheet's inconsistent casing. Full list in
+   `analysis-notes.md` — check it before assuming an Excel reference name is correct.
+6. If a Figma component's data needs genuinely don't fit any existing or sensibly-new consolidated
+   type, **stop and ask** rather than guessing — same rule as [figma-mcp-workflow] rule 0.
+
 See also: [nextjs-development] (rendering/registry), the content-model spec in
 `docs/03-content-model/`, and [figma-mcp-workflow] (design fidelity; assets originate from Figma).

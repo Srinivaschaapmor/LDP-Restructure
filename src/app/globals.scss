@@ -11,17 +11,49 @@ $font: "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
 body { font-family: $font; color: $body; margin: 0; }
 main { display: block; }
 
-// Content column matches Figma: 230px side margins on a 1600 frame = 1140 content.
-// Overrides Bootstrap's xxl container (1320px) so wide screens keep the design width.
-.container { max-width: 1140px; }
+// Content column, used everywhere via .container-xxl (not plain .container —
+// Bootstrap's .container snaps to a NEW fixed max-width at every sm/md/lg/xl/xxl
+// tier, which is what produced the old bug: a frozen 1140px box with an
+// uncontrolled, viewport-dependent outer gutter beyond it. .container-xxl has no
+// such tier — it is fluid (width:100%, just its padding) until it hits its own
+// max-width, so padding is the only thing that changes, continuously, and the
+// content column grows/shrinks smoothly with the viewport instead of jumping.
+//
+// Figma anchors (exact, from the three reference frames): 440px frame → 16px side
+// padding; 834px frame → 60px; 1600px frame → 230px (1600 − 230 − 230 = 1140
+// content) — but the 230px target is pulled forward to land by ~1400px, not
+// 1600px: most real "desktop" browser windows report a logical/CSS viewport
+// narrower than 1600 (1440/1536/1366 are all common laptop widths), so ramping
+// all the way to 1600 meant the padding never actually reached its full spec
+// value on ordinary hardware. max-width still caps the column at the true 1600
+// reference — only the padding ramp finishes early; the column keeps growing
+// (content gets proportionally wider) from 1400–1600 while padding holds at 230.
+// Two clamp() segments meet exactly at 834px, so there is no jump at that boundary.
+.container-xxl {
+  max-width: 1600px;
+  padding: 0% 5%;
+ 
+}
+@media (min-width: 834px) {
+  .container-xxl {
+    max-width: 1600px;
+    padding: 0% 5%;
 
-// Common content region for every page: 60px below the breadcrumbs and 60px above
-// the footer. The first/last sections' own vertical padding is zeroed at the edges so
-// the 60px isn't doubled; their inner padding still spaces sections from each other.
+  }
+}
+
+// Common content region for every page: below the breadcrumbs and above the footer.
+// The first/last sections' own vertical padding is zeroed at the edges so this isn't
+// doubled; their inner padding still spaces sections from each other. 16px on mobile
+// (design-tokens spacing scale), 60px from `lg` up — matches the header's own
+// mobile/desktop split (`d-lg-*`).
 .ld-content {
-  padding: 60px 0;
+  padding: 16px 0;
   > :first-child { padding-top: 0; }
   > :last-child { padding-bottom: 0; }
+}
+@media (min-width: 992px) {
+  .ld-content { padding: 60px 0; }
 }
 
 // ---- Utilities --------------------------------------------------------------
@@ -30,18 +62,85 @@ main { display: block; }
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
 
+// ---- Utility bar (Language / Login, above the header) ------------------------
+// Figma: white bg, 10px vertical padding, language trigger at the left edge of the
+// 1140 column, login at the right edge; 16px Medium #0F1042; icons/chevron 20/16px.
+.ld-utilitybar {
+  background: #fff;
+  // padding-block only (never the `padding` shorthand here): this element also
+  // carries .container-xxl, whose horizontal padding a shorthand's implicit
+  // left/right:0 would silently clobber (same specificity, later in the cascade).
+  &__inner { display: flex; align-items: center; justify-content: space-between; padding-block: 10px; }
+  &__item { position: relative; }
+  &__trigger {
+    display: inline-flex; align-items: center; gap: 6px; background: none; border: 0;
+    cursor: pointer; font: inherit; font-size: 1rem; color: #0f1042; padding: 0;
+  }
+  &__icon { width: 20px; height: 20px; }
+  // Native SVG is 9.33×5.12 (wide, short) — 16×9 keeps that ratio; a square box would
+  // stretch it into a distorted shape. Rotation is an inline style in UtilityBar.tsx
+  // (open/closed state) — kept out of the class to avoid a cascade/specificity edge case.
+  &__chev { width: 16px; height: 9px; opacity: .5; transition: transform .15s ease; }
+  &__panel {
+    position: absolute; top: 100%; left: 0; z-index: 20; min-width: 200px; margin-top: .5rem;
+    list-style: none; padding: .5rem 0; background: #fff; border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(15, 16, 66, .18); border: 1px solid rgba(15, 16, 66, .08);
+    // More generous row spacing than the primary-nav dropdown, matching the reference.
+    .ld-nav__sublink { padding: .75rem 1.25rem; font-size: 1rem; }
+  }
+  // Current language selection: bolder + tinted, same "active via typography" idea as
+  // the header's current nav item (.ld-nav__link.is-active) — no separate icon needed.
+  &__option.is-selected { color: $blue; font-weight: 600; background: rgba(51, 82, 163, .06); }
+}
+
 // ---- Header -----------------------------------------------------------------
 .ld-header {
   background: $navy;
-  &__inner { display: flex; align-items: center; gap: 1.5rem; padding: 1rem 0; }
+  // padding-block only — see the identical note on .ld-utilitybar__inner above;
+  // this element also carries .container-xxl.
+  &__inner { display: flex; align-items: center; gap: 1rem; padding-block: 1rem; }
   &__brand { display: inline-flex; }
-  &__logo { height: 36px; width: auto; } // Figma: 169×36
+  // Figma mobile frame: 146×34 logo (not the desktop 169×36) — using the desktop
+  // size at every width was part of what overflowed the header row on narrow
+  // phones (logo + CTA + burger genuinely don't fit at the desktop CTA's size;
+  // see the .ld-header__actions .ld-btn override below).
+  &__logo { height: 34px; width: auto; }
   &__desktopnav { flex: 1 1 auto; }
-  &__actions { margin-left: auto; display: flex; align-items: center; gap: 1rem; }
+  &__actions { margin-left: auto; display: flex; align-items: center; gap: .75rem;
+    .ld-btn, .ld-header__burger { flex-shrink: 0; }
+    // Figma mobile frame: CTA is a compact 128×44 button, not the desktop size —
+    // reusing the desktop .ld-btn sizing everywhere is what made the header row
+    // (logo + CTA + burger) genuinely wider than a narrow phone viewport,
+    // pushing the burger past the right edge (real horizontal overflow, not
+    // just a rendering glitch — confirmed via scrollWidth > clientWidth).
+    .ld-btn { font-size: .875rem; padding: .625rem 1rem; } }
   &__burger {
     background: transparent; border: 0; color: #fff; padding: .25rem; line-height: 0;
     display: inline-flex; align-items: center; cursor: pointer;
   }
+}
+@media (min-width: 992px) {
+  .ld-header {
+    &__inner { gap: 1.5rem; }
+    &__logo { height: 36px; } // Figma desktop: 169×36
+    &__actions {
+      gap: 1.25rem;
+      .ld-btn { font-size: 1.125rem; padding: .75rem 1.25rem; } // back to desktop CTA size
+    }
+  }
+}
+
+// Desktop header search box. Figma: white pill 200px wide, radius 24, no border,
+// pl-20/py-14/pr-16, placeholder 16px rgba(23,21,62,.5), trailing 20px icon.
+.ld-search {
+  display: flex; align-items: center; gap: 4px; width: 200px; background: #fff;
+  border-radius: 24px; padding: 14px 16px 14px 20px; cursor: text;
+  &__input {
+    flex: 1 1 0; min-width: 0; border: 0; outline: 0; background: none; font: inherit;
+    font-size: 1rem; color: #17153e;
+    &::placeholder { color: rgba(23, 21, 62, .5); }
+  }
+  &__icon { width: 20px; height: 20px; flex-shrink: 0; }
 }
 
 // ---- Desktop nav + dropdowns (primary in header, sub in the bar) ------------
@@ -77,13 +176,13 @@ main { display: block; }
     .ld-nav__link, .ld-nav__trigger { color: #0f1042; font-size: .875rem; } // 14px — Figma sub-nav
     .ld-nav__sublink { color: $body; }
     .ld-nav__chev { opacity: .5; }        // Figma: sub-nav chevrons at 50%
-    .ld-nav__list { gap: 1.25rem; }       // 20px — Figma gap
+    .ld-nav__list { gap: 1.25rem; padding: 10px; }       // 20px — Figma gap
   }
 }
 // The desktop sub-menu bar (solid light band so its dark text is readable — it sits
 // directly under the navy header, so a translucent fill would render dark-on-dark).
 // Left-aligned at the content margin, matching Figma (px-230, inner flex-1).
-.ld-submenu { background: #eef1f8; border-top: 1px solid rgba(15,16,66,.06);
+.ld-submenu { background: #ffff; border-top: 1px solid rgba(15,16,66,.06);
   .container { display: flex; justify-content: flex-start; padding-top: .75rem; padding-bottom: .75rem; } }
 
 // ---- Mobile / tablet drawer -------------------------------------------------
@@ -96,9 +195,14 @@ main { display: block; }
   &__panel { display: flex; flex-direction: column; gap: 1rem; animation: ld-slide-in .2s ease; }
   &__back { display: flex; align-items: center; gap: .5rem; background: none; border: 0; cursor: pointer;
     color: $navy; font-weight: 500; font-size: 1.125rem; padding: .25rem 0; font-family: inherit; }
-  &__search { display: flex; align-items: center; gap: .5rem; border: 1px solid rgba(15,16,66,.2);
-    border-radius: 24px; padding: .5rem 1rem; color: $muted;
-    input { border: 0; outline: 0; flex: 1; font: inherit; } }
+  // Figma (mobile drawer search field): white bg, 1px #898989 border, radius 68
+  // (pill), icon 24px THEN text — a different layout/style from the desktop
+  // .ld-search box, not a shared component (see SearchBox.tsx note).
+  &__search { display: flex; align-items: center; gap: 8px; border: 1px solid #898989;
+    border-radius: 68px; padding: 11px 18px; color: #5b5b5b;
+    input { border: 0; outline: 0; flex: 1; min-width: 0; font: inherit; font-size: .875rem; color: #5b5b5b;
+      &::placeholder { color: #5b5b5b; } } }
+  &__search-icon { width: 24px; height: 24px; flex-shrink: 0; }
   &__nav { display: flex; flex-direction: column; }
   &__nav--sub { border-top: 1px solid rgba(15,16,66,.08); margin-top: .5rem; }
   &__row { display: flex; align-items: center; justify-content: space-between; width: 100%;
@@ -110,8 +214,19 @@ main { display: block; }
   &__sublist { list-style: none; margin: 0; padding: .25rem 0 .75rem 1rem;
     li a { display: block; padding: .5rem 0; color: $body; text-decoration: none; } }
   &__cta { text-align: center; margin-top: .5rem; }
-  &__utility { display: flex; justify-content: space-between; padding-top: .5rem;
-    a { color: $navy; text-decoration: none; } }
+  // Language + Login: compact, side-by-side triggers (not full-width rows like
+  // the nav drilldown) — each item sizes to its own content, so
+  // justify-content:space-between pushes them to opposite ends, matching Figma.
+  &__utility { display: flex; justify-content: space-between; align-items: flex-start;
+    padding-top: .75rem; border-top: 1px solid rgba(15,16,66,.08); gap: 1rem; }
+  &__utilitygroup { display: flex; flex-direction: column; align-items: flex-start; gap: .5rem; }
+  &__utilitytrigger { display: inline-flex; align-items: center; gap: 6px; background: none; border: 0;
+    cursor: pointer; font: inherit; font-size: 1rem; color: $navy; padding: 0; }
+  &__utilityicon { width: 20px; height: 20px; }
+  &__utilitylist { list-style: none; margin: 0; padding: 0;
+    li { padding: .375rem 0; }
+    a { color: $body; text-decoration: none; }
+    .ld-utilitybar__option.is-selected { color: $blue; font-weight: 600; } }
 }
 @keyframes ld-slide-in { from { transform: translateX(24px); opacity: .4; } to { transform: translateX(0); opacity: 1; } }
 
@@ -119,6 +234,10 @@ main { display: block; }
 .ld-btn {
   display: inline-block; border-radius: 32px; padding: 0.75rem 1.25rem; font-weight: 500; font-size: 1.125rem;
   text-decoration: none; border: 2px solid transparent; cursor: pointer;
+  // A flex child (e.g. inside .ld-header__actions) can shrink below its label's
+  // natural width by default, wrapping the text onto a second line — nowrap
+  // forces it to stay on one line and take the space it needs instead.
+  white-space: nowrap;
   &--primary { background: $blue; color: #fff; }
   &--secondary { background: #fff; color: $deep-blue; border-color: $deep-blue; }
 }
@@ -131,10 +250,28 @@ main { display: block; }
   &--md { min-height: clamp(160px, 18vw, 265px); }
   &--lg { min-height: clamp(220px, 24vw, 360px); }
   &__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  &__overlay { position: absolute; inset: 0;
-    background: linear-gradient(90deg, rgba(15,16,66,0.6), rgba(15,16,66,0)); }
-  &__inner { position: relative; }
-  &__heading { color: #fff; font-size: clamp(1.6rem, 4vw, 2.6rem); }
+  // Direction is content-driven (banner.overlay); the default navy tint is a fixed
+  // design-system token. banner.overlayColor is a validated-hex, scoped exception to
+  // "no free color pickers" (ADR-0006) — when set, an inline style overrides these.
+  &__overlay {
+    position: absolute; inset: 0;
+    &--left { background: linear-gradient(90deg, rgba(15, 16, 66, .6), rgba(15, 16, 66, 0)); }
+    &--right { background: linear-gradient(270deg, rgba(15, 16, 66, .6), rgba(15, 16, 66, 0)); }
+  }
+  &__inner { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: .75rem; }
+  &__heading { color: #fff; font-size: clamp(1.6rem, 4vw, 2.6rem); margin: 0; }
+  &__logo { position: relative; width: 100%; max-width: 260px; height: 64px; }
+  &__subheading { color: #fff; font-size: 1rem; line-height: 1.6; max-width: 40ch; }
+  &__cta { margin-top: .25rem; }
+
+  // Mobile-only lightweight band: solid color (default navy, or overlayColor) with
+  // just the logo or heading — no large hero photo — see Banner.tsx for why.
+  &__mobile {
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    min-height: clamp(120px, 30vw, 200px); padding: 1.5rem 1rem; background: $navy;
+  }
+  &__mobile-logo { position: relative; width: 100%; max-width: 180px; height: 48px; }
+  &__mobile-heading { color: #fff; font-size: clamp(1.25rem, 6vw, 1.75rem); margin: 0; }
 }
 
 // ---- Media content block ----------------------------------------------------

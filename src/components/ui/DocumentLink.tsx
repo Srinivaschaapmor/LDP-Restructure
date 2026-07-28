@@ -1,4 +1,4 @@
-import type { DocumentEntry } from "@/lib/types";
+import type { DocumentEntry } from "@/types";
 import { DOC_LABELS, EXTERNAL_LINK_REL, EXTERNAL_LINK_TARGET } from "@/lib/constants";
 import { PdfIcon } from "@/components/icons/PdfIcon";
 

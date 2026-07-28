@@ -23,15 +23,30 @@ Brand) — **never** pick one of those; use the Avenir Next "Liberty" set.
 not invent, approximate, simplify, or substitute an icon/colour.**
 *(Real mistakes: shipped a flat "PDF" text chip and approximate sizes; had to redo to the exact
 Figma page-outline icon, 52px H1, 24px prompt, etc.)*
+**One narrow, explicit exception:** `Banner.overlayColor` — a Contentful-regex-validated hex
+field with a safe fallback to the default navy — per user sign-off, see ADR-0006. This is a
+one-off, not a precedent; a new "let the CMS pick a color" request is still a fresh decision
+to confirm, not something this exception pre-approves elsewhere.
 
-## 1. Content width & page padding come from the frame, not Bootstrap defaults
-The content column is the frame width minus its side margins (e.g. 1600 − 230 − 230 = **1140**).
-Bootstrap's `.container` widens to **1320px** at ≥1400px — cap it (`.container{max-width:1140px}`)
-so wide screens keep the design width. Common page rhythm: the content area (below breadcrumbs,
-above footer) uses a shared vertical padding on **every** page (this project: **60px** top &
-bottom via `.ld-content`); zero the first/last section's edge padding so it isn't doubled.
+## 1. Content width & page padding come from the frame, not Bootstrap defaults — and must be
+## fluid, not fixed
+Use **`.container-xxl`**, never plain `.container`: Bootstrap's `.container` snaps to a new fixed
+max-width at *every* sm/md/lg/xl/xxl tier, which freezes the content box at one width and leaves
+an uncontrolled, viewport-dependent gutter beyond it — "too much padding" on common desktop
+widths, "no padding" on mobile (only the 12px default gutter). `.container-xxl` has none of
+Bootstrap's smaller tiers, so it stays fluid (padding-only) until it hits its own max-width.
+Side padding must **interpolate continuously** between the Figma reference frames (not a single
+fixed value, not a hard breakpoint jump): e.g. this project's 440/834/1600px frames → 16/60/230px
+padding, implemented as two `clamp()` segments meeting exactly at the middle frame width so there
+is no visible jump at that boundary. `max-width` on the container = the desktop reference frame
+width (here 1600), so the content column keeps growing right up to that width instead of freezing
+early. Common page rhythm: the content area (below breadcrumbs, above footer) also uses a shared
+vertical padding on **every** page (this project: **60px** top & bottom via `.ld-content`); zero
+the first/last section's edge padding so it isn't doubled.
 *(Real feedback: "padding around the page — make it exactly"; "60px is common below breadcrumbs
-and above footer for all pages".)*
+and above footer for all pages"; "container should be xxl size... padding too high in desktop and
+no padding in mobile... should be responsive not fixed" — the original `.container{max-width:
+1140px}` approach was exactly this bug: a fixed box, not a fluid one.)*
 
 ## 2. Build the WHOLE page, not just the named section
 A page is header + contextual nav + breadcrumbs + (banner) + sections + footer. When asked to

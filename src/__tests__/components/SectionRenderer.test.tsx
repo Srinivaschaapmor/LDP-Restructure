@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { SectionRenderer } from "@/components/SectionRenderer";
-import type { Section } from "@/lib/types";
+import type { Section } from "@/types";
 import * as log from "@/lib/log";
 
 const section = (id: string, fields: Section["fields"]): Section => ({

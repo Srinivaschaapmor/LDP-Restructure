@@ -25,6 +25,11 @@ TypeScript + Bootstrap 5 + SCSS**, with content from **Contentful** and designs 
   invent, approximate, simplify, replace icons, or use a foreign-library lookalike.** Baseline:
   `docs/04-design-system/design-tokens.md`; process + implementation-report format:
   [figma-mcp-workflow]. If a required design value is missing, **STOP and ask** — do not assume.
+- **Content-model reference, mandatory for every page:** `docs/03-content-model/reference/`
+  (the client's full field/requirement analysis across all Figma pages) must be consulted before
+  building any page — but as a **field inventory to map onto our existing consolidated content
+  types**, never as a literal 1:1 type-per-row spec. See [contentful-development] rule 11. This
+  applies to everyone working in this repo, not just one contributor.
 - **No assumed requirements:** If a requirement is unclear, ask — do not guess.
 
 ## Where things live (single source of truth = this repo)

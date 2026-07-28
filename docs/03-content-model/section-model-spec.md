@@ -122,6 +122,13 @@ Hero/banner. **Covers:** `Banner`.
 | cta | Ref → Button | optional |
 | variant | Enum: `image`·`gradient`·`plain` | |
 | height | Enum: `sm`·`md`·`lg` | |
+| overlay | Enum: `none`·`left`·`right` (gradient direction) | |
+| overlayColor | Short Text, regex `^#([0-9A-Fa-f]{3}\|[0-9A-Fa-f]{6})$` | optional — see ADR-0006 |
+
+On mobile (< `md`), the photo is replaced by a lightweight solid-color band (default navy, or
+`overlayColor`) showing just the logo or heading — never both — instead of shipping a large
+hero image as the mobile LCP element. Only swaps in when there's a logo or heading to show;
+a photo-only banner (no heading/logo) keeps its photo on mobile too, so nothing goes blank.
 
 ### 7.2 MediaContentBlock
 Image/icon + copy + optional CTA. **Covers:** ImageWithContent, BackgroundImageWithContent,

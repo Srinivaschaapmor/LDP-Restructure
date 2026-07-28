@@ -1,6 +1,7 @@
 "use client";
-import { useEffect, useId, useRef, useState } from "react";
-import { isLink, isLinkGroup, type LinkGroup, type NavItem } from "@/lib/types";
+import { useId } from "react";
+import { isLink, isLinkGroup, type LinkGroup, type NavItem } from "@/types";
+import { useDismissableToggle } from "@/lib/useDismissableToggle";
 
 function Chevron({ open }: { open: boolean }) {
   return (
@@ -11,7 +12,9 @@ function Chevron({ open }: { open: boolean }) {
   );
 }
 
-function SubLink({ item }: { item: NavItem }) {
+// Exported so other dropdown-style menus (e.g. UtilityBar) reuse the same
+// group/link rendering instead of duplicating it (coding-standards §1).
+export function SubLink({ item }: { item: NavItem }) {
   // A group child inside a dropdown becomes a labeled section; a link becomes a link.
   if (isLinkGroup(item)) {
     return (
@@ -32,23 +35,13 @@ function SubLink({ item }: { item: NavItem }) {
 }
 
 function NavDropdown({ group }: { group: LinkGroup }) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLLIElement>(null);
+  const { open, toggle, ref } = useDismissableToggle<HTMLLIElement>();
   const panelId = useId();
-
-  useEffect(() => {
-    if (!open) return;
-    const onDown = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false); };
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
-    document.addEventListener("mousedown", onDown);
-    document.addEventListener("keydown", onKey);
-    return () => { document.removeEventListener("mousedown", onDown); document.removeEventListener("keydown", onKey); };
-  }, [open]);
 
   return (
     <li className="ld-nav__item ld-nav__item--group" ref={ref}>
       <button type="button" className="ld-nav__link ld-nav__trigger"
-        aria-expanded={open} aria-controls={panelId} aria-haspopup="true" onClick={() => setOpen((v) => !v)}>
+        aria-expanded={open} aria-controls={panelId} aria-haspopup="true" onClick={toggle}>
         {group?.fields?.title}
         <Chevron open={open} />
       </button>

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { resolveUrl, resolveDimensions } from "@/components/primitives/MediaImg";
-import { ctId } from "@/lib/types";
-import type { Media } from "@/lib/types";
+import { resolveUrl, resolveDimensions } from "@/components/ui/MediaImg";
+import { ctId } from "@/types";
+import type { Media } from "@/types";
 
 const media = (fields: Media["fields"]): Media => ({ sys: { id: "x", contentType: { sys: { id: "media" } } }, fields });
 

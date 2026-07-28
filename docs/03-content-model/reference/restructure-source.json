@@ -1,0 +1,1945 @@
+[
+  {
+    "num": 1,
+    "name": "Header",
+    "fields": [
+      {
+        "field": "Entry Key ",
+        "type": "Short Text",
+        "ref": null,
+        "desc": "Top page header configuration that groups navigation, branding, utility links, search, and primary actions."
+      },
+      {
+        "field": "Utility Bar",
+        "type": "Reference",
+        "ref": "UtilityBar",
+        "desc": "Utility Bar field for Header; references UtilityBar."
+      },
+      {
+        "field": "Logo",
+        "type": "Reference",
+        "ref": "GraphicAsset",
+        "desc": "Visual or file asset used by this item; expected reference: GraphicAsset."
+      },
+      {
+        "field": "Persona Links",
+        "type": "Reference",
+        "ref": "Link",
+        "desc": "Link or URL configuration used to navigate users to the correct destination."
+      },
+      {
+        "field": "Search",
+        "type": "Reference",
+        "ref": "InputForms",
+        "desc": "Search field for Header; references InputForms."
+      },
+      {
+        "field": "CTA",
+        "type": "Reference",
+        "ref": "Button",
+        "desc": "Call-to-action configuration referencing Button, used for the primary user action."
+      }
+    ]
+  },
+  {
+    "num": 2,
+    "name": "Banner",
+    "fields": [
+      {
+        "field": "Background Image",
+        "type": "Reference",
+        "ref": "GraphicAsset",
+        "desc": "Hero/banner section used to display prominent visual branding, page messaging, and supporting logo/title assets."
+      },
+      {
+        "field": "Logo",
+        "type": "Reference",
+        "ref": "GraphicAsset",
+        "desc": "Visual or file asset used by this item; expected reference: GraphicAsset."
+      },
+      {
+        "field": "Heading",
+        "type": "Reference",
+        "ref": "Heading",
+        "desc": "Display heading shown to users or editors for this item."
+      }
+    ]
+  },
+  {
+    "num": 3,
+    "name": "Meta",
+    "fields": [
+      {
+        "field": "Title (40-75 chars)",
+        "type": "Short Text",
+        "ref": null,
+        "desc": "SEO metadata for the page including browser title, search description, and keyword targeting."
+      },
+      {
+        "field": "Description (110-160 chars)",
+        "type": "Long Text",
+        "ref": null,
+        "desc": "Main supporting copy/content for this item. Long-form formatted content entered by the content author."
+      },
+      {
+        "field": "Keywords",
+        "type": "Short Text",
+        "ref": null,
+        "desc": "Keywords field for Meta. Short text value entered directly by the content author."
+      }
+    ]
+  },
+  {
+    "num": 4,
+    "name": "SubNavBar",
+    "fields": [
+      {
+        "field": "Entry Key ",
+        "type": null,
+        "ref": null,
+        "desc": "Secondary navigation bar configuration for related page or section links."
+      },
+      {
+        "field": "Links",
+        "type": "Reference",
+        "ref": "LinkSelector",
+        "desc": "Link or URL configuration used to navigate users to the correct destination."
+      }
+    ]
+  },
+  {
+    "num": 5,
+    "name": "Footer",
+    "fields": [
+      {
+        "field": "Entry Key ",
+        "type": null,
+        "ref": null,
+        "desc": "Footer configuration containing brand logo and social or supporting links."
+      },
+      {
+        "field": "Logo",
+        "type": null,
+        "ref": null,
+        "desc": "Visual or file asset used by this item."
+      },
+      {
+        "field": "Social Links",
+        "type": "Reference",
+        "ref": "Link",
+        "desc": "Link should have asset"
+      }
+    ]
+  },
+  {
+    "num": 6,
+    "name": "Component Collection",
+    "fields": [
+      {
+        "field": "Entry Key",
+        "type": null,
+        "ref": null,
+        "desc": "Reusable collection container for one or more page components."
+      },
+      {
+        "field": "Component",
+        "type": "Reference",
+        "ref": null,
+        "desc": "Component field for Component Collection. References another reusable content entry."
+      }
+    ]
+  },
+  {
+    "num": 7,
+    "name": "RichText",
+    "fields": [
+      {
+        "field": "Entry Key",
+        "type": null,
+        "ref": null,
+        "desc": "Container that points to reusable rich text content blocks."
+      },
+      {
+        "field": "Richtext",
+        "type": "Reference",
+        "ref": "RichText Item",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      }
+    ]
+  },
+  {
+    "num": 8,
+    "name": "RichText Item",
+    "fields": [
+      {
+        "field": "RichText",
+        "type": null,
+        "ref": null,
+        "desc": "Reusable formatted text content such as paragraphs, inline links, or HTML-style copy."
+      }
+    ]
+  },
+  {
+    "num": 9,
+    "name": "UtilityBar",
+    "fields": [
+      {
+        "field": "Entry Key",
+        "type": "Short Text",
+        "ref": null,
+        "desc": "Utility navigation area for language selection, login access, and quick links."
+      },
+      {
+        "field": "Language Dropdown",
+        "type": "Reference (one)",
+        "ref": "SelectorForms",
+        "desc": "Dropdown/selector configuration referencing SelectorForms."
+      },
+      {
+        "field": "Login Dropdown",
+        "type": "Reference (one)",
+        "ref": "LinkSelector",
+        "desc": "Dropdown/selector configuration referencing LinkSelector."
+      }
+    ]
+  },
+  {
+    "num": 10,
+    "name": "GraphicAsset",
+    "fields": [
+      {
+        "field": "Entry Key",
+        "type": "Short Text",
+        "ref": null,
+        "desc": "Reusable image or media asset with accessibility text, sizing, and optional external URL metadata."
+      },
+      {
+        "field": "Asset",
+        "type": "Asset Media",
+        "ref": null,
+        "desc": "Visual or file asset used by this item."
+      },
+      {
+        "field": "Alt Text",
+        "type": "Short Text",
+        "ref": null,
+        "desc": "Accessibility text describing the asset for screen readers and non-visual users."
+      },
+      {
+        "field": "Aria Label",
+        "type": "Short Text",
+        "ref": null,
+        "desc": "ARIA accessibility label used to clarify the control or asset for assistive technology."
+      },
+      {
+        "field": "Width",
+        "type": "Number",
+        "ref": null,
+        "desc": "Sizing configuration for layout or display. Numeric value used for ordering, sizing, or configuration."
+      },
+      {
+        "field": "Height",
+        "type": "Number",
+        "ref": null,
+        "desc": "Sizing configuration for layout or display. Numeric value used for ordering, sizing, or configuration."
+      },
+      {
+        "field": "Ext Url Link",
+        "type": "Long Text",
+        "ref": null,
+        "desc": "Link or URL configuration used to navigate users to the correct destination."
+      }
+    ]
+  },
+  {
+    "num": 11,
+    "name": "Link",
+    "fields": [
+      {
+        "field": "Entry Key",
+        "type": "Short Text",
+        "ref": null,
+        "desc": "Reusable link record containing display label and destination URL."
+      },
+      {
+        "field": "Link Label",
+        "type": "Short Text",
+        "ref": null,
+        "desc": "Link or URL configuration used to navigate users to the correct destination."
+      },
+      {
+        "field": "Url",
+        "type": "Long Text",
+        "ref": null,
+        "desc": "Link or URL configuration used to navigate users to the correct destination."
+      }
+    ]
+  },
+  {
+    "num": 12,
+    "name": "InputForms (Text, Number, Email, Text Area, Phone)",
+    "fields": [
+      {
+        "field": "Entry Key ",
+        "type": "Short Text",
+        "ref": null,
+        "desc": "Form input configuration for text, number, email, textarea, or phone fields including labels, validation, and required state."
+      },
+      {
+        "field": "Label",
+        "type": "Short Text",
+        "ref": null,
+        "desc": "Display label shown to users or editors for this item."
+      },
+      {
+        "field": "Alt Text",
+        "type": "Short Text",
+        "ref": null,
+        "desc": "Accessibility text describing the asset for screen readers and non-visual users."
+      },
+      {
+        "field": "Aria Label",
+        "type": "Short Text",
+        "ref": null,
+        "desc": "ARIA accessibility label used to clarify the control or asset for assistive technology."
+      },
+      {
+        "field": "Type ",
+        "type": "Short Text, Dropdown",
+        "ref": null,
+        "desc": "Type field for InputForms (Text, Number, Email, Text Area, Phone). Short text value entered directly by the content author."
+      },
+      {
+        "field": "Placeholder",
+        "type": "Short Text",
+        "ref": null,
+        "desc": "Placeholder text shown before the user enters a value."
+      },
+      {
+        "field": "Error Message",
+        "type": "Short Text",
+        "ref": null,
+        "desc": "Error message displayed when user input fails validation."
+      },
+      {
+        "field": "Required Field",
+        "type": "Boolean",
+        "ref": null,
+        "desc": "Indicates whether this field must be completed before submission."
+      },
+      {
+        "field": "Validations",
+        "type": "-",
+        "ref": null,
+        "desc": "Validation rules used to check the submitted field value."
+      },
+      {
+        "field": "Width",
+        "type": null,
+        "ref": "Dropdown",
+        "desc": "Sizing configuration for layout or display. General configuration value."
+      }
+    ]
+  },
+  {
+    "num": 13,
+    "name": "ImageWithContent",
+    "fields": [
+      {
+        "field": "Entry Key",
+        "type": null,
+        "ref": null,
+        "desc": "Component combining an image with heading, rich text, bullets, and CTA content."
+      },
+      {
+        "field": "Title",
+        "type": "Reference",
+        "ref": "Heading",
+        "desc": "Display title shown to users or editors for this item."
+      },
+      {
+        "field": "RichTextItem",
+        "type": "Reference ",
+        "ref": "RichText Item",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      },
+      {
+        "field": "Bullet Points",
+        "type": "Reference",
+        "ref": "Bullet Points",
+        "desc": "Bullet Points field for ImageWithContent; references Bullet Points."
+      },
+      {
+        "field": "CTA",
+        "type": "Reference",
+        "ref": "Button",
+        "desc": "Call-to-action configuration referencing Button, used for the primary user action."
+      },
+      {
+        "field": "Image",
+        "type": "Reference",
+        "ref": "GraphicAsset",
+        "desc": "Visual or file asset used by this item; expected reference: GraphicAsset."
+      }
+    ]
+  },
+  {
+    "num": 14,
+    "name": "BackgroundImageWithContent",
+    "fields": [
+      {
+        "field": "Entry Key",
+        "type": null,
+        "ref": null,
+        "desc": "Component that overlays heading, rich text, and links on a background image."
+      },
+      {
+        "field": "Title",
+        "type": "Reference",
+        "ref": "Heading",
+        "desc": "Display title shown to users or editors for this item."
+      },
+      {
+        "field": "RichTextItem",
+        "type": "Reference ",
+        "ref": "RichText Item",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      },
+      {
+        "field": "Link Collection",
+        "type": "Reference",
+        "ref": "Link",
+        "desc": "Need to check Scenario where image has link"
+      }
+    ]
+  },
+  {
+    "num": 15,
+    "name": "Accodian",
+    "fields": [
+      {
+        "field": "Entry Key",
+        "type": null,
+        "ref": null,
+        "desc": "Accordion component container used to group expandable accordion list items."
+      },
+      {
+        "field": "Accordian Collection",
+        "type": "Reference",
+        "ref": "Accordian List",
+        "desc": "Accordian Collection field for Accodian; references Accordian List."
+      }
+    ]
+  },
+  {
+    "num": 16,
+    "name": "Accordian List",
+    "fields": [
+      {
+        "field": "Entry Key",
+        "type": null,
+        "ref": null,
+        "desc": "Individual accordion item with title and expandable content."
+      },
+      {
+        "field": "Title",
+        "type": null,
+        "ref": null,
+        "desc": "Display title shown to users or editors for this item."
+      },
+      {
+        "field": "Content",
+        "type": "reference",
+        "ref": "RichText Item,PdfLinkCollection",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      }
+    ]
+  },
+  {
+    "num": 17,
+    "name": "Communication Channels",
+    "fields": [
+      {
+        "field": "Entry Key",
+        "type": null,
+        "ref": null,
+        "desc": "Section for grouping communication or contact channel details."
+      },
+      {
+        "field": "Details",
+        "type": "reference",
+        "ref": "Icon Text",
+        "desc": "Details field for Communication Channels; references Icon Text."
+      }
+    ]
+  },
+  {
+    "num": 18,
+    "name": "Icon Text",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Reusable icon-and-text content item combining an icon, heading, and supporting content."
+      },
+      {
+        "field": "Title",
+        "type": "reference",
+        "ref": "Heading",
+        "desc": "Display title shown to users or editors for this item."
+      },
+      {
+        "field": "Icon",
+        "type": "reference",
+        "ref": "GraphicAsset",
+        "desc": "Visual or file asset used by this item; expected reference: GraphicAsset."
+      },
+      {
+        "field": "Content",
+        "type": "reference",
+        "ref": "Link, Rich text Item",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      }
+    ]
+  },
+  {
+    "num": 19,
+    "name": "SplitContentBlocks",
+    "fields": [
+      {
+        "field": "Entry Key",
+        "type": null,
+        "ref": null,
+        "desc": "Container for split-layout content blocks such as login cards, content panels, or PDF cards."
+      },
+      {
+        "field": "Block",
+        "type": "reference",
+        "ref": "Login Card, Content,ContentWithPDFCard",
+        "desc": "Block field for SplitContentBlocks; references Login Card, Content,ContentWithPDFCard."
+      }
+    ]
+  },
+  {
+    "num": 20,
+    "name": "Content",
+    "fields": [
+      {
+        "field": "Entry Key",
+        "type": null,
+        "ref": null,
+        "desc": "Generic content block with heading, description, bullets, and CTA."
+      },
+      {
+        "field": "Title",
+        "type": "reference",
+        "ref": "Heading",
+        "desc": "Display title shown to users or editors for this item."
+      },
+      {
+        "field": "Description",
+        "type": "reference",
+        "ref": "RichText Item",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      },
+      {
+        "field": "Bullet Points",
+        "type": "reference",
+        "ref": "Bullet Points",
+        "desc": "Bullet Points field for Content; references Bullet Points."
+      },
+      {
+        "field": "CTA",
+        "type": "reference",
+        "ref": "Button",
+        "desc": "Call-to-action configuration referencing Button, used for the primary user action."
+      }
+    ]
+  },
+  {
+    "num": 21,
+    "name": "MobileAppDownload",
+    "fields": [
+      {
+        "field": "Entry Key",
+        "type": null,
+        "ref": null,
+        "desc": "Mobile app promotion/download section with app image, text, and download links."
+      },
+      {
+        "field": "Image Type",
+        "type": "reference",
+        "ref": "Dropdown",
+        "desc": "Visual or file asset used by this item; expected reference: Dropdown."
+      },
+      {
+        "field": "Title",
+        "type": "reference",
+        "ref": "Heading",
+        "desc": "Display title shown to users or editors for this item."
+      },
+      {
+        "field": "Description",
+        "type": "reference",
+        "ref": "RichText Item",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      },
+      {
+        "field": "Asset",
+        "type": "reference",
+        "ref": "GraphicAsset",
+        "desc": "Visual or file asset used by this item; expected reference: GraphicAsset."
+      },
+      {
+        "field": "Links",
+        "type": "reference",
+        "ref": "link",
+        "desc": "Link or URL configuration used to navigate users to the correct destination."
+      }
+    ]
+  },
+  {
+    "num": 22,
+    "name": "TeleDentistry",
+    "fields": [
+      {
+        "field": "Entry Key",
+        "type": null,
+        "ref": null,
+        "desc": "TeleDentistry content section with heading, description, and related card collection."
+      },
+      {
+        "field": "Title",
+        "type": "reference",
+        "ref": "Heading",
+        "desc": "Display title shown to users or editors for this item."
+      },
+      {
+        "field": "Description",
+        "type": "reference",
+        "ref": "RichText Item",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      },
+      {
+        "field": "Cards collection",
+        "type": "reference",
+        "ref": "Cards Collection",
+        "desc": "Cards collection field for TeleDentistry; references Cards Collection."
+      }
+    ]
+  },
+  {
+    "num": 23,
+    "name": "ImageDescriptionCard",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Card combining an image and descriptive rich text."
+      },
+      {
+        "field": "Image",
+        "type": "reference",
+        "ref": "GraphicAsset",
+        "desc": "Visual or file asset used by this item; expected reference: GraphicAsset."
+      },
+      {
+        "field": "Description",
+        "type": "reference",
+        "ref": "RichText Item",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      }
+    ]
+  },
+  {
+    "num": 24,
+    "name": "IconWithContentCard",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Card combining an icon/image, title, and descriptive rich text."
+      },
+      {
+        "field": "Image",
+        "type": "reference",
+        "ref": "GraphicAsset",
+        "desc": "Visual or file asset used by this item; expected reference: GraphicAsset."
+      },
+      {
+        "field": "Title",
+        "type": "reference",
+        "ref": "Heading",
+        "desc": "Display title shown to users or editors for this item."
+      },
+      {
+        "field": "Description",
+        "type": "reference",
+        "ref": "RichText Item",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      }
+    ]
+  },
+  {
+    "num": 25,
+    "name": "PdfLinkCard",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Card linking to a PDF document and related document/external icons."
+      },
+      {
+        "field": "Link",
+        "type": "reference",
+        "ref": "Link",
+        "desc": "Link or URL configuration used to navigate users to the correct destination."
+      },
+      {
+        "field": "Asset",
+        "type": "reference",
+        "ref": "Document Asset",
+        "desc": "Visual or file asset used by this item; expected reference: Document Asset."
+      },
+      {
+        "field": "Document Icon",
+        "type": "reference",
+        "ref": "GraphicAsset",
+        "desc": "Visual or file asset used by this item; expected reference: GraphicAsset."
+      },
+      {
+        "field": "External Icon",
+        "type": "reference",
+        "ref": "GraphicAsset",
+        "desc": "Visual or file asset used by this item; expected reference: GraphicAsset."
+      }
+    ]
+  },
+  {
+    "num": 26,
+    "name": "PdfLinkCollection",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Collection of PDF link cards with an optional label or heading."
+      },
+      {
+        "field": "Label",
+        "type": "reference ",
+        "ref": "Heading",
+        "desc": "Display label shown to users or editors for this item."
+      },
+      {
+        "field": "PdfLinkCards",
+        "type": "Reference",
+        "ref": "PdfLinkCard",
+        "desc": "Link or URL configuration used to navigate users to the correct destination."
+      }
+    ]
+  },
+  {
+    "num": 27,
+    "name": "Document Asset",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Reusable document file asset with title, file reference, and language metadata."
+      },
+      {
+        "field": "Title",
+        "type": null,
+        "ref": null,
+        "desc": "Display title shown to users or editors for this item."
+      },
+      {
+        "field": "File",
+        "type": null,
+        "ref": "Asset",
+        "desc": "File field for Document Asset; references Asset."
+      },
+      {
+        "field": "Language Dropdown",
+        "type": null,
+        "ref": null,
+        "desc": "Dropdown/selector configuration."
+      }
+    ]
+  },
+  {
+    "num": 28,
+    "name": "DynamicDropdown",
+    "fields": [
+      {
+        "field": "Entry Key",
+        "type": null,
+        "ref": null,
+        "desc": "Dynamic dropdown block that can drive PDF collections or accordion content based on selected values."
+      },
+      {
+        "field": "Label",
+        "type": null,
+        "ref": null,
+        "desc": "Display label shown to users or editors for this item."
+      },
+      {
+        "field": "Description",
+        "type": null,
+        "ref": null,
+        "desc": "Main supporting copy/content for this item. General configuration value."
+      },
+      {
+        "field": "Dropdown",
+        "type": "Reference",
+        "ref": "SelectorForms",
+        "desc": "Dropdown/selector configuration referencing SelectorForms."
+      },
+      {
+        "field": "PdfLinkCollection",
+        "type": "Reference",
+        "ref": "PdfLinkCollection, AccordionList",
+        "desc": "Link or URL configuration used to navigate users to the correct destination."
+      }
+    ]
+  },
+  {
+    "num": 29,
+    "name": "StateContactInfo",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "State-specific contact information section with title, left/right contact areas, and bottom message."
+      },
+      {
+        "field": "Title",
+        "type": "Reference",
+        "ref": "heading",
+        "desc": "Display title shown to users or editors for this item."
+      },
+      {
+        "field": "Left Column",
+        "type": "reference",
+        "ref": "Contact Column",
+        "desc": "Left Column field for StateContactInfo; references Contact Column."
+      },
+      {
+        "field": "Right Column",
+        "type": "reference",
+        "ref": "Contact Address",
+        "desc": "Right Column field for StateContactInfo; references Contact Address."
+      },
+      {
+        "field": "Bottom Message",
+        "type": "reference",
+        "ref": "richtext item",
+        "desc": "Bottom Message field for StateContactInfo; references richtext item."
+      }
+    ]
+  },
+  {
+    "num": 30,
+    "name": "Contact column",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Contact detail column for label, phone number, clickability, and divider display."
+      },
+      {
+        "field": "Label",
+        "type": "short text",
+        "ref": null,
+        "desc": "Display label shown to users or editors for this item."
+      },
+      {
+        "field": "Phone Number",
+        "type": "short text",
+        "ref": null,
+        "desc": "Phone number value or phone contact configuration."
+      },
+      {
+        "field": "Is Clickable",
+        "type": "boolean",
+        "ref": null,
+        "desc": "Is Clickable field for Contact column. True/false setting that controls behavior or visibility."
+      },
+      {
+        "field": "Divider After",
+        "type": "boolean",
+        "ref": null,
+        "desc": "Divider After field for Contact column. True/false setting that controls behavior or visibility."
+      }
+    ]
+  },
+  {
+    "num": 31,
+    "name": "Contact Address",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Postal address details including company, street, city, state, and ZIP code."
+      },
+      {
+        "field": "Company name",
+        "type": "short text",
+        "ref": null,
+        "desc": "Company name field for Contact Address. Short text value entered directly by the content author."
+      },
+      {
+        "field": "Address line 1",
+        "type": "short text",
+        "ref": null,
+        "desc": "Address information used for contact or location display."
+      },
+      {
+        "field": "City",
+        "type": "short text",
+        "ref": null,
+        "desc": "Address information used for contact or location display."
+      },
+      {
+        "field": "State",
+        "type": "short text",
+        "ref": null,
+        "desc": "Address information used for contact or location display."
+      },
+      {
+        "field": "Zipcode",
+        "type": "short text",
+        "ref": null,
+        "desc": "Address information used for contact or location display."
+      }
+    ]
+  },
+  {
+    "num": 32,
+    "name": "SecureDocumentPortal",
+    "fields": [
+      {
+        "field": "Entry key ",
+        "type": null,
+        "ref": null,
+        "desc": "Secure document portal section with heading, description, hero image, form configuration, and success message."
+      },
+      {
+        "field": "Heading",
+        "type": "reference",
+        "ref": "heading",
+        "desc": "Display heading shown to users or editors for this item."
+      },
+      {
+        "field": "Description",
+        "type": "reference",
+        "ref": "rich text item",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      },
+      {
+        "field": "Hero Image",
+        "type": "reference",
+        "ref": "GraphicAsset",
+        "desc": "Visual or file asset used by this item; expected reference: GraphicAsset."
+      },
+      {
+        "field": "Form Config",
+        "type": "reference",
+        "ref": "inputForms",
+        "desc": "Form Config field for SecureDocumentPortal; references inputForms."
+      },
+      {
+        "field": "Success Content",
+        "type": "short text",
+        "ref": null,
+        "desc": "Main supporting copy/content for this item. Short text value entered directly by the content author."
+      }
+    ]
+  },
+  {
+    "num": 33,
+    "name": "SecureDocumentContent",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Secure document content section containing heading, description, and supporting content items."
+      },
+      {
+        "field": "Heading",
+        "type": "reference ",
+        "ref": "heading",
+        "desc": "Display heading shown to users or editors for this item."
+      },
+      {
+        "field": "Description",
+        "type": "reference",
+        "ref": "richtextitem",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      },
+      {
+        "field": "Items",
+        "type": "reference ",
+        "ref": "content item ",
+        "desc": "Items field for SecureDocumentContent; references content item."
+      }
+    ]
+  },
+  {
+    "num": 34,
+    "name": "Content Item",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Reusable content item with heading, optional subheading, and rich text description."
+      },
+      {
+        "field": "Heading",
+        "type": "reference ",
+        "ref": "heading",
+        "desc": "Display heading shown to users or editors for this item."
+      },
+      {
+        "field": "Sub Heading",
+        "type": "Short text",
+        "ref": null,
+        "desc": "Sub Heading field for Content Item. Short text value entered directly by the content author."
+      },
+      {
+        "field": "Description",
+        "type": "reference",
+        "ref": "rich text item",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      }
+    ]
+  },
+  {
+    "num": 35,
+    "name": "GlobalSearch",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Global search component with heading and form configuration."
+      },
+      {
+        "field": "Heading",
+        "type": null,
+        "ref": null,
+        "desc": "Display heading shown to users or editors for this item."
+      },
+      {
+        "field": "Form Config",
+        "type": "reference ",
+        "ref": "inputforms",
+        "desc": "Form Config field for GlobalSearch; references inputforms."
+      }
+    ]
+  },
+  {
+    "num": 36,
+    "name": "LoginCard",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Login card component with heading, description, CTA, and width/display configuration."
+      },
+      {
+        "field": "Heading",
+        "type": "reference",
+        "ref": "heading",
+        "desc": "Display heading shown to users or editors for this item."
+      },
+      {
+        "field": "Description",
+        "type": "reference ",
+        "ref": "richtext",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      },
+      {
+        "field": "Cta",
+        "type": "reference",
+        "ref": "button",
+        "desc": "Call-to-action configuration referencing button, used for the primary user action."
+      },
+      {
+        "field": "Width",
+        "type": "dropdown",
+        "ref": null,
+        "desc": "Sizing configuration for layout or display. Controlled selection chosen from predefined options."
+      }
+    ]
+  },
+  {
+    "num": 37,
+    "name": "ImageWithContentCTA",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Image-based CTA component linking a hero image with content item copy."
+      },
+      {
+        "field": "Hero Image",
+        "type": "reference",
+        "ref": "GraphicAsset",
+        "desc": "Visual or file asset used by this item; expected reference: GraphicAsset."
+      },
+      {
+        "field": "Description",
+        "type": "reference ",
+        "ref": "content item ",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      }
+    ]
+  },
+  {
+    "num": 39,
+    "name": "InfoContentCard",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Informational card using content item text and supporting icons."
+      },
+      {
+        "field": "Description",
+        "type": "reference",
+        "ref": "content item ",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      },
+      {
+        "field": "Icons",
+        "type": "reference ",
+        "ref": "GraphicAsset",
+        "desc": "Visual or file asset used by this item; expected reference: GraphicAsset."
+      }
+    ]
+  },
+  {
+    "num": 40,
+    "name": "Accrediations",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Accreditation section listing linked accreditation images or badges."
+      },
+      {
+        "field": "Title",
+        "type": "reference",
+        "ref": "heading",
+        "desc": "Display title shown to users or editors for this item."
+      },
+      {
+        "field": "Accrediations",
+        "type": "reference",
+        "ref": "ImageWithLink",
+        "desc": "accrediations field for Accrediations; references ImageWithLink."
+      }
+    ]
+  },
+  {
+    "num": 41,
+    "name": "ImageWithLink",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Image asset paired with descriptive rich text and link behavior."
+      },
+      {
+        "field": "Asset",
+        "type": "reference",
+        "ref": "GraphicAsset",
+        "desc": "Visual or file asset used by this item; expected reference: GraphicAsset."
+      },
+      {
+        "field": "Description",
+        "type": "reference",
+        "ref": "rich text item",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      }
+    ]
+  },
+  {
+    "num": 42,
+    "name": "BrushSection",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Brush-style layout section with left and right content areas."
+      },
+      {
+        "field": "Heading",
+        "type": null,
+        "ref": null,
+        "desc": "Display heading shown to users or editors for this item."
+      },
+      {
+        "field": "Left Content",
+        "type": "reference",
+        "ref": "GraphicAsset",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      },
+      {
+        "field": "Right Content",
+        "type": "reference",
+        "ref": "card collection,graphicAsset",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      }
+    ]
+  },
+  {
+    "num": 43,
+    "name": "BrushCard",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Small brush card item with icon and title."
+      },
+      {
+        "field": "Icon",
+        "type": "reference",
+        "ref": "GraphicAsset",
+        "desc": "Visual or file asset used by this item; expected reference: GraphicAsset."
+      },
+      {
+        "field": "Title",
+        "type": "short text",
+        "ref": null,
+        "desc": "Display title shown to users or editors for this item."
+      }
+    ]
+  },
+  {
+    "num": 44,
+    "name": "BrokerPlanCard",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Broker plan card with heading, description, selectable collection, and footer content."
+      },
+      {
+        "field": "Heading",
+        "type": "reference",
+        "ref": "heading",
+        "desc": "Display heading shown to users or editors for this item."
+      },
+      {
+        "field": "Description",
+        "type": "reference",
+        "ref": "rich text item",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      },
+      {
+        "field": "Collection",
+        "type": null,
+        "ref": "Selection Collection",
+        "desc": "Collection field for BrokerPlanCard; references Selection Collection."
+      },
+      {
+        "field": "Footer Content",
+        "type": null,
+        "ref": null,
+        "desc": "Main supporting copy/content for this item. General configuration value."
+      }
+    ]
+  },
+  {
+    "num": 45,
+    "name": "Selection Collection",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Selectable item configuration with internal name, icon, and target value."
+      },
+      {
+        "field": "Internal Name",
+        "type": "Short text",
+        "ref": null,
+        "desc": "Internal Name field for Selection Collection. Short text value entered directly by the content author."
+      },
+      {
+        "field": "Trailing Icon",
+        "type": "reference",
+        "ref": "GraphicAsset",
+        "desc": "Visual or file asset used by this item; expected reference: GraphicAsset."
+      },
+      {
+        "field": "Target",
+        "type": "short text",
+        "ref": null,
+        "desc": "Target field for Selection Collection. Short text value entered directly by the content author."
+      }
+    ]
+  },
+  {
+    "num": 46,
+    "name": "LeadershipCard",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Leadership section that displays a collection of people."
+      },
+      {
+        "field": "Heading",
+        "type": null,
+        "ref": null,
+        "desc": "Display heading shown to users or editors for this item."
+      },
+      {
+        "field": "Person Collection",
+        "type": "reference",
+        "ref": "Person",
+        "desc": "Person Collection field for LeadershipCard; references Person."
+      }
+    ]
+  },
+  {
+    "num": 47,
+    "name": "Person",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Person profile record with name, designation, image, and display order."
+      },
+      {
+        "field": "Name",
+        "type": "Short text",
+        "ref": null,
+        "desc": "Display name shown to users or editors for this item."
+      },
+      {
+        "field": "Designation",
+        "type": "S T",
+        "ref": null,
+        "desc": "Designation field for Person. S T field configuration."
+      },
+      {
+        "field": "Profile Image",
+        "type": "reference",
+        "ref": "GraphicAsset",
+        "desc": "Visual or file asset used by this item; expected reference: GraphicAsset."
+      },
+      {
+        "field": "Display Order",
+        "type": "Number",
+        "ref": null,
+        "desc": "Numeric order controlling where this item appears in a list."
+      }
+    ]
+  },
+  {
+    "num": 48,
+    "name": "IFrameContent",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Embedded iframe content section with title and iframe URL."
+      },
+      {
+        "field": "Title",
+        "type": "reference",
+        "ref": "heading",
+        "desc": "Display title shown to users or editors for this item."
+      },
+      {
+        "field": "Iframe URL",
+        "type": "short text",
+        "ref": null,
+        "desc": "Link or URL configuration used to navigate users to the correct destination."
+      }
+    ]
+  },
+  {
+    "num": 49,
+    "name": "ContentWithBackgroundColor",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Content section with heading, description, bullets, and configurable background color."
+      },
+      {
+        "field": "Title",
+        "type": "reference",
+        "ref": "heading",
+        "desc": "Display title shown to users or editors for this item."
+      },
+      {
+        "field": "Description",
+        "type": "reference",
+        "ref": "rich text item",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      },
+      {
+        "field": "Bullet points",
+        "type": "reference",
+        "ref": "bullet points",
+        "desc": "bullet points field for ContentWithBackgroundColor; references bullet points."
+      },
+      {
+        "field": "Background color",
+        "type": "color picker",
+        "ref": null,
+        "desc": "Visual styling configuration for this component."
+      }
+    ]
+  },
+  {
+    "num": 50,
+    "name": "ContentWithPDFCard",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Content section that includes a heading, description, and PDF link card."
+      },
+      {
+        "field": "Title",
+        "type": "reference",
+        "ref": "Heading",
+        "desc": "Display title shown to users or editors for this item."
+      },
+      {
+        "field": "Description",
+        "type": "reference",
+        "ref": "rich text item",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      },
+      {
+        "field": "PDF",
+        "type": "reference",
+        "ref": "PdfLinkCard",
+        "desc": "PDF field for ContentWithPDFCard; references PdfLinkCard."
+      }
+    ]
+  },
+  {
+    "num": 51,
+    "name": "NewsArticles",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "News article listing section with title, description, form configuration, and article collection."
+      },
+      {
+        "field": "Title",
+        "type": null,
+        "ref": null,
+        "desc": "Display title shown to users or editors for this item."
+      },
+      {
+        "field": "Description",
+        "type": "reference",
+        "ref": null,
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      },
+      {
+        "field": "Form Config",
+        "type": "reference",
+        "ref": "inputForms",
+        "desc": "Form Config field for NewsArticles; references inputForms."
+      },
+      {
+        "field": "Collection",
+        "type": "reference",
+        "ref": "New Articles Collection",
+        "desc": "Collection field for NewsArticles; references New Articles Collection."
+      }
+    ]
+  },
+  {
+    "num": 52,
+    "name": "New Articles Collection",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Individual article collection entry with title, content, and CTA."
+      },
+      {
+        "field": "Title",
+        "type": null,
+        "ref": null,
+        "desc": "Display title shown to users or editors for this item."
+      },
+      {
+        "field": "Content",
+        "type": "reference",
+        "ref": "rich text item,heading",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      },
+      {
+        "field": "Cta",
+        "type": "reference",
+        "ref": "button",
+        "desc": "Call-to-action configuration referencing button, used for the primary user action."
+      }
+    ]
+  },
+  {
+    "num": 53,
+    "name": "ImageWithCTACard",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Card combining a title, hero image, and CTA."
+      },
+      {
+        "field": "Title",
+        "type": "reference",
+        "ref": "heading",
+        "desc": "Display title shown to users or editors for this item."
+      },
+      {
+        "field": "Hero image",
+        "type": "reference",
+        "ref": "graphicAsset",
+        "desc": "Visual or file asset used by this item; expected reference: graphicAsset."
+      },
+      {
+        "field": "CTA",
+        "type": "reference",
+        "ref": "Button",
+        "desc": "Call-to-action configuration referencing Button, used for the primary user action."
+      }
+    ]
+  },
+  {
+    "num": 54,
+    "name": "ContentWithQR",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Content section containing heading and a related QR/action collection."
+      },
+      {
+        "field": "Heading",
+        "type": null,
+        "ref": null,
+        "desc": "Display heading shown to users or editors for this item."
+      },
+      {
+        "field": "Collection",
+        "type": "reference",
+        "ref": null,
+        "desc": "Collection field for ContentWithQR. References another reusable content entry."
+      }
+    ]
+  },
+  {
+    "num": 55,
+    "name": "ActionCollection",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": "-",
+        "ref": "-",
+        "desc": "Collection of action cards with display style, theme, and component configuration."
+      },
+      {
+        "field": "Heading",
+        "type": "Text",
+        "ref": "-",
+        "desc": "Display heading shown to users or editors for this item."
+      },
+      {
+        "field": "Description",
+        "type": "Rich Text",
+        "ref": "-",
+        "desc": "Main supporting copy/content for this item. Long-form formatted content entered by the content author."
+      },
+      {
+        "field": "Actions",
+        "type": "Reference (Multiple)",
+        "ref": "ActionCard",
+        "desc": "Actions field for ActionCollection; references ActionCard."
+      },
+      {
+        "field": "Display Style",
+        "type": "Dropdown",
+        "ref": "-",
+        "desc": "Display Style field for ActionCollection; references -."
+      },
+      {
+        "field": "Theme",
+        "type": "Reference",
+        "ref": "Theme",
+        "desc": "Visual styling configuration for this component."
+      },
+      {
+        "field": "Configuration",
+        "type": "Reference",
+        "ref": "ComponentConfiguration",
+        "desc": "Configuration field for ActionCollection; references ComponentConfiguration."
+      }
+    ]
+  },
+  {
+    "num": 56,
+    "name": "ActionCard",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": "-",
+        "ref": "-",
+        "desc": "Action card with title, description, media, contact information, links, CTA, and display order."
+      },
+      {
+        "field": "Title",
+        "type": "Text",
+        "ref": "-",
+        "desc": "Display title shown to users or editors for this item."
+      },
+      {
+        "field": "Description",
+        "type": "Rich Text",
+        "ref": "-",
+        "desc": "Main supporting copy/content for this item. Long-form formatted content entered by the content author."
+      },
+      {
+        "field": "Icon",
+        "type": "Reference",
+        "ref": "GraphicAsset",
+        "desc": "Visual or file asset used by this item; expected reference: GraphicAsset."
+      },
+      {
+        "field": "Image",
+        "type": "Reference",
+        "ref": "GraphicAsset",
+        "desc": "Visual or file asset used by this item; expected reference: GraphicAsset."
+      },
+      {
+        "field": "Contact Information",
+        "type": "Reference",
+        "ref": "ContactInformation",
+        "desc": "Contact Information field for ActionCard; references ContactInformation."
+      },
+      {
+        "field": "Links",
+        "type": "Reference (Multiple)",
+        "ref": "Link",
+        "desc": "Link or URL configuration used to navigate users to the correct destination."
+      },
+      {
+        "field": "CTA",
+        "type": "Reference",
+        "ref": "Button",
+        "desc": "Call-to-action configuration referencing Button, used for the primary user action."
+      },
+      {
+        "field": "Display Order",
+        "type": "Number",
+        "ref": "-",
+        "desc": "Numeric order controlling where this item appears in a list."
+      }
+    ]
+  },
+  {
+    "num": 57,
+    "name": "ContactInformation",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": "-",
+        "ref": "-",
+        "desc": "Reusable contact information record for phone, email, fax, or address details."
+      },
+      {
+        "field": "Label",
+        "type": "Text",
+        "ref": "-",
+        "desc": "Display label shown to users or editors for this item."
+      },
+      {
+        "field": "Value",
+        "type": "Text",
+        "ref": "-",
+        "desc": "Value field for ContactInformation; references -."
+      },
+      {
+        "field": "Description",
+        "type": "Rich Text",
+        "ref": "-",
+        "desc": "Main supporting copy/content for this item. Long-form formatted content entered by the content author."
+      },
+      {
+        "field": "Type",
+        "type": "Dropdown",
+        "ref": "Phone / Email / Fax / Address",
+        "desc": "Type field for ContactInformation; references Phone / Email / Fax / Address."
+      }
+    ]
+  },
+  {
+    "num": 58,
+    "name": "BannerNotification",
+    "fields": [
+      {
+        "field": "Entry key",
+        "type": null,
+        "ref": null,
+        "desc": "Dismissible or timed banner notification with description, color, dates, and icon."
+      },
+      {
+        "field": "Description",
+        "type": "reference",
+        "ref": "rich text item",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      },
+      {
+        "field": "Banner color",
+        "type": "Color picker",
+        "ref": null,
+        "desc": "Visual styling configuration for this component."
+      },
+      {
+        "field": "Show notification or not",
+        "type": null,
+        "ref": null,
+        "desc": "Show notification or not field for BannerNotification. General configuration value."
+      },
+      {
+        "field": "Active from",
+        "type": null,
+        "ref": null,
+        "desc": "Date setting controlling when this item is active or visible."
+      },
+      {
+        "field": "Active to",
+        "type": null,
+        "ref": null,
+        "desc": "Date setting controlling when this item is active or visible."
+      },
+      {
+        "field": "Icon",
+        "type": null,
+        "ref": null,
+        "desc": "Visual or file asset used by this item."
+      }
+    ]
+  },
+  {
+    "num": 59,
+    "name": "URL Redirection",
+    "fields": [
+      {
+        "field": "Route name",
+        "type": null,
+        "ref": null,
+        "desc": "URL redirect rule defining route name, destination URL, and redirect type."
+      },
+      {
+        "field": "URL",
+        "type": null,
+        "ref": null,
+        "desc": "Link or URL configuration used to navigate users to the correct destination."
+      },
+      {
+        "field": "Redirection Type",
+        "type": null,
+        "ref": null,
+        "desc": "Redirection Type field for URL Redirection. General configuration value."
+      }
+    ]
+  },
+  {
+    "num": 60,
+    "name": "BackgroundSurvey",
+    "fields": []
+  },
+  {
+    "num": 61,
+    "name": "AccessibilitySurvey",
+    "fields": []
+  },
+  {
+    "num": 62,
+    "name": "DynamicForms",
+    "fields": []
+  },
+  {
+    "num": 63,
+    "name": "GrievanceAddress",
+    "fields": []
+  },
+  {
+    "num": 64,
+    "name": "GrievanceLinks",
+    "fields": []
+  },
+  {
+    "num": 65,
+    "name": "Tab",
+    "fields": []
+  },
+  {
+    "num": 66,
+    "name": "BaseCardComponent",
+    "fields": []
+  },
+  {
+    "num": 67,
+    "name": "Page",
+    "fields": [
+      {
+        "field": "Entry Key",
+        "type": null,
+        "ref": null,
+        "desc": "Page-level content model connecting metadata, header, breadcrumbs, components, and footer."
+      },
+      {
+        "field": "Meta",
+        "type": "reference",
+        "ref": "Meta",
+        "desc": "Meta field for Page; references Meta."
+      },
+      {
+        "field": "Header",
+        "type": "reference",
+        "ref": "Header",
+        "desc": "Header field for Page; references Header."
+      },
+      {
+        "field": "Breadcrumbs",
+        "type": "reference",
+        "ref": "breadcrumbs",
+        "desc": "breadcrumbs field for Page; references breadcrumbs."
+      },
+      {
+        "field": "Subnavbar",
+        "type": "reference",
+        "ref": "Sub nav bar",
+        "desc": "subnavbar field for Page; references Sub nav bar."
+      },
+      {
+        "field": "Component",
+        "type": "reference",
+        "ref": "all the components",
+        "desc": "Component field for Page; references all the components."
+      },
+      {
+        "field": "Footer",
+        "type": "reference",
+        "ref": "footer",
+        "desc": "Footer field for Page; references footer."
+      }
+    ]
+  },
+  {
+    "num": 68,
+    "name": "DynamicTabs",
+    "fields": [
+      {
+        "field": "Entry Key",
+        "type": null,
+        "ref": null,
+        "desc": "Dynamic tab container with dropdown selectors and tab content."
+      },
+      {
+        "field": "Dropdowns",
+        "type": "Reference",
+        "ref": "SelectorForms",
+        "desc": "Dropdown/selector configuration referencing SelectorForms."
+      },
+      {
+        "field": "Tabs",
+        "type": "Reference",
+        "ref": "Tab",
+        "desc": "Tabs field for DynamicTabs; references Tab."
+      }
+    ]
+  },
+  {
+    "num": 69,
+    "name": "Tab",
+    "fields": [
+      {
+        "field": "Entry Key",
+        "type": null,
+        "ref": null,
+        "desc": "Tab item with label and associated content reference."
+      },
+      {
+        "field": "Label",
+        "type": null,
+        "ref": null,
+        "desc": "Display label shown to users or editors for this item."
+      },
+      {
+        "field": "Content",
+        "type": "Reference",
+        "ref": "DynamicForms, GrievanceAddress, GrievanceLinks, ",
+        "desc": "Main supporting copy/content for this item. References another reusable content entry."
+      }
+    ]
+  },
+  {
+    "num": 70,
+    "name": "Heading",
+    "fields": [
+      {
+        "field": "Entry Key",
+        "type": null,
+        "ref": null,
+        "desc": "Reusable heading content type used to manage page or component headings consistently."
+      },
+      {
+        "field": "Title",
+        "type": null,
+        "ref": null,
+        "desc": "Display title text shown as the heading content."
+      },
+      {
+        "field": "Heading Level",
+        "type": "dropdown",
+        "ref": null,
+        "desc": "Dropdown selection that defines the semantic heading level, such as H1, H2, or H3."
+      }
+    ]
+  }
+]

@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllPageSlugs, getPageBySlug } from "@/lib/contentful";
-import { ctId, type PageEntry } from "@/lib/types";
-import { Header } from "@/components/chrome/Header";
-import { Footer } from "@/components/chrome/Footer";
-import { Breadcrumbs } from "@/components/chrome/Breadcrumbs";
+import { ctId, type PageEntry } from "@/types";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
+import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { SectionRenderer } from "@/components/SectionRenderer";
 
 export const revalidate = 3600; // ISR fallback; on-demand revalidation via webhook (later)

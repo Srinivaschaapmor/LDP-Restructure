@@ -38,10 +38,18 @@ Phase purple `#EBE2EF` · Cool gray `#E9EAEE`.
 `8 · 16 · 20 · 24 · 32 · 48` — named: **m = 16, ml = 24, l = 32, xl = 48** (also 8, 10, 12, 20 seen).
 
 ## Layout
-- **Content column width:** 1140px (frame 1600 − 230 side margins). Cap Bootstrap `.container`
-  at 1140 (it defaults to 1320 at ≥1400px).
+- **Container:** use `.container-xxl` everywhere (not plain `.container` — its per-tier fixed
+  max-widths produce a frozen content box with an uncontrolled outer gutter). `.container-xxl` is
+  fluid (padding-only) up to its own max-width, so the column scales continuously with the
+  viewport instead of jumping between breakpoints.
+- **Side padding (responsive, not fixed):** anchored to the three Figma reference frames — 16px at
+  the 440px mobile frame, 60px at the 834px tablet frame, 230px at the 1600px desktop frame
+  (1600 − 230 − 230 = 1140 content at that exact width). Implemented as two `clamp()` segments
+  meeting at 834px so there's no jump at the boundary. `max-width: 1600px` caps the column at the
+  desktop reference; below that it's fluid, not fixed at 1140.
 - **Common content padding:** 60px top (below breadcrumbs) and 60px bottom (above footer), every page.
-- **Breakpoints:** Bootstrap (`lg` = 992px is where the header collapses to a hamburger).
+- **Breakpoints:** Bootstrap (`lg` = 992px is where the header collapses to a hamburger); the
+  container padding breakpoint is the exact 834px tablet frame, not a Bootstrap tier.
 
 ## Radius / borders / shadows
 - **Radius:** 8px (inputs / boxes) · 12px (cards / accordion items) · 24px (layout blocks).

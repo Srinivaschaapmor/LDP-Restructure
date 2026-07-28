@@ -1,4 +1,4 @@
-import { ctId, type Section } from "@/lib/types";
+import { ctId, type Section } from "@/types";
 import { registry } from "@/components/registry";
 import { logger } from "@/lib/log";
 

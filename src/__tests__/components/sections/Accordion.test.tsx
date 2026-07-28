@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { Accordion } from "@/components/sections/Accordion";
-import type { AccordionItem, DocumentEntry, Section } from "@/lib/types";
+import type { AccordionItem, DocumentEntry, Section } from "@/types";
 
 const pdf = (id: string, label: string): DocumentEntry => ({
   sys: { id, contentType: { sys: { id: "document" } } },

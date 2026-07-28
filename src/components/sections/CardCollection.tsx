@@ -1,10 +1,8 @@
-import { asFields, type Card, type Section } from "@/lib/types";
-import { MediaImg } from "@/components/primitives/MediaImg";
-import { RichText } from "@/components/primitives/RichText";
-import { Heading, type HeadingLevel } from "@/components/primitives/Heading";
+import { asFields, type Card, type CardCollectionFields, type Section } from "@/types";
+import { MediaImg } from "@/components/ui/MediaImg";
+import { RichText } from "@/components/ui/RichText";
+import { Heading, type HeadingLevel } from "@/components/ui/Heading";
 import { COLLECTION_COL_CLASS, DEFAULTS, IMAGE_SIZES } from "@/lib/constants";
-
-interface CardCollectionFields { heading?: string; layout?: string; cards?: Card[] }
 
 function CardItem({ card, titleLevel }: { card: Card; titleLevel: HeadingLevel }) {
   const f = card?.fields;
@@ -28,7 +26,7 @@ export function CardCollection({ fields }: { fields: Section["fields"] }) {
   const cardLevel: HeadingLevel = f.heading ? 3 : 2;
   return (
     <section className={`ld-collection ld-collection--${layout}`}>
-      <div className="container">
+      <div className="container-xxl">
         {f.heading ? <Heading level={2} className="ld-collection__heading">{f.heading}</Heading> : null}
         <div className="row g-4">
           {(f.cards ?? []).map((card) => (

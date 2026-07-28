@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { DocumentLink, resolveDocHref } from "@/components/primitives/DocumentLink";
-import type { DocumentEntry } from "@/lib/types";
+import { DocumentLink, resolveDocHref } from "@/components/ui/DocumentLink";
+import type { DocumentEntry } from "@/types";
 
 const pdf = (url?: string, label = "ADA claim form"): DocumentEntry => ({
   sys: { id: "d1", contentType: { sys: { id: "document" } } },

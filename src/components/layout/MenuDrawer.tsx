@@ -1,8 +1,8 @@
 "use client";
 import { useId, useState } from "react";
-import { isLinkGroup, type Button, type Link, type LinkGroup, type Media, type NavItem } from "@/lib/types";
-import { MediaImg } from "@/components/primitives/MediaImg";
-import { IMAGE_SIZES } from "@/lib/constants";
+import { isLink, isLinkGroup, type Button, type LinkGroup, type Media, type NavItem } from "@/types";
+import { MediaImg } from "@/components/ui/MediaImg";
+import { IMAGE_SIZES, UI_TEXT } from "@/lib/constants";
 
 type Panel = { title?: string; items?: NavItem[] };
 
@@ -39,9 +39,55 @@ function InlineItem({ item }: { item: NavItem }) {
   );
 }
 
+// Language/Login, drawer-native: inline-expanding (pushes content down), never a
+// floating position:absolute panel. The desktop UtilityBar's dropdown works fine
+// in a wide, roomy horizontal bar, but that same floating-panel treatment is
+// fragile inside a narrow, scrollable drawer (it can render clipped or
+// off-the-visible-area depending on where the trigger sits) — so the drawer
+// reuses the same guaranteed-visible inline-expand pattern as every other
+// drilldown row here (see InlineItem) instead of importing UtilityMenu.
+function UtilityGroup({
+  icon, menu, highlightSelected = false,
+}: { icon?: Media; menu?: LinkGroup; highlightSelected?: boolean }) {
+  const [open, setOpen] = useState(false);
+  const panelId = useId();
+  if (!menu?.fields?.title) return null;
+
+  return (
+    <div className="ld-drawer__utilitygroup">
+      <button type="button" className="ld-drawer__utilitytrigger" aria-expanded={open} aria-controls={panelId} onClick={() => setOpen((v) => !v)}>
+        <MediaImg media={icon} className="ld-drawer__utilityicon" sizes={IMAGE_SIZES.icon} />
+        <span>{menu.fields.title}</span>
+        <ChevRight className={`ld-drawer__chev ${open ? "is-open" : ""}`} />
+      </button>
+      {open ? (
+        <ul id={panelId} className="ld-drawer__utilitylist">
+          {(menu.fields.links ?? []).filter(isLink).map((l) => (
+            <li key={l?.sys?.id}>
+              <a
+                href={l.fields?.href ?? "#"}
+                className={highlightSelected && l.fields?.label === menu.fields?.title ? "ld-utilitybar__option is-selected" : undefined}
+              >
+                {l.fields?.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </div>
+  );
+}
+
+interface MenuDrawerProps {
+  logo?: Media; items?: NavItem[]; cta?: Button; searchIcon?: Media;
+  languageIcon?: Media; languageMenu?: LinkGroup;
+  loginIcon?: Media; loginMenu?: LinkGroup;
+  onClose: () => void;
+}
+
 export function MenuDrawer({
-  logo, items, cta, utilityLinks, onClose,
-}: { logo?: Media; items?: NavItem[]; cta?: Button; utilityLinks?: Link[]; onClose: () => void }) {
+  logo, items, cta, searchIcon, languageIcon, languageMenu, loginIcon, loginMenu, onClose,
+}: MenuDrawerProps) {
   // A stack of panels — pushing a section slides in its sub-menu.
   const [stack, setStack] = useState<Panel[]>([{ items }]);
   const current = stack[stack.length - 1];
@@ -61,10 +107,10 @@ export function MenuDrawer({
     );
 
   return (
-    <div className="ld-drawer" role="dialog" aria-modal="true" aria-label="Menu">
+    <div className="ld-drawer" role="dialog" aria-modal="true" aria-label={UI_TEXT.menuDialogLabel}>
       <div className="ld-drawer__header">
         {logo ? <MediaImg media={logo} className="ld-drawer__logo" sizes={IMAGE_SIZES.logo} /> : null}
-        <button type="button" className="ld-drawer__close" aria-label="Close menu" onClick={onClose}>
+        <button type="button" className="ld-drawer__close" aria-label={UI_TEXT.closeMenuLabel} onClick={onClose}>
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
             <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
           </svg>
@@ -75,23 +121,22 @@ export function MenuDrawer({
         {atRoot ? (
           <div className="ld-drawer__panel" key="root">
             <label className="ld-drawer__search">
-              <span className="visually-hidden">Search</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                <circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" strokeLinecap="round" />
-              </svg>
-              <input type="search" placeholder="Search" />
+              <MediaImg media={searchIcon} className="ld-drawer__search-icon" sizes={IMAGE_SIZES.icon} />
+              <span className="visually-hidden">{UI_TEXT.searchLabel}</span>
+              <input type="search" placeholder={UI_TEXT.searchPlaceholder} />
             </label>
 
-            <nav className="ld-drawer__nav" aria-label="Primary">
+            <nav className="ld-drawer__nav" aria-label={UI_TEXT.primaryNavLabel}>
               {(items ?? []).map(rootRow)}
             </nav>
 
             {cta?.fields ? (
               <a className="ld-btn ld-btn--primary ld-drawer__cta" href={cta.fields.link?.fields?.href ?? "#"}>{cta.fields.label}</a>
             ) : null}
-            {utilityLinks?.length ? (
+            {languageMenu || loginMenu ? (
               <div className="ld-drawer__utility">
-                {utilityLinks.map((l) => <a key={l?.sys?.id} href={l?.fields?.href ?? "#"}>{l?.fields?.label}</a>)}
+                <UtilityGroup icon={languageIcon} menu={languageMenu} highlightSelected />
+                <UtilityGroup icon={loginIcon} menu={loginMenu} />
               </div>
             ) : null}
           </div>
@@ -103,7 +148,7 @@ export function MenuDrawer({
               </svg>
               <span>{current.title}</span>
             </button>
-            <nav className="ld-drawer__nav" aria-label={current.title || "Menu"}>
+            <nav className="ld-drawer__nav" aria-label={current.title || UI_TEXT.menuDialogLabel}>
               {(current.items ?? []).map((it) => <InlineItem key={it?.sys?.id} item={it} />)}
             </nav>
           </div>

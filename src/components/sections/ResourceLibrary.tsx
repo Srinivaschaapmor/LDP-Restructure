@@ -1,10 +1,8 @@
 "use client";
 import { useId, useState } from "react";
-import { asFields, type Section } from "@/lib/types";
+import { asFields, type ResourceLibraryFields, type Section } from "@/types";
 import { Accordion } from "@/components/sections/Accordion";
 import { RL_SELECT_LABEL, RL_SELECT_PLACEHOLDER } from "@/lib/constants";
-
-interface ResourceLibraryFields { heading?: string; selectPrompt?: string; accordions?: Section[] }
 
 // The dropdown option for a state is that state's accordion heading (e.g. "Alabama").
 function stateName(accordion?: Section): string {
@@ -24,7 +22,7 @@ export function ResourceLibrary({ fields }: { fields: Section["fields"] }) {
 
   return (
     <section className="ld-rl">
-      <div className="container">
+      <div className="container-xxl">
         {f.heading ? <h1 className="ld-rl__title">{f.heading}</h1> : null}
         <div className="ld-rl__selector">
           <label htmlFor={selectId} className="ld-rl__prompt">{f.selectPrompt ?? RL_SELECT_LABEL}</label>

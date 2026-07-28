@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildCrumbs } from "@/components/chrome/Breadcrumbs";
+import { buildCrumbs } from "@/components/layout/Breadcrumbs";
 
 describe("buildCrumbs", () => {
   it("derives Home + segment links + current page from the slug and title", () => {
