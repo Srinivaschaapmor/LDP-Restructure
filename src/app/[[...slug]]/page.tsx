@@ -19,8 +19,9 @@ export async function generateStaticParams() {
   return slugs.map((s) => ({ slug: s.replace(/^\//, "").split("/") }));
 }
 
-export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
-  const page = (await getPageBySlug(pathFrom(params.slug))) as PageEntry | undefined;
+export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
+  const { slug } = await params;
+  const page = (await getPageBySlug(pathFrom(slug))) as PageEntry | undefined;
   const meta = page?.fields?.meta?.fields;
   if (!meta) return { title: page?.fields?.title };
   return {
@@ -31,8 +32,9 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   };
 }
 
-export default async function Page({ params }: { params: Params }) {
-  const page = (await getPageBySlug(pathFrom(params.slug))) as PageEntry | undefined;
+export default async function Page({ params }: { params: Promise<Params> }) {
+  const { slug } = await params;
+  const page = (await getPageBySlug(pathFrom(slug))) as PageEntry | undefined;
   if (!page) notFound();
 
   // A leading banner is a full-bleed hero that sits ABOVE the breadcrumbs (per design);
