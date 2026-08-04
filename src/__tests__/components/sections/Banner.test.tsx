@@ -1,6 +1,6 @@
-import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
 import { Banner, hexToRgb, overlayGradient } from "@/components/sections/Banner";
+import styles from "@/components/sections/Banner.module.css";
 import type { Media, Section } from "@/types";
 
 const media = (altText: string, url = "//cdn/x.jpg"): Media => ({
@@ -37,34 +37,34 @@ describe("Banner", () => {
 
   it("shows the photo on mobile too when there is neither a logo nor a heading (no blank gap)", () => {
     const { container } = render(<Banner fields={fields({})} />);
-    const bg = container.querySelector(".ld-banner__bg");
+    const bg = container.querySelector(`.${styles.bg}`);
     expect(bg?.className).not.toContain("d-none");
-    expect(container.querySelector(".ld-banner__mobile")).toBeNull();
+    expect(container.querySelector(`.${styles.mobile}`)).toBeNull();
   });
 
   it("swaps to a mobile heading band (and hides the desktop photo on mobile) when a heading is set", () => {
     const { container } = render(<Banner fields={fields({ heading: "5 toothbrush tips" })} />);
-    expect(container.querySelector(".ld-banner__bg")?.className).toContain("d-none d-md-block");
-    expect(container.querySelector(".ld-banner__heading")?.textContent).toBe("5 toothbrush tips");
-    expect(container.querySelector(".ld-banner__mobile-heading")?.textContent).toBe("5 toothbrush tips");
+    expect(container.querySelector(`.${styles.bg}`)?.className).toContain("d-none d-md-block");
+    expect(container.querySelector(`.${styles.heading}`)?.textContent).toBe("5 toothbrush tips");
+    expect(container.querySelector(`.${styles.mobileHeading}`)?.textContent).toBe("5 toothbrush tips");
   });
 
   it("prefers the logo over the heading for mobile content when both are set", () => {
     const { container } = render(<Banner fields={fields({ heading: "Ignored on mobile", logo: media("Liberty logo") })} />);
-    expect(container.querySelector(".ld-banner__mobile-logo")).toBeInTheDocument();
-    expect(container.querySelector(".ld-banner__mobile-heading")).toBeNull();
+    expect(container.querySelector(`.${styles.mobileLogo}`)).toBeInTheDocument();
+    expect(container.querySelector(`.${styles.mobileHeading}`)).toBeNull();
   });
 
   it("falls back to the default navy overlay when overlayColor is invalid", () => {
     const { container } = render(<Banner fields={fields({ overlay: "left", overlayColor: "not-a-hex" })} />);
-    const overlay = container.querySelector(".ld-banner__overlay");
-    expect(overlay?.className).toContain("ld-banner__overlay--left");
+    const overlay = container.querySelector(`.${styles.overlay}`);
+    expect(overlay?.className).toContain(styles.overlayLeft);
     expect((overlay as HTMLElement)?.style.background).toBe("");
   });
 
   it("uses an inline gradient when overlayColor is a valid hex", () => {
     const { container } = render(<Banner fields={fields({ overlay: "left", overlayColor: "#3352A3" })} />);
-    const overlay = container.querySelector(".ld-banner__overlay") as HTMLElement;
+    const overlay = container.querySelector(`.${styles.overlay}`) as HTMLElement;
     expect(overlay.style.background).toContain("rgba(51,82,163,.6)");
   });
 });

@@ -1,0 +1,55 @@
+.mcb {
+  padding: clamp(2rem, 5vw, 3.75rem) 0;
+}
+.eyebrow {
+  color: var(--ld-blue);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.heading {
+  color: var(--ld-blue);
+  font-size: clamp(1.8rem, 4.5vw, 3.25rem);
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+/* Aspect-ratio wrapper so the height is controlled here (not by the image's
+   intrinsic size); next/image runs in fill mode inside it. Figma: 822×352. */
+.media {
+  position: relative;
+  width: 100%;
+  max-width: 822px;
+  aspect-ratio: 918 / 393;
+  border-radius: 20px;
+  overflow: hidden;
+}
+.media img {
+  object-fit: cover;
+}
+.body {
+  color: var(--ld-body);
+  font-size: 1.125rem;
+  line-height: 1.7;
+  max-width: 820px;
+}
+.bullets {
+  color: var(--ld-body);
+  font-size: 1.125rem;
+  line-height: 1.7;
+  max-width: 820px;
+  margin-top: 1rem;
+}
+.bullets ul,
+.bullets ol {
+  padding-left: 1.25rem;
+}
+.toneInverse {
+  background: var(--ld-navy);
+  color: #fff;
+}
+.toneInverse .heading {
+  color: #fff;
+}
+.toneSubtle {
+  background: rgba(51, 82, 163, 0.05);
+}

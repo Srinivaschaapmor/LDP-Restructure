@@ -1,0 +1,106 @@
+/* Shared primary/dropdown nav classes — reused by Header, DesktopMenu, UtilityBar,
+   and MenuDrawer (which all render or extend the same dropdown-link markup), so
+   they share one CSS Module instead of duplicating these rules per file. */
+
+.list {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+.item {
+  position: relative;
+}
+.link,
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-decoration: none;
+  font: inherit;
+  color: #fff;
+  font-size: 1.125rem; /* 18px — Figma header nav */
+}
+.chev {
+  transition: transform 0.15s ease;
+}
+.chevOpen {
+  transform: rotate(180deg);
+}
+.panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 20;
+  min-width: 200px;
+  margin-top: 0.25rem;
+  list-style: none;
+  padding: 0.5rem 0;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(15, 16, 66, 0.18);
+  border: 1px solid rgba(15, 16, 66, 0.08);
+}
+.sublink {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: var(--ld-body);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.sublink:hover {
+  background: rgba(51, 82, 163, 0.06);
+  color: var(--ld-blue);
+}
+/* A group child inside a dropdown becomes a labeled section. */
+.section {
+  padding: 0.25rem 0;
+}
+.section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.section + .section {
+  border-top: 1px solid rgba(15, 16, 66, 0.06);
+  margin-top: 0.25rem;
+}
+.sectionTitle {
+  padding: 0.5rem 1rem 0.25rem;
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(15, 16, 66, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Primary sections on the navy bar; the active one is underlined. */
+.primary .link {
+  padding-bottom: 6px;
+  border-bottom: 3px solid transparent;
+}
+.linkActive {
+  border-bottom-color: #9c9cd1;
+}
+/* Sub-nav bar: dark text on the light band (State Sites / Shop plans / …). */
+.sub .link,
+.sub .trigger {
+  color: #0f1042;
+  font-size: 0.875rem; /* 14px — Figma sub-nav */
+}
+.sub .sublink {
+  color: var(--ld-body);
+}
+.sub .chev {
+  opacity: 0.5; /* Figma: sub-nav chevrons at 50% */
+}
+.sub .list {
+  gap: 1.25rem;
+  padding: 10px; /* 20px — Figma gap */
+}

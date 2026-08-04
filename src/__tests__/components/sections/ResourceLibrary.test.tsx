@@ -1,4 +1,3 @@
-import { describe, expect, it } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { ResourceLibrary } from "@/components/sections/ResourceLibrary";
 import type { AccordionItem, DocumentEntry, Section } from "@/types";

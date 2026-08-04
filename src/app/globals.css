@@ -1,0 +1,110 @@
+/* Design tokens pulled from the Figma "for-devs" file. Global custom properties —
+   consumed by every CSS Module via var(--ld-*) (docs/04-design-system/design-tokens.md). */
+:root {
+  --ld-navy: #1f1f4f;
+  --ld-blue: #3352a3;
+  --ld-deep-blue: #414195;
+  --ld-body: #4c4c67;
+  --ld-muted: rgba(15, 16, 66, 0.5);
+  --ld-font: "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+body {
+  font-family: var(--ld-font);
+  color: var(--ld-body);
+  margin: 0;
+}
+main {
+  display: block;
+}
+
+/* Content column, used everywhere via .container-xxl (not plain .container —
+   Bootstrap's .container snaps to a NEW fixed max-width at every sm/md/lg/xl/xxl
+   tier, which is what produced the old bug: a frozen 1140px box with an
+   uncontrolled, viewport-dependent outer gutter beyond it. .container-xxl has no
+   such tier — it is fluid (width:100%, just its padding) until it hits its own
+   max-width, so padding is the only thing that changes, continuously, and the
+   content column grows/shrinks smoothly with the viewport instead of jumping.
+
+   Figma anchors (exact, from the three reference frames): 440px frame → 16px side
+   padding; 834px frame → 60px; 1600px frame → 230px (1600 − 230 − 230 = 1140
+   content) — but the 230px target is pulled forward to land by ~1400px, not
+   1600px: most real "desktop" browser windows report a logical/CSS viewport
+   narrower than 1600 (1440/1536/1366 are all common laptop widths), so ramping
+   all the way to 1600 meant the padding never actually reached its full spec
+   value on ordinary hardware. max-width still caps the column at the true 1600
+   reference — only the padding ramp finishes early; the column keeps growing
+   (content gets proportionally wider) from 1400–1600 while padding holds at 230.
+   Two clamp() segments meet exactly at 834px, so there is no jump at that boundary. */
+.container-xxl {
+  max-width: 1600px;
+  padding: 0% 5%;
+}
+@media (min-width: 834px) {
+  .container-xxl {
+    max-width: 1600px;
+    padding: 0% 5%;
+  }
+}
+
+/* Common content region for every page: below the breadcrumbs and above the footer.
+   The first/last sections' own vertical padding is zeroed at the edges so this isn't
+   doubled; their inner padding still spaces sections from each other. 16px on mobile
+   (design-tokens spacing scale), 60px from `lg` up — matches the header's own
+   mobile/desktop split (`d-lg-*`). Kept global (not a module) since it's applied as a
+   plain wrapper class in page.tsx, not scoped to a single component. */
+.ld-content {
+  padding: 16px 0;
+}
+.ld-content > :first-child {
+  padding-top: 0;
+}
+.ld-content > :last-child {
+  padding-bottom: 0;
+}
+@media (min-width: 992px) {
+  .ld-content {
+    padding: 60px 0;
+  }
+}
+
+/* ---- Utilities ------------------------------------------------------------- */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- Buttons ----------------------------------------------------------------
+   Shared design-system primitive used across Header, Banner, MenuDrawer, and
+   not-found.tsx — kept global (like a Bootstrap utility) rather than duplicated
+   into every component's CSS Module. */
+.ld-btn {
+  display: inline-block;
+  border-radius: 32px;
+  padding: 0.75rem 1.25rem;
+  font-weight: 500;
+  font-size: 1.125rem;
+  text-decoration: none;
+  border: 2px solid transparent;
+  cursor: pointer;
+  /* A flex child (e.g. inside the header actions) can shrink below its label's
+     natural width by default, wrapping the text onto a second line — nowrap
+     forces it to stay on one line and take the space it needs instead. */
+  white-space: nowrap;
+}
+.ld-btn--primary {
+  background: var(--ld-blue);
+  color: #fff;
+}
+.ld-btn--secondary {
+  background: #fff;
+  color: var(--ld-deep-blue);
+  border-color: var(--ld-deep-blue);
+}

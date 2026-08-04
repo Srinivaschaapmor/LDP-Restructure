@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./globals.scss";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Liberty Dental Plan",

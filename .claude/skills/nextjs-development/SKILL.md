@@ -74,11 +74,11 @@ every shape in one place.
 
 ## 9. All tests AND test config live in `src/__tests__/` — one folder, no second one
 `Foo.test.tsx` is never colocated with `Foo.tsx`. It lives at
-`src/__tests__/<same-relative-path>/Foo.test.tsx`. Vitest's `include: ["src/**/*.test.{ts,tsx}"]`
+`src/__tests__/<same-relative-path>/Foo.test.tsx`. Jest's `testMatch: ["<rootDir>/src/**/*.test.{ts,tsx}"]`
 already discovers tests anywhere under `src/`, so this is a pure organization convention, not a
 config requirement — keep it anyway so the whole suite is browsable from one directory.
 **Test setup/config lives in `src/__tests__/setup.ts` too** (referenced by
-`vitest.config.ts`'s `setupFiles`) — don't create a second, differently-named test-related
+`jest.config.mjs`'s `setupFilesAfterEnv`) — don't create a second, differently-named test-related
 folder (e.g. a bare `src/test/`); that's confusing to have alongside `__tests__/` and defeats
 "one folder for tests."
 

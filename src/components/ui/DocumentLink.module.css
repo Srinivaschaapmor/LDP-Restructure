@@ -1,0 +1,25 @@
+/* A single document row: red PDF chip + underlined link, or label + external glyph. */
+.doc {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  color: var(--ld-blue);
+  text-decoration: none;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.label {
+  text-decoration: underline;
+}
+.doc:hover .label {
+  color: var(--ld-deep-blue);
+}
+.doc:focus-visible {
+  outline: 2px solid var(--ld-blue);
+  outline-offset: 2px;
+}
+.ext {
+  flex: 0 0 auto;
+  color: var(--ld-blue);
+}

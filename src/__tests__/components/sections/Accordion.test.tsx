@@ -1,4 +1,3 @@
-import { describe, expect, it } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { Accordion } from "@/components/sections/Accordion";
 import type { AccordionItem, DocumentEntry, Section } from "@/types";

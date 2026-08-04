@@ -1,0 +1,36 @@
+.collection {
+  padding: 0 0 clamp(2rem, 5vw, 3.75rem);
+}
+.collectionHeading {
+  color: var(--ld-blue);
+  margin-bottom: 1.5rem;
+}
+.collectionIntro {
+  color: var(--ld-body);
+  font-size: 1.125rem;
+  line-height: 1.7;
+  max-width: 820px;
+  margin-bottom: 1.5rem;
+}
+
+.cardTitle {
+  color: var(--ld-deep-blue);
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+.cardSubtitle {
+  color: var(--ld-blue);
+  font-weight: 500;
+}
+.cardBody {
+  color: var(--ld-body);
+  font-size: 1.125rem;
+  line-height: 1.7;
+}
+.cardMedia {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}

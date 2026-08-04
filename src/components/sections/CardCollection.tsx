@@ -3,16 +3,17 @@ import { MediaImg } from "@/components/ui/MediaImg";
 import { RichText } from "@/components/ui/RichText";
 import { Heading, type HeadingLevel } from "@/components/ui/Heading";
 import { COLLECTION_COL_CLASS, DEFAULTS, IMAGE_SIZES } from "@/lib/constants";
+import styles from "@/components/sections/CardCollection.module.css";
 
 function CardItem({ card, titleLevel }: { card: Card; titleLevel: HeadingLevel }) {
   const f = card?.fields;
   if (!f) return null;
   return (
-    <article className="ld-card">
-      {f.media ? <MediaImg media={f.media} className="ld-card__media" sizes={IMAGE_SIZES.card} /> : null}
-      {f.title ? <Heading level={titleLevel} className="ld-card__title">{f.title}</Heading> : null}
-      {f.subtitle ? <p className="ld-card__subtitle">{f.subtitle}</p> : null}
-      {f.body?.fields?.content ? <div className="ld-card__body"><RichText doc={f.body.fields.content} /></div> : null}
+    <article>
+      {f.media ? <MediaImg media={f.media} className={styles.cardMedia} sizes={IMAGE_SIZES.card} /> : null}
+      {f.title ? <Heading level={titleLevel} className={styles.cardTitle}>{f.title}</Heading> : null}
+      {f.subtitle ? <p className={styles.cardSubtitle}>{f.subtitle}</p> : null}
+      {f.body?.fields?.content ? <div className={styles.cardBody}><RichText doc={f.body.fields.content} /></div> : null}
     </article>
   );
 }
@@ -25,10 +26,10 @@ export function CardCollection({ fields }: { fields: Section["fields"] }) {
   // otherwise the cards sit directly under the page h1, so they are h2.
   const cardLevel: HeadingLevel = f.heading ? 3 : 2;
   return (
-    <section className={`ld-collection ld-collection--${layout}`}>
+    <section className={styles.collection}>
       <div className="container-xxl">
-        {f.heading ? <Heading level={2} className="ld-collection__heading">{f.heading}</Heading> : null}
-        {f.intro?.fields?.content ? <div className="ld-collection__intro"><RichText doc={f.intro.fields.content} /></div> : null}
+        {f.heading ? <Heading level={2} className={styles.collectionHeading}>{f.heading}</Heading> : null}
+        {f.intro?.fields?.content ? <div className={styles.collectionIntro}><RichText doc={f.intro.fields.content} /></div> : null}
         <div className="row g-4">
           {(f.cards ?? []).map((card) => (
             <div key={card?.sys?.id} className={colClass}>

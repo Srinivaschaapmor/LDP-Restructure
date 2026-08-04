@@ -1,0 +1,77 @@
+.header {
+  background: var(--ld-navy);
+}
+.inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  /* padding-block only (never the `padding` shorthand here): this element also
+     carries .container-xxl, whose horizontal padding a shorthand's implicit
+     left/right:0 would silently clobber (same specificity, later in the cascade). */
+  padding-block: 1rem;
+}
+.brand {
+  display: inline-flex;
+}
+/* Figma mobile frame: 146×34 logo (not the desktop 169×36) — using the desktop
+   size at every width was part of what overflowed the header row on narrow
+   phones (logo + CTA + burger genuinely don't fit at the desktop CTA's size;
+   see .actions .ctaMobile below). */
+.logo {
+  height: 34px;
+  width: auto;
+}
+.desktopnav {
+  flex: 1 1 auto;
+}
+.actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.actions > * {
+  flex-shrink: 0;
+}
+/* Figma mobile frame: CTA is a compact 128×44 button, not the desktop size —
+   reusing the desktop .ld-btn sizing everywhere is what made the header row
+   (logo + CTA + burger) genuinely wider than a narrow phone viewport, pushing
+   the burger past the right edge (real horizontal overflow, not just a
+   rendering glitch — confirmed via scrollWidth > clientWidth). */
+.ctaMobile {
+  font-size: 0.875rem;
+  padding: 0.625rem 1rem;
+}
+.burger {
+  background: transparent;
+  border: 0;
+  color: #fff;
+  padding: 0.25rem;
+  line-height: 0;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+@media (min-width: 992px) {
+  .inner {
+    gap: 1.5rem;
+  }
+  .logo {
+    height: 36px; /* Figma desktop: 169×36 */
+  }
+  .actions {
+    gap: 1.25rem;
+  }
+  .ctaMobile {
+    font-size: 1.125rem;
+    padding: 0.75rem 1.25rem; /* back to desktop CTA size */
+  }
+}
+
+/* The desktop sub-menu bar (solid light band so its dark text is readable — it sits
+   directly under the navy header, so a translucent fill would render dark-on-dark). */
+.submenu {
+  background: #fff;
+  border-top: 1px solid rgba(15, 16, 66, 0.06);
+}

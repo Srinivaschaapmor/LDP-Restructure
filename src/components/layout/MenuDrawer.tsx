@@ -3,6 +3,12 @@ import { useId, useState } from "react";
 import { isLink, isLinkGroup, type Button, type LinkGroup, type Media, type NavItem } from "@/types";
 import { MediaImg } from "@/components/ui/MediaImg";
 import { IMAGE_SIZES, UI_TEXT } from "@/lib/constants";
+import styles from "@/components/layout/MenuDrawer.module.css";
+import utilitybar from "@/components/layout/UtilityBar.module.css";
+
+function cx(...classes: Array<string | false | undefined>): string {
+  return classes.filter(Boolean).join(" ");
+}
 
 type Panel = { title?: string; items?: NavItem[] };
 
@@ -18,16 +24,16 @@ function InlineItem({ item }: { item: NavItem }) {
   const panelId = useId();
   if (!isLinkGroup(item)) {
     // item is narrowed to Link here (discriminated union, no cast needed).
-    return <a href={item?.fields?.href ?? "#"} className="ld-drawer__row ld-drawer__row--leaf">{item?.fields?.label}</a>;
+    return <a href={item?.fields?.href ?? "#"} className={cx(styles.row, styles.rowLeaf)}>{item?.fields?.label}</a>;
   }
   return (
-    <div className="ld-drawer__group">
-      <button type="button" className="ld-drawer__row" aria-expanded={open} aria-controls={panelId} onClick={() => setOpen((v) => !v)}>
+    <div>
+      <button type="button" className={styles.row} aria-expanded={open} aria-controls={panelId} onClick={() => setOpen((v) => !v)}>
         <span>{item?.fields?.title}</span>
-        <ChevRight className={`ld-drawer__chev ${open ? "is-open" : ""}`} />
+        <ChevRight className={cx(styles.chev, open && styles.chevOpen)} />
       </button>
       {open ? (
-        <ul id={panelId} className="ld-drawer__sublist">
+        <ul id={panelId} className={styles.sublist}>
           {(item?.fields?.links ?? []).map((l) =>
             isLinkGroup(l)
               ? <li key={l?.sys?.id}><InlineItem item={l} /></li>
@@ -54,19 +60,19 @@ function UtilityGroup({
   if (!menu?.fields?.title) return null;
 
   return (
-    <div className="ld-drawer__utilitygroup">
-      <button type="button" className="ld-drawer__utilitytrigger" aria-expanded={open} aria-controls={panelId} onClick={() => setOpen((v) => !v)}>
-        <MediaImg media={icon} className="ld-drawer__utilityicon" sizes={IMAGE_SIZES.icon} />
+    <div className={styles.utilitygroup}>
+      <button type="button" className={styles.utilitytrigger} aria-expanded={open} aria-controls={panelId} onClick={() => setOpen((v) => !v)}>
+        <MediaImg media={icon} className={styles.utilityicon} sizes={IMAGE_SIZES.icon} />
         <span>{menu.fields.title}</span>
-        <ChevRight className={`ld-drawer__chev ${open ? "is-open" : ""}`} />
+        <ChevRight className={cx(styles.chev, open && styles.chevOpen)} />
       </button>
       {open ? (
-        <ul id={panelId} className="ld-drawer__utilitylist">
+        <ul id={panelId} className={styles.utilitylist}>
           {(menu.fields.links ?? []).filter(isLink).map((l) => (
             <li key={l?.sys?.id}>
               <a
                 href={l.fields?.href ?? "#"}
-                className={highlightSelected && l.fields?.label === menu.fields?.title ? "ld-utilitybar__option is-selected" : undefined}
+                className={highlightSelected && l.fields?.label === menu.fields?.title ? utilitybar.optionSelected : undefined}
               >
                 {l.fields?.label}
               </a>
@@ -98,57 +104,57 @@ export function MenuDrawer({
   // A root-panel row: a group drills in (slide), a plain link navigates.
   const rootRow = (item: NavItem) =>
     isLinkGroup(item) ? (
-      <button key={item?.sys?.id} type="button" className="ld-drawer__row ld-drawer__push" onClick={() => push(item)}>
+      <button key={item?.sys?.id} type="button" className={styles.row} onClick={() => push(item)}>
         <span>{item?.fields?.title}</span>
         <ChevRight />
       </button>
     ) : (
-      <a key={item?.sys?.id} href={item?.fields?.href ?? "#"} className="ld-drawer__row ld-drawer__row--leaf">{item?.fields?.label}</a>
+      <a key={item?.sys?.id} href={item?.fields?.href ?? "#"} className={cx(styles.row, styles.rowLeaf)}>{item?.fields?.label}</a>
     );
 
   return (
-    <div className="ld-drawer" role="dialog" aria-modal="true" aria-label={UI_TEXT.menuDialogLabel}>
-      <div className="ld-drawer__header">
-        {logo ? <MediaImg media={logo} className="ld-drawer__logo" sizes={IMAGE_SIZES.logo} /> : null}
-        <button type="button" className="ld-drawer__close" aria-label={UI_TEXT.closeMenuLabel} onClick={onClose}>
+    <div className={styles.drawer} role="dialog" aria-modal="true" aria-label={UI_TEXT.menuDialogLabel}>
+      <div className={styles.header}>
+        {logo ? <MediaImg media={logo} className={styles.logo} sizes={IMAGE_SIZES.logo} /> : null}
+        <button type="button" className={styles.close} aria-label={UI_TEXT.closeMenuLabel} onClick={onClose}>
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
             <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
           </svg>
         </button>
       </div>
 
-      <div className="ld-drawer__body">
+      <div className={styles.body}>
         {atRoot ? (
-          <div className="ld-drawer__panel" key="root">
-            <label className="ld-drawer__search">
-              <MediaImg media={searchIcon} className="ld-drawer__search-icon" sizes={IMAGE_SIZES.icon} />
+          <div className={styles.panel} key="root">
+            <label className={styles.search}>
+              <MediaImg media={searchIcon} className={styles.searchIcon} sizes={IMAGE_SIZES.icon} />
               <span className="visually-hidden">{UI_TEXT.searchLabel}</span>
               <input type="search" placeholder={UI_TEXT.searchPlaceholder} />
             </label>
 
-            <nav className="ld-drawer__nav" aria-label={UI_TEXT.primaryNavLabel}>
+            <nav className={styles.nav} aria-label={UI_TEXT.primaryNavLabel}>
               {(items ?? []).map(rootRow)}
             </nav>
 
             {cta?.fields ? (
-              <a className="ld-btn ld-btn--primary ld-drawer__cta" href={cta.fields.link?.fields?.href ?? "#"}>{cta.fields.label}</a>
+              <a className={cx("ld-btn ld-btn--primary", styles.cta)} href={cta.fields.link?.fields?.href ?? "#"}>{cta.fields.label}</a>
             ) : null}
             {languageMenu || loginMenu ? (
-              <div className="ld-drawer__utility">
+              <div className={styles.utility}>
                 <UtilityGroup icon={languageIcon} menu={languageMenu} highlightSelected />
                 <UtilityGroup icon={loginIcon} menu={loginMenu} />
               </div>
             ) : null}
           </div>
         ) : (
-          <div className="ld-drawer__panel" key={stack.length}>
-            <button type="button" className="ld-drawer__back" onClick={pop}>
+          <div className={styles.panel} key={stack.length}>
+            <button type="button" className={styles.back} onClick={pop}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                 <path d="M15 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
               <span>{current.title}</span>
             </button>
-            <nav className="ld-drawer__nav" aria-label={current.title || UI_TEXT.menuDialogLabel}>
+            <nav className={styles.nav} aria-label={current.title || UI_TEXT.menuDialogLabel}>
               {(current.items ?? []).map((it) => <InlineItem key={it?.sys?.id} item={it} />)}
             </nav>
           </div>

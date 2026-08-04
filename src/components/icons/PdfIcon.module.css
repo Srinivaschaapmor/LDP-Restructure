@@ -1,0 +1,26 @@
+/* Figma PDF glyph: red page outline (SVG) with a red "PDF" chip at the bottom-left. */
+.pdficon {
+  position: relative;
+  flex: 0 0 auto;
+  display: inline-block;
+  width: 26px;
+  height: 31px;
+}
+.page {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.chip {
+  position: absolute;
+  left: 0;
+  bottom: 3px;
+  background: #ff2116;
+  color: #fff;
+  font-size: 0.5rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  padding: 2px 2px 1px;
+  border-radius: 2px;
+}

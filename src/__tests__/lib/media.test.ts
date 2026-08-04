@@ -1,4 +1,3 @@
-import { describe, expect, it } from "vitest";
 import { resolveUrl, resolveDimensions } from "@/components/ui/MediaImg";
 import { ctId } from "@/types";
 import type { Media } from "@/types";

@@ -1,0 +1,69 @@
+/* Figma: white bg, 10px vertical padding, language trigger at the left edge of the
+   1140 column, login at the right edge; 16px Medium #0F1042; icons/chevron 20/16px. */
+.utilitybar {
+  background: #fff;
+}
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* padding-block only (never the `padding` shorthand here): this element also
+     carries .container-xxl, whose horizontal padding a shorthand's implicit
+     left/right:0 would silently clobber (same specificity, later in the cascade). */
+  padding-block: 10px;
+}
+.item {
+  position: relative;
+}
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 1rem;
+  color: #0f1042;
+  padding: 0;
+}
+.icon {
+  width: 20px;
+  height: 20px;
+}
+/* Native SVG is 9.33×5.12 (wide, short) — 16×9 keeps that ratio; a square box would
+   stretch it into a distorted shape. Rotation is an inline style in UtilityBar.tsx
+   (open/closed state) — kept out of the class to avoid a cascade/specificity edge case. */
+.chev {
+  width: 16px;
+  height: 9px;
+  opacity: 0.5;
+  transition: transform 0.15s ease;
+}
+.panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 20;
+  min-width: 200px;
+  margin-top: 0.5rem;
+  list-style: none;
+  padding: 0.5rem 0;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(15, 16, 66, 0.18);
+  border: 1px solid rgba(15, 16, 66, 0.08);
+}
+/* More generous row spacing than the primary-nav dropdown, matching the reference. */
+.panelSublink {
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+}
+/* Current language selection: bolder + tinted, same "active via typography" idea as
+   the header's current nav item — no separate icon needed. Shared with MenuDrawer's
+   mobile language/login rows (see MenuDrawer.tsx). */
+.optionSelected {
+  color: var(--ld-blue);
+  font-weight: 600;
+  background: rgba(51, 82, 163, 0.06);
+}

@@ -1,0 +1,108 @@
+.footer {
+  background: var(--ld-navy);
+  color: #fff;
+  padding: 3.75rem 0 2rem;
+}
+.top {
+  row-gap: 2rem;
+}
+.logo {
+  height: 36px;
+  width: auto;
+  margin-bottom: 1.25rem;
+}
+.social {
+  display: flex;
+  gap: 0.75rem;
+}
+.social a {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+.social a:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+.groupTitle {
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+.group ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.group li {
+  margin-bottom: 0.75rem;
+}
+.group a {
+  color: #fff;
+  text-decoration: none;
+}
+.group a:hover {
+  text-decoration: underline;
+}
+.totopcol {
+  display: flex;
+  justify-content: flex-start;
+}
+.totop {
+  color: #fff;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+.totopIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.divider {
+  border-color: rgba(255, 255, 255, 0.15);
+  margin: 2.5rem 0 1.5rem;
+}
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.legal {
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+  font-size: 0.95rem;
+}
+.legallinks {
+  list-style: none;
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+}
+.legallinks a {
+  color: #fff;
+  text-decoration: none;
+}
+.legallinks a:hover {
+  text-decoration: underline;
+}
+
+@media (min-width: 992px) {
+  .totopcol {
+    justify-content: flex-end;
+  }
+}

@@ -1,4 +1,3 @@
-import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { SectionRenderer } from "@/components/SectionRenderer";
 import type { Section } from "@/types";
@@ -21,10 +20,10 @@ describe("SectionRenderer", () => {
   });
 
   it("skips an unknown section type and logs an error", () => {
-    const spy = vi.spyOn(log.logger, "error").mockImplementation(() => {});
+    const spy = jest.spyOn(log.logger, "error").mockImplementation(() => {});
     const { container } = render(<SectionRenderer sections={[section("mysteryBlock", {})]} />);
     expect(container).toBeEmptyDOMElement();
-    expect(spy).toHaveBeenCalledOnce();
+    expect(spy).toHaveBeenCalledTimes(1);
     spy.mockRestore();
   });
 

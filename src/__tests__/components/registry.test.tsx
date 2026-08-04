@@ -1,4 +1,3 @@
-import { describe, expect, it } from "vitest";
 import { registry } from "@/components/registry";
 
 // Contract (content-model spec §11): every section content-type id that can appear in
@@ -9,13 +8,13 @@ const EXPECTED_SECTION_TYPES = ["banner", "mediaContentBlock", "cardCollection",
 describe("section registry contract", () => {
   it("has a component for every whitelisted section content-type id", () => {
     for (const id of EXPECTED_SECTION_TYPES) {
-      expect(registry[id], `missing renderer for section type "${id}"`).toBeTypeOf("function");
+      expect(typeof registry[id]).toBe("function");
     }
   });
 
   it("registers only renderable components", () => {
-    for (const [id, Component] of Object.entries(registry)) {
-      expect(typeof Component, `"${id}" is not a component`).toBe("function");
+    for (const Component of Object.values(registry)) {
+      expect(typeof Component).toBe("function");
     }
   });
 });

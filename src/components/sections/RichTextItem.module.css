@@ -1,0 +1,11 @@
+.richtext {
+  padding: 0 0 clamp(2rem, 5vw, 3.75rem);
+}
+.inner {
+  color: var(--ld-body);
+  font-size: 1.125rem;
+  line-height: 1.7;
+}
+.inner a {
+  color: var(--ld-blue);
+}

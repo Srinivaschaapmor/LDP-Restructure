@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Crumb, PageEntry } from "@/types";
 import { HOME_LABEL, UI_TEXT } from "@/lib/constants";
+import styles from "@/components/layout/Breadcrumbs.module.css";
 
 // Title-cases a slug segment for a breadcrumb label ("resource-library" -> "Resource library").
 function labelFromSegment(segment: string): string {
@@ -30,14 +31,14 @@ export function Breadcrumbs({ page }: { page?: PageEntry }) {
   if (crumbs.length <= 1) return null;
 
   return (
-    <nav className="ld-breadcrumbs" aria-label={UI_TEXT.breadcrumbNavLabel}>
+    <nav className={styles.breadcrumbs} aria-label={UI_TEXT.breadcrumbNavLabel}>
       <div className="container-xxl">
-        <ol className="ld-breadcrumbs__list">
+        <ol className={styles.list}>
           {crumbs.map((crumb, i) => (
-            <li key={`${crumb.label}-${i}`} className="ld-breadcrumbs__item">
+            <li key={`${crumb.label}-${i}`} className={styles.item}>
               {crumb.href
-                ? <Link href={crumb.href} className="ld-breadcrumbs__link">{crumb.label}</Link>
-                : <span className="ld-breadcrumbs__current" aria-current="page">{crumb.label}</span>}
+                ? <Link href={crumb.href} className={styles.link}>{crumb.label}</Link>
+                : <span className={styles.current} aria-current="page">{crumb.label}</span>}
             </li>
           ))}
         </ol>

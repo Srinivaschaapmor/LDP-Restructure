@@ -1,4 +1,3 @@
-import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { DocumentLink, resolveDocHref } from "@/components/ui/DocumentLink";
 import type { DocumentEntry } from "@/types";

@@ -3,8 +3,20 @@ import { MediaImg } from "@/components/ui/MediaImg";
 import { RichText } from "@/components/ui/RichText";
 import { Heading, type HeadingLevel } from "@/components/ui/Heading";
 import { DEFAULTS, IMAGE_SIZES, UI_TEXT } from "@/lib/constants";
+import styles from "@/components/sections/Banner.module.css";
 
 const HEX_PATTERN = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i;
+
+const HEIGHT_CLASS: Record<string, string> = {
+  sm: styles.bannerSm, md: styles.bannerMd, lg: styles.bannerLg,
+};
+const OVERLAY_CLASS: Record<string, string> = {
+  left: styles.overlayLeft, right: styles.overlayRight,
+};
+
+function cx(...classes: Array<string | false | undefined>): string {
+  return classes.filter(Boolean).join(" ");
+}
 
 // Pure helpers (exported for unit tests). A validated hex string, not a free color
 // picker: Contentful's field regex already rejects anything else at entry time, and
@@ -18,9 +30,9 @@ export function hexToRgb(value?: string): [number, number, number] | null {
   return [Number.parseInt(hex.slice(0, 2), 16), Number.parseInt(hex.slice(2, 4), 16), Number.parseInt(hex.slice(4, 6), 16)];
 }
 
-// Direction matches the existing .ld-banner__overlay--left/right SCSS gradients;
-// only the color itself is dynamic (falls back to those default-navy classes below
-// when no valid overlayColor is set — no inline style needed in the common case).
+// Direction matches the .overlayLeft/.overlayRight CSS Module gradients; only the
+// color itself is dynamic (falls back to those default-navy classes below when no
+// valid overlayColor is set — no inline style needed in the common case).
 export function overlayGradient(direction: string, rgb: [number, number, number]): string {
   const [r, g, b] = rgb;
   const angle = direction === "right" ? 270 : 90;
@@ -42,44 +54,44 @@ export function Banner({ fields }: { fields: Section["fields"] }) {
   // swaps in when there's actually something to show instead; a banner with neither
   // (e.g. a plain photo banner) keeps showing its photo on mobile too — no blank gap.
   const mobileContent = hasLogo ? (
-    <MediaImg media={f.logo} className="ld-banner__mobile-logo" fill sizes={IMAGE_SIZES.icon} priority />
+    <MediaImg media={f.logo} className={styles.mobileLogo} fill sizes={IMAGE_SIZES.icon} priority />
   ) : f.heading ? (
-    <Heading level={headingLevel} className="ld-banner__mobile-heading">{f.heading}</Heading>
+    <Heading level={headingLevel} className={styles.mobileHeading}>{f.heading}</Heading>
   ) : null;
   const deprioritizeDesktopImage = Boolean(mobileContent);
-  const hideOnMobile = mobileContent ? " d-none d-md-block" : "";
+  const hideOnMobile = mobileContent ? "d-none d-md-block" : "";
 
   return (
-    <section className={`ld-banner ld-banner--${height}`} aria-label={f.heading || UI_TEXT.bannerFallbackLabel}>
+    <section className={cx(styles.banner, HEIGHT_CLASS[height])} aria-label={f.heading || UI_TEXT.bannerFallbackLabel}>
       <MediaImg
-        media={f.backgroundImage} className={`ld-banner__bg${hideOnMobile}`} sizes={IMAGE_SIZES.hero} fill
+        media={f.backgroundImage} className={cx(styles.bg, hideOnMobile)} sizes={IMAGE_SIZES.hero} fill
         priority={!deprioritizeDesktopImage}
         loading={deprioritizeDesktopImage ? "lazy" : "eager"}
         fetchPriority={deprioritizeDesktopImage ? "low" : "high"}
       />
       {direction !== "none" ? (
         customRgb ? (
-          <span className={`ld-banner__overlay${hideOnMobile}`} style={{ background: overlayGradient(direction, customRgb) }} aria-hidden="true" />
+          <span className={cx(styles.overlay, hideOnMobile)} style={{ background: overlayGradient(direction, customRgb) }} aria-hidden="true" />
         ) : (
-          <span className={`ld-banner__overlay ld-banner__overlay--${direction}${hideOnMobile}`} aria-hidden="true" />
+          <span className={cx(styles.overlay, OVERLAY_CLASS[direction], hideOnMobile)} aria-hidden="true" />
         )
       ) : null}
       {(hasLogo || f.heading) ? (
-        <div className={`container-xxl ld-banner__inner${hideOnMobile}`}>
+        <div className={cx("container-xxl", styles.inner, hideOnMobile)}>
           {hasLogo ? (
-            <MediaImg media={f.logo} className="ld-banner__logo" fill sizes={IMAGE_SIZES.logo} priority />
+            <MediaImg media={f.logo} className={styles.logo} fill sizes={IMAGE_SIZES.logo} priority />
           ) : (
-            <Heading level={headingLevel} className="ld-banner__heading">{f.heading}</Heading>
+            <Heading level={headingLevel} className={styles.heading}>{f.heading}</Heading>
           )}
-          {f.subheading?.fields?.content ? <div className="ld-banner__subheading"><RichText doc={f.subheading.fields.content} /></div> : null}
+          {f.subheading?.fields?.content ? <div className={styles.subheading}><RichText doc={f.subheading.fields.content} /></div> : null}
           {f.cta?.fields ? (
-            <a className="ld-btn ld-btn--primary ld-banner__cta" href={f.cta.fields.link?.fields?.href ?? "#"}>{f.cta.fields.label}</a>
+            <a className={cx("ld-btn ld-btn--primary", styles.cta)} href={f.cta.fields.link?.fields?.href ?? "#"}>{f.cta.fields.label}</a>
           ) : null}
         </div>
       ) : null}
 
       {mobileContent ? (
-        <div className="d-md-none ld-banner__mobile" style={{ backgroundColor: customRgb ? f.overlayColor : undefined }}>
+        <div className={cx("d-md-none", styles.mobile)} style={{ backgroundColor: customRgb ? f.overlayColor : undefined }}>
           {mobileContent}
         </div>
       ) : null}

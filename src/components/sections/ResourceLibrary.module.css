@@ -1,0 +1,69 @@
+/* Sizes taken from Figma: H1/Bold 52/62 (#3352A3); selector box #f0f0f0, 20px pad,
+   8px radius; prompt 24px Demi (#414195); control 215px wide, 14/16px padding. */
+.rl {
+  padding: 0; /* edge spacing comes from .ld-content (60px); see below */
+}
+/* Nested accordion adds no extra top/bottom — the selector's margin gives the gap,
+   and .ld-content provides the 60px above the footer. The two-class selector (not a
+   bare .nestedAccordion) gives this override higher specificity than Accordion's own
+   base padding rule, so it wins regardless of CSS Module load/insertion order. */
+.rl .nestedAccordion {
+  padding: 0;
+}
+.title {
+  color: var(--ld-blue);
+  font-weight: 600;
+  line-height: 1.192;
+  font-size: clamp(2rem, 6vw, 3.25rem);
+  margin-bottom: 1.5rem;
+}
+.selector {
+  background: #f0f0f0;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 1.5rem;
+}
+.prompt {
+  display: block;
+  color: var(--ld-deep-blue);
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  margin-bottom: 20px;
+}
+.selectwrap {
+  position: relative;
+  width: 215px;
+  max-width: 100%;
+}
+/* Chevron affordance for the native select (Figma "angle", 50% opacity). */
+.selectwrap::after {
+  content: "";
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid var(--ld-deep-blue);
+  border-bottom: 2px solid var(--ld-deep-blue);
+  opacity: 0.5;
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+}
+.select {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  background: #fff;
+  font: inherit;
+  font-size: 16px;
+  color: var(--ld-deep-blue);
+  border: 1px solid rgba(15, 16, 66, 0.4);
+  border-radius: 8px;
+  padding: 14px 40px 14px 16px;
+  cursor: pointer;
+}
+.select:focus-visible {
+  outline: 2px solid var(--ld-blue);
+  outline-offset: 1px;
+}

@@ -15,7 +15,7 @@ description: Unit and component testing strategy, coverage expectations, and tes
 - Follow the testing pyramid: many unit, fewer integration, minimal E2E.
 
 ## Recommended tooling
-- **Vitest + React Testing Library** (fast, TS-native) — or Jest if the team prefers.
+- **Jest + React Testing Library** (via `next/jest`) — test behavior, not implementation.
 
 ## Coverage
 - Recommended target: **≥ 80%** on statements/branches for non-trivial logic.

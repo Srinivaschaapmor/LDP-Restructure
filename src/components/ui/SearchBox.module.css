@@ -1,0 +1,32 @@
+/* Desktop header search box (Figma: white pill, placeholder text then a trailing
+   icon — the mobile drawer's own search field is icon-then-text and styled
+   differently, so it's implemented separately rather than forced through this
+   same component; see MenuDrawer). */
+.search {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 200px;
+  background: #fff;
+  border-radius: 24px;
+  padding: 14px 16px 14px 20px;
+  cursor: text;
+}
+.input {
+  flex: 1 1 0;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: none;
+  font: inherit;
+  font-size: 1rem;
+  color: #17153e;
+}
+.input::placeholder {
+  color: rgba(23, 21, 62, 0.5);
+}
+.icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
