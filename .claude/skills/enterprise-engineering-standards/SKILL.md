@@ -26,7 +26,7 @@ enforce the non-negotiables that apply to every change.
 ## Which skill to use when
 | You are… | Use skill |
 |---|---|
-| Writing/refactoring any TS/React code | `coding-standards` + `sonarqube-compliance` |
+| Writing/refactoring any TS/React code | `project-coding-standards` + `coding-standards` + `sonarqube-compliance` |
 | Building UI / markup | `accessibility` + `siteimprove-compliance` |
 | Adding pages, metadata, links | `seo` + `siteimprove-compliance` |
 | Reviewing a diff / opening a PR | `code-review-standards` + `definition-of-done` |

@@ -1,8 +1,8 @@
 "use client";
 import { useId } from "react";
 import { isLink, isLinkGroup, type LinkGroup, type NavItem } from "@/types";
-import { useDismissableToggle } from "@/lib/useDismissableToggle";
-import nav from "@/components/layout/Nav.module.css";
+import { useDismissableToggle } from "@/hooks/useDismissableToggle";
+import nav from "@/components/navigation/styles/Nav.module.css";
 
 function cx(...classes: Array<string | false | undefined>): string {
   return classes.filter(Boolean).join(" ");
@@ -17,13 +17,8 @@ function Chevron({ open }: { open: boolean }) {
   );
 }
 
-// Exported so other dropdown-style menus (e.g. UtilityBar) reuse the same
-// group/link rendering instead of duplicating it (coding-standards §1).
-// `sublinkClassName` lets a container (e.g. UtilityBar's panel) layer on its own
-// contextual override without SubLink itself knowing about that context.
 export function SubLink({ item, sublinkClassName }: { item: NavItem; sublinkClassName?: string }) {
   const sublinkClass = cx(nav.sublink, sublinkClassName);
-  // A group child inside a dropdown becomes a labeled section; a link becomes a link.
   if (isLinkGroup(item)) {
     return (
       <li className={nav.section}>
@@ -36,7 +31,6 @@ export function SubLink({ item, sublinkClassName }: { item: NavItem; sublinkClas
       </li>
     );
   }
-  // Not a group → item is narrowed to Link here (discriminated union, no cast needed).
   return (
     <li><a href={item?.fields?.href ?? "#"} className={sublinkClass}>{item?.fields?.label}</a></li>
   );

@@ -17,7 +17,7 @@ const L = (v) => ({ [LOCALE]: v });
 const entryLink = (id) => ({ sys: { type: "Link", linkType: "Entry", id } });
 
 const here = dirname(fileURLToPath(import.meta.url));
-const bannerFile = join(here, "..", "..", "public", "images", "prl-banner.png");
+const bannerFile = join(here, "..", "..", "public", "assets", "images", "prl-banner.png");
 
 async function findId(ct, internalName) {
   const r = await env.getEntries({ content_type: ct, "fields.internalName": internalName, limit: 1 });

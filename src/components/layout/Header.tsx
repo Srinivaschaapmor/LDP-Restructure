@@ -4,21 +4,19 @@ import { usePathname } from "next/navigation";
 import {
   asFields, isLinkGroup, type HeaderFields, type NavItem, type NavigationMenu, type Section,
 } from "@/types";
-import { MediaImg } from "@/components/ui/MediaImg";
-import { SearchBox } from "@/components/ui/SearchBox";
-import { DesktopMenu } from "@/components/layout/DesktopMenu";
-import { MenuDrawer } from "@/components/layout/MenuDrawer";
-import { UtilityBar } from "@/components/layout/UtilityBar";
-import { IMAGE_SIZES, TOP_ANCHOR_ID, UI_TEXT } from "@/lib/constants";
-import styles from "@/components/layout/Header.module.css";
-import nav from "@/components/layout/Nav.module.css";
+import { MediaImg } from "@/components/media/MediaImg";
+import { SearchBox } from "@/components/forms/SearchBox";
+import { DesktopMenu } from "@/components/navigation/DesktopMenu";
+import { MenuDrawer } from "@/components/navigation/MenuDrawer";
+import { UtilityBar } from "@/components/navigation/UtilityBar";
+import { IMAGE_SIZES, ROUTES, TOP_ANCHOR_ID, UI_TEXT } from "@/constants";
+import styles from "@/components/layout/styles/Header.module.css";
+import nav from "@/components/navigation/styles/Nav.module.css";
 
 function cx(...classes: Array<string | false | undefined>): string {
   return classes.filter(Boolean).join(" ");
 }
 
-// NavItem is a real discriminated union (see @/types), so isLinkGroup(it) narrows
-// both ternary branches with no cast needed.
 const title = (it: NavItem) => (isLinkGroup(it) ? it.fields?.title : it.fields?.label);
 const href = (it: NavItem) => (isLinkGroup(it) ? it.fields?.href : it.fields?.href);
 const children = (it: NavItem) => (isLinkGroup(it) ? it.fields?.links : undefined);
@@ -27,7 +25,7 @@ const isActive = (pathname: string, h?: string) => !!h && (pathname === h || pat
 export function Header({ fields, primaryNav }: { fields: Section["fields"]; primaryNav?: NavigationMenu }) {
   const f = asFields<HeaderFields>(fields);
   const [open, setOpen] = useState(false);
-  const pathname = usePathname() || "/";
+  const pathname = usePathname() || ROUTES.home;
   const items = primaryNav?.fields?.items ?? [];
   const active = items.find((it) => isActive(pathname, href(it)));
   const activeTitle = active ? title(active) : undefined;
@@ -41,11 +39,10 @@ export function Header({ fields, primaryNav }: { fields: Section["fields"]; prim
         chevronIcon={f.chevronIcon}
       />
       <div className={cx("container-xxl", styles.inner)}>
-        <a href="/" className={styles.brand}>
+        <a href={ROUTES.home} className={styles.brand}>
           {f.logo ? <MediaImg media={f.logo} className={styles.logo} sizes={IMAGE_SIZES.logo} priority /> : null}
         </a>
 
-        {/* Primary sections = plain links; the active one is underlined */}
         <nav className={cx(nav.primary, "d-none d-lg-flex")} aria-label={UI_TEXT.primaryNavLabel}>
           <ul className={nav.list}>
             {items.map((it) => {
@@ -62,7 +59,6 @@ export function Header({ fields, primaryNav }: { fields: Section["fields"]; prim
         </nav>
 
         <div className={styles.actions}>
-          {/* Figma: search box precedes the CTA, desktop-only (mobile gets search inside the drawer) */}
           <div className="d-none d-lg-block"><SearchBox icon={f.searchIcon} /></div>
           {f.cta?.fields ? (
             <a className={cx("ld-btn ld-btn--primary", styles.ctaMobile)} href={f.cta.fields.link?.fields?.href ?? "#"}>{f.cta.fields.label}</a>
@@ -76,7 +72,6 @@ export function Header({ fields, primaryNav }: { fields: Section["fields"]; prim
         </div>
       </div>
 
-      {/* Contextual sub-bar: the active section's sub-menu */}
       {subItems?.length ? (
         <div className={cx(styles.submenu, "d-none d-lg-block")}>
           <div className="container-xxl">
@@ -85,8 +80,6 @@ export function Header({ fields, primaryNav }: { fields: Section["fields"]; prim
         </div>
       ) : null}
 
-      {/* Mobile / tablet drawer: sections drill down into their sub-menus; same
-          search icon and Language/Login menus as desktop, just laid out for mobile */}
       {open ? (
         <MenuDrawer
           logo={f.logo} items={items} cta={f.cta} searchIcon={f.searchIcon}

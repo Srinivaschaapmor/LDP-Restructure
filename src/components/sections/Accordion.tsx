@@ -1,17 +1,15 @@
 "use client";
 import { useState } from "react";
 import { asFields, type AccordionFields, type AccordionItem, type Section } from "@/types";
-import { RichText } from "@/components/ui/RichText";
-import { Heading, type HeadingLevel } from "@/components/ui/Heading";
-import { DocumentLink } from "@/components/ui/DocumentLink";
-import styles from "@/components/sections/Accordion.module.css";
+import { RichText } from "@/components/common/RichText";
+import { Heading, type HeadingLevel } from "@/components/common/Heading";
+import { DocumentLink } from "@/components/media/DocumentLink";
+import styles from "@/components/sections/styles/Accordion.module.css";
 
 function cx(...classes: Array<string | false | undefined>): string {
   return classes.filter(Boolean).join(" ");
 }
 
-// One group: a heading-wrapped disclosure button controlling a labelled region
-// (WCAG accordion pattern). Content and/or a document list render inside the region.
 function AccordionGroup({
   item, level, isOpen, onToggle,
 }: { item?: AccordionItem; level: HeadingLevel; isOpen: boolean; onToggle: () => void }) {
@@ -46,17 +44,12 @@ function AccordionGroup({
   );
 }
 
-// `className` lets a container (e.g. ResourceLibrary, which nests this section
-// and needs to zero out its own top/bottom padding) layer on a contextual override.
 export function Accordion({ fields, className }: { fields: Section["fields"]; className?: string }) {
   const f = asFields<AccordionFields>(fields);
   const items = f.items ?? [];
   const allowMultiple = f.allowMultipleOpen ?? false;
-  // All groups start collapsed (matches the design); hook runs before any early
-  // return (sonarqube-compliance rule 2).
   const [open, setOpen] = useState<Set<string>>(() => new Set());
 
-  // Single-open mode collapses siblings; multi-open toggles each independently.
   const toggle = (id?: string) => {
     if (!id) return;
     setOpen((prev) => {
@@ -68,8 +61,6 @@ export function Accordion({ fields, className }: { fields: Section["fields"]; cl
 
   if (!items.length) return null;
 
-  // Keep the outline valid: an accordion heading (h2) pushes group titles to h3;
-  // without one the groups sit under the page h1, so they are h2.
   const titleLevel: HeadingLevel = f.heading ? 3 : 2;
 
   return (

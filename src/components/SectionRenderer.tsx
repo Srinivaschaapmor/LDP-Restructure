@@ -1,9 +1,7 @@
 import { ctId, type Section } from "@/types";
 import { registry } from "@/components/registry";
-import { logger } from "@/lib/log";
+import { logger } from "@/lib/logger/log";
 
-// Maps each section entry to its component by content-type ID, in array order.
-// Unknown types fail gracefully (render nothing + log) instead of crashing the page.
 export function SectionRenderer({ sections }: { sections?: Section[] }) {
   return (
     <>

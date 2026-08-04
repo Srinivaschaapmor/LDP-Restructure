@@ -1,6 +1,6 @@
 ---
 name: coding-standards
-description: Core code-organization and readability standards for this project. Use whenever writing or refactoring code — covers shared-utility extraction, meaningful "why" comments, naming, and file structure.
+description: Core code-organization and readability standards for this project. Use whenever writing or refactoring code — covers shared-utility extraction, naming, and file structure.
 ---
 
 # Coding Standards
@@ -20,16 +20,12 @@ lib/utils/
 Rule of thumb: if the same logic appears in **two** places, extract it. One category per
 concern; never mix (e.g. don't put date logic in `auth.utils.ts`).
 
-## 2. Comment the "why", block by block
-Add a brief comment on each function and each non-obvious block explaining **why it exists /
-why it's useful** — not what the code literally does.
-```ts
-// Normalizes Contentful rich-text links so relative CMS paths resolve against the site root.
-// Needed because the CMS stores paths without the locale prefix.
-function normalizeLink(...) { ... }
-```
-Good comments explain intent, edge cases, and non-obvious decisions. Skip comments that just
-restate the code.
+## 2. No code comments — see [project-coding-standards]
+Code must be self-explanatory through naming and structure; no inline comments anywhere in
+application source. Rationale that would otherwise go in a comment lives in
+`docs/02-architecture/code-notes.md` or the relevant ADR/doc instead. *(This reverses the
+former "comment the why" rule — see [project-coding-standards] §2 for the current, canonical
+rule and its rationale.)*
 
 ## 3. Naming
 - Files: `PascalCase.tsx` for components, `camelCase.ts` for utils/hooks (`useX.ts`).

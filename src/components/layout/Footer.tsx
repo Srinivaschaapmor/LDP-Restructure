@@ -1,7 +1,7 @@
 import { asFields, isLink, type FooterFields, type Section } from "@/types";
-import { MediaImg } from "@/components/ui/MediaImg";
-import { DEFAULTS, IMAGE_SIZES, TOP_ANCHOR_ID } from "@/lib/constants";
-import styles from "@/components/layout/Footer.module.css";
+import { MediaImg } from "@/components/media/MediaImg";
+import { DEFAULTS, IMAGE_SIZES, TOP_ANCHOR_ID } from "@/constants";
+import styles from "@/components/layout/styles/Footer.module.css";
 
 function cx(...classes: Array<string | false | undefined>): string {
   return classes.filter(Boolean).join(" ");
@@ -28,8 +28,6 @@ export function Footer({ fields }: { fields: Section["fields"] }) {
             <div key={col?.sys?.id} className={cx("col-6 col-md-4 col-lg-2", styles.group)}>
               <p className={styles.groupTitle}>{col?.fields?.title}</p>
               <ul>
-                {/* Footer columns are plain links; isLink narrows NavItem[] with no
-                    cast and silently drops any nested group instead of crashing. */}
                 {(col?.fields?.links ?? []).filter(isLink).map((l) => (
                   <li key={l?.sys?.id}><a href={l?.fields?.href ?? "#"}>{l?.fields?.label}</a></li>
                 ))}

@@ -1,20 +1,17 @@
 "use client";
 import { useId } from "react";
 import { isLink, type LinkGroup, type Media, type NavItem } from "@/types";
-import { MediaImg } from "@/components/ui/MediaImg";
-import { SubLink } from "@/components/layout/DesktopMenu";
-import { useDismissableToggle } from "@/lib/useDismissableToggle";
-import { IMAGE_SIZES } from "@/lib/constants";
-import styles from "@/components/layout/UtilityBar.module.css";
-import nav from "@/components/layout/Nav.module.css";
+import { MediaImg } from "@/components/media/MediaImg";
+import { SubLink } from "@/components/navigation/DesktopMenu";
+import { useDismissableToggle } from "@/hooks/useDismissableToggle";
+import { IMAGE_SIZES } from "@/constants";
+import styles from "@/components/navigation/styles/UtilityBar.module.css";
+import nav from "@/components/navigation/styles/Nav.module.css";
 
 function cx(...classes: Array<string | false | undefined>): string {
   return classes.filter(Boolean).join(" ");
 }
 
-// Language options are flat links (never groups); the trigger already displays the
-// active choice's label, so a match marks the current selection — same "active via
-// typography" convention as the header's current nav item (.linkActive), no new icon.
 function LanguageOption({ item, isSelected }: { item: NavItem; isSelected: boolean }) {
   if (!isLink(item)) return null;
   return (
@@ -30,12 +27,6 @@ function LanguageOption({ item, isSelected }: { item: NavItem; isSelected: boole
   );
 }
 
-// One trigger: an icon + the group's title + a chevron, opening a flat dropdown of
-// links. Icon and chevron are Contentful Media (nextjs-development skill rule 7) —
-// never hardcoded SVG. `highlightSelected` is for the language menu only — Login's
-// destinations have no "current selection" concept.
-// Exported so MenuDrawer can reuse the identical Language/Login dropdowns on
-// mobile instead of a separate, simpler flat-link treatment (one behavior, one place).
 export function UtilityMenu({
   icon, chevron, menu, highlightSelected = false,
 }: { icon?: Media; chevron?: Media; menu?: LinkGroup; highlightSelected?: boolean }) {
@@ -49,8 +40,6 @@ export function UtilityMenu({
         aria-expanded={open} aria-controls={panelId} aria-haspopup="true" onClick={toggle}>
         <MediaImg media={icon} className={styles.icon} sizes={IMAGE_SIZES.icon} />
         <span>{menu.fields.title}</span>
-        {/* The Figma "angle" asset is drawn pointing up; rotate to point down when
-            closed ("click to expand") and up when open ("click to collapse"). */}
         <MediaImg
           media={chevron} className={styles.chev} sizes={IMAGE_SIZES.icon}
           style={{ transform: open ? "rotate(0deg)" : "rotate(180deg)" }}
@@ -80,8 +69,6 @@ interface UtilityBarProps {
   chevronIcon?: Media;
 }
 
-// The thin bar above the main header (Figma: Language + Login dropdowns). Renders
-// nothing if neither menu is configured, so pages/personas without it are unaffected.
 export function UtilityBar({ languageIcon, languageMenu, loginIcon, loginMenu, chevronIcon }: UtilityBarProps) {
   if (!languageMenu && !loginMenu) return null;
   return (

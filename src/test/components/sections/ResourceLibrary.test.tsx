@@ -9,7 +9,6 @@ const pdf = (id: string, label: string): DocumentEntry => ({
 const item = (id: string, title: string, docs: DocumentEntry[]): AccordionItem => ({
   sys: { id, contentType: { sys: { id: "accordionItem" } } }, fields: { title, documents: docs },
 });
-// A state = an accordion whose heading is the state name.
 const stateAccordion = (id: string, name: string, docLabel: string): Section => ({
   sys: { id, contentType: { sys: { id: "accordion" } } },
   fields: { heading: name, allowMultipleOpen: true, items: [item(`${id}-g`, "Forms", [pdf(`${id}-d`, docLabel)]) ] },
@@ -45,7 +44,6 @@ describe("ResourceLibrary", () => {
     fireEvent.change(screen.getByLabelText(/Select your state/), { target: { value: "1" } });
     expect(screen.getByRole("heading", { name: "California" })).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "Alabama" })).not.toBeInTheDocument();
-    // Groups start collapsed; opening one reveals that state's document.
     fireEvent.click(screen.getByRole("button", { name: "Forms" }));
     expect(screen.getByRole("link", { name: /California enrollment form/ })).toBeInTheDocument();
   });

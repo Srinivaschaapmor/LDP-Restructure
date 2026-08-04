@@ -10,7 +10,7 @@ const { CONTENTFUL_SPACE_ID, CONTENTFUL_ENVIRONMENT_ID = "master", CONTENTFUL_MA
 if (!CONTENTFUL_MANAGEMENT_ACCESS_TOKEN) { console.error("Missing CMA token"); process.exit(1); }
 
 const here = dirname(fileURLToPath(import.meta.url));
-const imgDir = join(here, "..", "..", "public", "images");
+const imgDir = join(here, "..", "..", "public", "assets", "images");
 
 const client = contentful.createClient({ accessToken: CONTENTFUL_MANAGEMENT_ACCESS_TOKEN });
 const env = await (await client.getSpace(CONTENTFUL_SPACE_ID)).getEnvironment(CONTENTFUL_ENVIRONMENT_ID);

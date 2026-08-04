@@ -1,9 +1,6 @@
-import { DOC_LABELS } from "@/lib/constants";
-import styles from "@/components/icons/PdfIcon.module.css";
+import { DOC_LABELS } from "@/constants";
+import styles from "@/components/icons/styles/PdfIcon.module.css";
 
-// PDF document icon taken verbatim from Figma (node 36:1665 "DOC"): the red page
-// outline with a folded corner ("Vector 9") plus a red "PDF" chip. Decorative —
-// aria-hidden, since the document label carries the accessible name.
 export function PdfIcon() {
   return (
     <span className={styles.pdficon} aria-hidden="true">

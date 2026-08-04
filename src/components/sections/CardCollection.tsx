@@ -1,9 +1,9 @@
 import { asFields, type Card, type CardCollectionFields, type Section } from "@/types";
-import { MediaImg } from "@/components/ui/MediaImg";
-import { RichText } from "@/components/ui/RichText";
-import { Heading, type HeadingLevel } from "@/components/ui/Heading";
-import { COLLECTION_COL_CLASS, DEFAULTS, IMAGE_SIZES } from "@/lib/constants";
-import styles from "@/components/sections/CardCollection.module.css";
+import { MediaImg } from "@/components/media/MediaImg";
+import { RichText } from "@/components/common/RichText";
+import { Heading, type HeadingLevel } from "@/components/common/Heading";
+import { COLLECTION_COL_CLASS, DEFAULTS, IMAGE_SIZES } from "@/constants";
+import styles from "@/components/sections/styles/CardCollection.module.css";
 
 function CardItem({ card, titleLevel }: { card: Card; titleLevel: HeadingLevel }) {
   const f = card?.fields;
@@ -22,8 +22,6 @@ export function CardCollection({ fields }: { fields: Section["fields"] }) {
   const f = asFields<CardCollectionFields>(fields);
   const layout = f.layout ?? DEFAULTS.collectionLayout;
   const colClass = COLLECTION_COL_CLASS[layout] ?? COLLECTION_COL_CLASS[DEFAULTS.collectionLayout];
-  // Keep the outline valid: if the collection has an h2, cards are h3;
-  // otherwise the cards sit directly under the page h1, so they are h2.
   const cardLevel: HeadingLevel = f.heading ? 3 : 2;
   return (
     <section className={styles.collection}>

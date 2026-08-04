@@ -1,9 +1,9 @@
 import { asFields, type MediaContentBlockFields, type Section } from "@/types";
-import { MediaImg } from "@/components/ui/MediaImg";
-import { RichText } from "@/components/ui/RichText";
-import { Heading } from "@/components/ui/Heading";
-import { DEFAULTS, IMAGE_SIZES } from "@/lib/constants";
-import styles from "@/components/sections/MediaContentBlock.module.css";
+import { MediaImg } from "@/components/media/MediaImg";
+import { RichText } from "@/components/common/RichText";
+import { Heading } from "@/components/common/Heading";
+import { DEFAULTS, IMAGE_SIZES } from "@/constants";
+import styles from "@/components/sections/styles/MediaContentBlock.module.css";
 
 const TONE_CLASS: Record<string, string | undefined> = {
   inverse: styles.toneInverse, subtle: styles.toneSubtle,
@@ -21,7 +21,6 @@ export function MediaContentBlock({ fields }: { fields: Section["fields"] }) {
     <section className={cx(styles.mcb, TONE_CLASS[tone])} data-placement={placement}>
       <div className="container-xxl">
         {f.eyebrow ? <p className={styles.eyebrow}>{f.eyebrow}</p> : null}
-        {/* The article title is the page's single h1. */}
         {f.heading ? <Heading level={1} className={styles.heading}>{f.heading}</Heading> : null}
         {f.media ? (
           <div className={styles.media}>

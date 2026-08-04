@@ -1,12 +1,8 @@
 import type { Media } from "@/types";
-import { MediaImg } from "@/components/ui/MediaImg";
-import { IMAGE_SIZES, UI_TEXT } from "@/lib/constants";
-import styles from "@/components/ui/SearchBox.module.css";
+import { MediaImg } from "@/components/media/MediaImg";
+import { IMAGE_SIZES, UI_TEXT } from "@/constants";
+import styles from "@/components/forms/styles/SearchBox.module.css";
 
-// Desktop header search box (Figma: white pill, placeholder text then a trailing
-// icon — the mobile drawer's own search field is icon-then-text and styled
-// differently, so it's implemented separately rather than forced through this
-// same component; see MenuDrawer).
 export function SearchBox({ icon }: { icon?: Media }) {
   return (
     <label className={styles.search}>

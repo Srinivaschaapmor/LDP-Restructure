@@ -1,19 +1,14 @@
 import type { DocumentEntry } from "@/types";
-import { DOC_LABELS, EXTERNAL_LINK_REL, EXTERNAL_LINK_TARGET } from "@/lib/constants";
+import { DOC_LABELS, EXTERNAL_LINK_REL, EXTERNAL_LINK_TARGET } from "@/constants";
 import { PdfIcon } from "@/components/icons/PdfIcon";
-import styles from "@/components/ui/DocumentLink.module.css";
+import styles from "@/components/media/styles/DocumentLink.module.css";
 
-// Resolves a document's target: the uploaded PDF asset URL (Contentful stores it
-// protocol-relative), falling back to an external URL. Optional-chained because the
-// CDA reference tree is never guaranteed (sonarqube-compliance rule 1).
 export function resolveDocHref(doc?: DocumentEntry): string | undefined {
   const fileUrl = doc?.fields?.file?.fields?.file?.url;
   if (fileUrl) return fileUrl.startsWith("//") ? `https:${fileUrl}` : fileUrl;
   return doc?.fields?.externalUrl;
 }
 
-// Trailing external-link glyph (↗). aria-hidden — the visually-hidden "(opens in a
-// new tab)" text below carries the meaning for assistive tech.
 function ExternalIcon() {
   return (
     <svg className={styles.ext} width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -25,8 +20,6 @@ function ExternalIcon() {
   );
 }
 
-// One document row. PDFs show a red "PDF" chip + label; external docs show the
-// label + an ↗ glyph and open in a new tab. Renders nothing without a target/label.
 export function DocumentLink({ doc }: { doc?: DocumentEntry }) {
   const href = resolveDocHref(doc);
   const label = doc?.fields?.label;

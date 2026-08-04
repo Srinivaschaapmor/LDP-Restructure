@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getAllPageSlugs, getPageBySlug } from "@/lib/contentful";
+import { getAllPageSlugs, getPageBySlug } from "@/contentful/queries/page.queries";
 import { ctId, type PageEntry } from "@/types";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { SectionRenderer } from "@/components/SectionRenderer";
+import { articleJsonLd } from "@/lib/seo/articleJsonLd";
 
-export const revalidate = 3600; // ISR fallback; on-demand revalidation via webhook (later)
+export const revalidate = 3600;
 export const dynamicParams = true;
 
 type Params = { slug?: string[] };
@@ -37,8 +38,6 @@ export default async function Page({ params }: { params: Promise<Params> }) {
   const page = (await getPageBySlug(pathFrom(slug))) as PageEntry | undefined;
   if (!page) notFound();
 
-  // A leading banner is a full-bleed hero that sits ABOVE the breadcrumbs (per design);
-  // the rest of the sections render below the breadcrumbs.
   const sections = page.fields.sections ?? [];
   const leadBanner = ctId(sections[0]) === "banner" ? sections[0] : undefined;
   const bodySections = leadBanner ? sections.slice(1) : sections;
@@ -47,7 +46,6 @@ export default async function Page({ params }: { params: Promise<Params> }) {
     <>
       <script
         type="application/ld+json"
-        // Article structured data for search engines (seo skill).
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd(page.fields.title, page.fields.meta?.fields?.description)) }}
       />
       {page.fields.header ? (
@@ -56,7 +54,6 @@ export default async function Page({ params }: { params: Promise<Params> }) {
       <main>
         {leadBanner ? <SectionRenderer sections={[leadBanner]} /> : null}
         <Breadcrumbs page={page} />
-        {/* Common content padding for every page: 60px below breadcrumbs, 60px above footer. */}
         <div className="ld-content">
           <SectionRenderer sections={bodySections} />
         </div>
@@ -64,13 +61,4 @@ export default async function Page({ params }: { params: Promise<Params> }) {
       {page.fields.footer ? <Footer fields={page.fields.footer.fields} /> : null}
     </>
   );
-}
-
-function articleJsonLd(title?: string, description?: string) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: title,
-    description,
-  };
 }

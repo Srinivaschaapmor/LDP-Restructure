@@ -34,8 +34,10 @@ contributor regardless of which project they came from.
 
 ## 3. Dynamic section registry
 Render page bodies via a registry keyed by **`contentType.sys.id`** → React component. Unknown
-type → render `null` + `console.error` (never crash the page). Adding a section = one registry line.
-A build/CI test should assert every content-type id and every variant enum value has a renderer.
+type → render `null` + call the logger (never crash the page) — no `console.*` (see
+[project-coding-standards] §5: the logger is a no-op placeholder until the backend logging API
+exists). Adding a section = one registry line. A build/CI test should assert every content-type
+id and every variant enum value has a renderer.
 
 ## 4. Match `params` sync/async to the Next version
 - **Next 14**: `params` is a plain object — read directly.
@@ -72,15 +74,15 @@ Organize by category (`content.ts` = CMS primitives, `sections.ts` = per-section
 importing its own private type defeats the purpose — a new contributor must be able to find
 every shape in one place.
 
-## 9. All tests AND test config live in `src/__tests__/` — one folder, no second one
+## 9. All tests AND test config live in `src/test/` — one folder, no second one
 `Foo.test.tsx` is never colocated with `Foo.tsx`. It lives at
-`src/__tests__/<same-relative-path>/Foo.test.tsx`. Jest's `testMatch: ["<rootDir>/src/**/*.test.{ts,tsx}"]`
+`src/test/<same-relative-path>/Foo.test.tsx`. Jest's `testMatch: ["<rootDir>/src/**/*.test.{ts,tsx}"]`
 already discovers tests anywhere under `src/`, so this is a pure organization convention, not a
 config requirement — keep it anyway so the whole suite is browsable from one directory.
-**Test setup/config lives in `src/__tests__/setup.ts` too** (referenced by
+**Test setup/config lives in `src/test/setup.ts` too** (referenced by
 `jest.config.mjs`'s `setupFilesAfterEnv`) — don't create a second, differently-named test-related
-folder (e.g. a bare `src/test/`); that's confusing to have alongside `__tests__/` and defeats
-"one folder for tests."
+folder; that's confusing to have alongside `test/` and defeats "one folder for tests."
+*(Renamed from `__tests__` per [project-coding-standards] §8.)*
 
 See also: [contentful-development] (data layer), [coding-standards], [sonarqube-compliance]
 (`window`→`globalThis` SSR safety, hooks before early returns).

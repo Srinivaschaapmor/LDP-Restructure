@@ -1,10 +1,10 @@
 "use client";
 import { useId, useState } from "react";
 import { isLink, isLinkGroup, type Button, type LinkGroup, type Media, type NavItem } from "@/types";
-import { MediaImg } from "@/components/ui/MediaImg";
-import { IMAGE_SIZES, UI_TEXT } from "@/lib/constants";
-import styles from "@/components/layout/MenuDrawer.module.css";
-import utilitybar from "@/components/layout/UtilityBar.module.css";
+import { MediaImg } from "@/components/media/MediaImg";
+import { IMAGE_SIZES, UI_TEXT } from "@/constants";
+import styles from "@/components/navigation/styles/MenuDrawer.module.css";
+import utilitybar from "@/components/navigation/styles/UtilityBar.module.css";
 
 function cx(...classes: Array<string | false | undefined>): string {
   return classes.filter(Boolean).join(" ");
@@ -18,12 +18,10 @@ const ChevRight = ({ className }: { className?: string }) => (
   </svg>
 );
 
-// Inside a drilled panel: a plain link, or a group that expands inline (accordion).
 function InlineItem({ item }: { item: NavItem }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
   if (!isLinkGroup(item)) {
-    // item is narrowed to Link here (discriminated union, no cast needed).
     return <a href={item?.fields?.href ?? "#"} className={cx(styles.row, styles.rowLeaf)}>{item?.fields?.label}</a>;
   }
   return (
@@ -45,13 +43,6 @@ function InlineItem({ item }: { item: NavItem }) {
   );
 }
 
-// Language/Login, drawer-native: inline-expanding (pushes content down), never a
-// floating position:absolute panel. The desktop UtilityBar's dropdown works fine
-// in a wide, roomy horizontal bar, but that same floating-panel treatment is
-// fragile inside a narrow, scrollable drawer (it can render clipped or
-// off-the-visible-area depending on where the trigger sits) — so the drawer
-// reuses the same guaranteed-visible inline-expand pattern as every other
-// drilldown row here (see InlineItem) instead of importing UtilityMenu.
 function UtilityGroup({
   icon, menu, highlightSelected = false,
 }: { icon?: Media; menu?: LinkGroup; highlightSelected?: boolean }) {
@@ -94,14 +85,12 @@ interface MenuDrawerProps {
 export function MenuDrawer({
   logo, items, cta, searchIcon, languageIcon, languageMenu, loginIcon, loginMenu, onClose,
 }: MenuDrawerProps) {
-  // A stack of panels — pushing a section slides in its sub-menu.
   const [stack, setStack] = useState<Panel[]>([{ items }]);
   const current = stack[stack.length - 1];
   const atRoot = stack.length === 1;
   const push = (g: LinkGroup) => setStack((s) => [...s, { title: g?.fields?.title, items: g?.fields?.links }]);
   const pop = () => setStack((s) => s.slice(0, -1));
 
-  // A root-panel row: a group drills in (slide), a plain link navigates.
   const rootRow = (item: NavItem) =>
     isLinkGroup(item) ? (
       <button key={item?.sys?.id} type="button" className={styles.row} onClick={() => push(item)}>

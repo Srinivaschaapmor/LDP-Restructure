@@ -33,8 +33,11 @@ scrolling to read, extract helpers with intention-revealing names.
 ### 4. No unused vars / imports / dead code (S1481 / S1128)
 Remove unused imports, variables, and unreachable callbacks before finishing.
 
-### 5. No debug `console.log` in production code
-Especially in API routes (`app/api/**`). Use a proper logger or remove.
+### 5. No `console.*` in application code — not even through a logger
+No `console.log`/`console.error`/`console.warn`/`console.info` anywhere, including inside a
+logging utility. `src/lib/logger/log.ts` is a no-op placeholder until the backend logging API
+exists (see [project-coding-standards] §5) — this supersedes the earlier "use a proper logger"
+guidance, which implied console output was acceptable via a wrapper.
 
 ### 6. No commented-out code (S125)
 Delete dead comment blocks. Git is the history — don't keep code in comments.

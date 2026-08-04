@@ -1,9 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 
-// Shared open/close-on-outside-click/Escape behavior for dropdown-style triggers
-// (nav dropdowns, utility-bar menus). Extracted so the interaction logic lives in
-// one place instead of being copied per component (coding-standards §1).
 export function useDismissableToggle<T extends HTMLElement>() {
   const [open, setOpen] = useState(false);
   const ref = useRef<T>(null);

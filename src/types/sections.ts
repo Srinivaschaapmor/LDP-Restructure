@@ -1,7 +1,3 @@
-// Per-component field shapes: what each section/chrome component expects after
-// `asFields<T>()` casts the CMS payload at its boundary (see content.ts). Grouped
-// here (not inline per-component) so every field shape a page can contain is
-// visible from one place (coding-standards: categorized, not scattered).
 import type { AccordionItem, Button, Card, Link, LinkGroup, Media, RichTextItem, Section } from "./content";
 
 export interface BannerFields {
