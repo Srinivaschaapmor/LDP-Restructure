@@ -1,4 +1,4 @@
-import { resolveUrl, resolveDimensions } from "@/components/ui/MediaImg";
+import { resolveUrl, resolveDimensions } from "@/components/media/MediaImg";
 import { ctId } from "@/types";
 import type { Media } from "@/types";
 

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { SectionRenderer } from "@/components/SectionRenderer";
 import type { Section } from "@/types";
-import * as log from "@/lib/log";
+import * as log from "@/lib/logger/log";
 
 const section = (id: string, fields: Section["fields"]): Section => ({
   sys: { id: `e-${id}`, contentType: { sys: { id } }, }, fields,

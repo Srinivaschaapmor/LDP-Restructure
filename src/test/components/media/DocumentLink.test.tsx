@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { DocumentLink, resolveDocHref } from "@/components/ui/DocumentLink";
+import { DocumentLink, resolveDocHref } from "@/components/media/DocumentLink";
 import type { DocumentEntry } from "@/types";
 
 const pdf = (url?: string, label = "ADA claim form"): DocumentEntry => ({

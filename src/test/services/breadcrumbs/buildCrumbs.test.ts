@@ -1,4 +1,4 @@
-import { buildCrumbs } from "@/components/layout/Breadcrumbs";
+import { buildCrumbs } from "@/services/breadcrumbs/buildCrumbs";
 
 describe("buildCrumbs", () => {
   it("derives Home + segment links + current page from the slug and title", () => {

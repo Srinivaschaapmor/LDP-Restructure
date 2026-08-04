@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import { Banner, hexToRgb, overlayGradient } from "@/components/sections/Banner";
-import styles from "@/components/sections/Banner.module.css";
+import styles from "@/components/sections/styles/Banner.module.css";
 import type { Media, Section } from "@/types";
 
 const media = (altText: string, url = "//cdn/x.jpg"): Media => ({
