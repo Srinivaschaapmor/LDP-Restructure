@@ -29,6 +29,14 @@ Types: `feat` `fix` `refactor` `docs` `test` `chore` `perf` `style` `build` `ci`
 
 ## Pull requests
 - Small, single-purpose, with a clear description of what and why.
-- Passes CI + all gates ([definition-of-done]) before review.
-- At least one approving review; no merge with unresolved blocking comments.
+- Passes CI + all gates ([definition-of-done] — or run the `dod-auditor` agent for an
+  independent check) before review.
+- At least one approving review — or the `code-reviewer` agent for a first pass.
+- No merge with unresolved blocking comments.
 - Squash-merge to keep `main` history clean (unless team decides otherwise).
+
+## Automated enforcement
+Conventional Commits format is checked by a `PreToolUse` hook
+(`.claude/hooks/check-commit-message.js`) that inspects any `git commit -m "..."` command before
+it runs and blocks non-conforming subjects. Commits using `-F`/an editor/`--amend` aren't
+statically checked — the hook only validates the simple `-m` form.

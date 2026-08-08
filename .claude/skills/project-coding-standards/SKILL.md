@@ -114,3 +114,13 @@ This skill is the canonical standard for the rules above. Where it conflicts wit
 skill wins — those files have been updated to point here rather than duplicate or contradict it.
 Rules those skills own that this one doesn't touch (accessibility, SEO, Contentful modeling,
 Figma fidelity, git workflow) are unaffected.
+
+## Automated enforcement
+
+§2 (no comments), §5 (no console), §6 (CSS Module `styles/` location), and §8 (test folder name,
+no `.only`/`.skip`) are enforced automatically by a `PostToolUse` hook
+(`.claude/hooks/check-write-standards.js`, wired in `.claude/settings.json`) that runs after every
+`Write`/`Edit` on a file under `src/` and feeds a violation back to the model immediately — this
+skill's job is to avoid triggering it in the first place, not to be the only line of defense.
+For a full standards review beyond what the hook catches (duplication, naming, complexity), use
+the `code-reviewer` agent.

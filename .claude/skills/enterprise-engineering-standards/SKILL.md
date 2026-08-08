@@ -35,7 +35,7 @@ enforce the non-negotiables that apply to every change.
 | Writing docs | `documentation-standards` |
 | Modeling / migrating / fetching Contentful | `contentful-development` |
 | Scaffolding the app, routing, section renderer | `nextjs-development` |
-| Building a page/component from a Figma design | `figma-mcp-workflow` |
+| Building a page/component from a Figma design | `figma-to-development-workflow` (process/gates) + `figma-mcp-workflow` (fidelity technique) |
 
 ## Definition of Done
 No change is "done" until it passes [definition-of-done]. That checklist is the final gate.

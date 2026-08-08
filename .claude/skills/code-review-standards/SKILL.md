@@ -5,26 +5,8 @@ description: Standards for reviewing a diff or preparing code for review. Use wh
 
 # Code Review Standards
 
-Review in this order — stop and fix before moving on.
-
-## 1. Correctness
-- Does it do what was asked? Edge cases and error paths handled?
-- External data optional-chained; hooks above early returns (see [sonarqube-compliance]).
-- No obvious runtime/SSR hazards (`window` on server, unguarded async).
-
-## 2. Standards compliance
-- [sonarqube-compliance]: no `any`, no dead code, no `console.log`, no hardcoded strings,
-  no nested ternaries, complexity kept low.
-- [coding-standards]: shared logic extracted to categorized utils; "why" comments present.
-- [accessibility] + [seo] + [siteimprove-compliance] for any UI/markup/metadata.
-
-## 3. Design & reuse
-- Any duplication extracted into a shared component/util?
-- Single responsibility; sensible naming; no leaky abstractions.
-
-## 4. Tests & docs
-- Meaningful tests added/updated ([testing-standards]).
-- Relevant docs updated in the same change ([documentation-standards]).
+Review order: correctness → [project-coding-standards]/[sonarqube-compliance] compliance →
+[coding-standards] design & reuse → [testing-standards]/[documentation-standards] coverage.
 
 ## Review conduct
 - Comment on **why**, suggest a concrete fix, distinguish blocking issues from nits (prefix
@@ -33,3 +15,8 @@ Review in this order — stop and fix before moving on.
 
 ## Final gate
 A change passes review only when [definition-of-done] is fully satisfied.
+
+## Use the `code-reviewer` agent
+The full, itemized checklist lives in `.claude/agents/code-reviewer.md` — delegate any actual
+review there rather than re-deriving it here. It returns findings only, ordered most-severe
+first, no fixes applied.

@@ -102,31 +102,15 @@ WCAG 2.2 AA. Instead thread a `level` prop through the `Heading` primitive
 ## 11. Before building ANY page: consult the restructure reference, then map onto OUR consolidated types
 `docs/03-content-model/reference/` (`restructure-source.md` + `analysis-notes.md`) is the
 **mandatory field/requirement inventory** — the client's full ~65-content-type analysis of every
-component across the ~200+ Figma pages. **Consult it every time**, for every page, so nothing is
-missed and the whole team builds consistently. But it is an **inventory of what data each
-component needs, not a literal 1:1 content-type spec** — our model deliberately consolidates it
-to ~18 reusable types with variant enums (this is what ADR-0005 / the SA review's own finding #5
-recommends, and what we already did: `card` not 10 near-duplicate card types).
+component across the ~200+ Figma pages. **Consult it every time**, for every page. It is an
+**inventory of what data each component needs, not a literal 1:1 content-type spec** — our model
+deliberately consolidates it to ~18 reusable types with variant enums (ADR-0005 / the SA review's
+finding #5: `card` not 10 near-duplicate card types). If a component's data needs genuinely don't
+fit any existing or sensibly-new consolidated type, **stop and ask** rather than guessing.
 
-**Process for every new page:**
-1. Read the Figma design fully (all breakpoints) — [figma-mcp-workflow].
-2. For each visual block, look up the matching row(s) in `restructure-source.md` to see what
-   fields/references the client's analysis identified for that component shape.
-3. Map it onto an **existing** consolidated type (`banner`, `mediaContentBlock`, `cardCollection`
-   + `card`, `richTextItem`, `accordion`, `resourceLibrary`, primitives) wherever the shape
-   matches — even if the Excel names it differently (e.g. Excel's `ImageDescriptionCard` /
-   `IconWithContentCard` / `ActionCard` / `BrushCard` / `LoginCard` / `BrokerPlanCard` are all our
-   single `card` type with different field values/variants).
-4. Only propose a **new** content type when the shape is genuinely not covered by an existing one
-   — and follow the same consolidation discipline (variant enums, not a new type per look).
-5. **Known issues in the source sheet** (don't propagate them): `Button` and `breadcrumbs` are
-   referenced but never defined there — we already have both, correctly, in our model (`button`
-   type; breadcrumbs are code-derived from the slug, no CT needed). Several references are
-   case/spacing mismatches (`footer`↔`Footer`, `link`↔`Link`, etc.) — use **our** existing
-   camelCase content-type IDs, never the sheet's inconsistent casing. Full list in
-   `analysis-notes.md` — check it before assuming an Excel reference name is correct.
-6. If a Figma component's data needs genuinely don't fit any existing or sensibly-new consolidated
-   type, **stop and ask** rather than guessing — same rule as [figma-mcp-workflow] rule 0.
+**Run this via the `content-model-analyst` agent** (`.claude/agents/content-model-analyst.md`,
+Phase 2 of [figma-to-development-workflow]) — it holds the full process (row-lookup, mapping,
+the known source-sheet issues to not propagate) so it doesn't need restating here.
 
 See also: [nextjs-development] (rendering/registry), the content-model spec in
 `docs/03-content-model/`, and [figma-mcp-workflow] (design fidelity; assets originate from Figma).

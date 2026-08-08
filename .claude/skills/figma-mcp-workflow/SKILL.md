@@ -5,6 +5,11 @@ description: How to build pages/components from Figma designs via the Figma MCP 
 
 # Figma → Code Workflow
 
+> **Process note:** the phase order and approval gates (design analysis → content-model analysis
+> → CMS approval → technical plan → dev approval → build → validate) live in
+> [figma-to-development-workflow] — that skill governs *when* to do each step below; this skill
+> governs *how* to do the design-fidelity parts correctly.
+
 ## 0. Strict design-system fidelity — when Figma is connected, match it EXACTLY
 Every visual value MUST come from the design — never eyeballed or "close enough".
 That means **font-size, line-height, font-weight, color, padding, margin, gap, border,
@@ -105,7 +110,9 @@ rules · Accessibility · Design token · Variant · Auto-layout. Any unknown �
 When you finish a Figma-driven build, state: (1) components used, (2) design tokens used,
 (3) spacing values, (4) typography values, (5) colors used, (6) responsive behavior,
 (7) accessibility considerations, (8) any unavoidable assumptions. This is the proof of
-compliance, verified against **computed** values (not "looks right").
+compliance, verified against **computed** values (not "looks right"). **Delegation:** run this
+report via the `figma-fidelity-auditor` agent — it independently compares the finished build
+against the Figma node and returns this exact report format with a PASS/FAIL per item.
 
 Servers: the Figma **plugin** MCP is primary (read+write, any URL); the local Dev Mode server
 is the committed fallback (see ADR-0002 and `docs/06-runbooks/figma-mcp-connection.md`).
