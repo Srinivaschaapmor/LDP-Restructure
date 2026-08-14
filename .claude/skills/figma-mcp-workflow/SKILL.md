@@ -114,5 +114,21 @@ compliance, verified against **computed** values (not "looks right"). **Delegati
 report via the `figma-fidelity-auditor` agent — it independently compares the finished build
 against the Figma node and returns this exact report format with a PASS/FAIL per item.
 
+## 12. Extraction mechanics — drill children, export assets late
+**Large frames fail on the root node.** `get_design_context` on a whole page/header/footer frame
+routinely times out or drops the connection, and `get_metadata` on a big section silently
+truncates deep children. Work down the tree: `get_metadata` for structure, then
+`get_design_context` on the **specific child frames** you need. Many small calls beat one large
+one. If metadata looks suspiciously shallow, assume truncation rather than an empty node.
+
+**Layer names are not content.** Figma layer names are frequently generic (`Typography`,
+`Large Title (34/40)`, `Frame 1321321743`). Never read copy out of a metadata dump — pull the
+actual text via `get_design_context`. Names *are* usable for hidden/utility layers where no
+other source exists, but flag them as unconfirmed.
+
+**Export assets during the build step, not upfront.** Figma asset URLs expire in roughly 7 days.
+Record node IDs during analysis; fetch the binaries when you actually build, then store them in
+Contentful per [contentful-development] rule 2 — never `/public`.
+
 Servers: the Figma **plugin** MCP is primary (read+write, any URL); the local Dev Mode server
 is the committed fallback (see ADR-0002 and `docs/06-runbooks/figma-mcp-connection.md`).

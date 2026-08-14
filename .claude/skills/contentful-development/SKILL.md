@@ -32,6 +32,52 @@ the asset on the `media` entry. Move content+assets between environments with
 - **Whitelist every reference field** with `linkContentType`. Never "references all components".
 - Keep migrations versioned in `contentful/migrations/` — they are the source of truth (ADR-0003).
 
+**There is no Contentful MCP connection (ADR-0009) — this is the only way to create or change a
+content type.** Every migration file is `module.exports = function (migration) { ... }`, numbered
+next in sequence (`contentful/migrations/0XX-short-name.js`):
+
+```js
+module.exports = function (migration) {
+  // 1. New content type — leaf/primitive types before anything that references them.
+  const rl = migration.createContentType("resourceLibrary").name("Resource library")
+    .description("...").displayField("internalName");
+  rl.createField("internalName").name("Internal name").type("Symbol").required(true);
+  rl.createField("heading").name("Heading").type("Symbol");
+  // Reference array field — ALWAYS whitelist with linkContentType (rule 3).
+  rl.createField("accordions").name("Accordions (one per state)").type("Array").required(true)
+    .items({ type: "Link", linkType: "Entry", validations: [{ linkContentType: ["accordion"] }] });
+
+  // 2. Widen an existing type's reference field to accept the new type (re-list ALL
+  //    currently-allowed types — editField().items() replaces the validation, it doesn't append).
+  const page = migration.editContentType("page");
+  page.editField("sections").items({
+    type: "Link", linkType: "Entry",
+    validations: [{ linkContentType: ["banner", "mediaContentBlock", "resourceLibrary"] }],
+  });
+
+  // 3. Constrain new RichText/URL/Asset fields at creation time (rule 9) — don't leave them open.
+  migration.editContentType("someType").editField("body").validations([
+    { enabledMarks: ["bold", "italic", "underline"] },
+    { enabledNodeTypes: ["ordered-list", "unordered-list", "hyperlink"] },
+  ]);
+};
+```
+
+See `contentful/migrations/008-resource-library.js` for the full new-type example above, and
+`009-validation-guards.js` for validation-only edits (RichText constraints, URL regex,
+`linkMimetypeGroup`) across several existing types in one migration.
+
+**Run it** (rule 8's Windows/Git Bash env-sourcing gotcha applies):
+```bash
+set -a; . ./.env; set +a
+node_modules/.bin/contentful-migration -s "$CONTENTFUL_SPACE_ID" \
+  -e "$CONTENTFUL_ENVIRONMENT_ID" -a "$CONTENTFUL_MANAGEMENT_ACCESS_TOKEN" -y \
+  contentful/migrations/0XX-short-name.js
+```
+A clean run is the only available confirmation that the type now exists — there's no live query
+to double-check it afterward, so read the CLI's own diff/summary output carefully before trusting
+it succeeded.
+
 ## 4. Entries follow the same dependency order
 Seed/author leaf entries before dependents. `publish()` fails if required fields are missing —
 enforce `Meta` char ranges (title 40–75, description 110–160) and `Media.altText` in the model.
@@ -109,8 +155,40 @@ finding #5: `card` not 10 near-duplicate card types). If a component's data need
 fit any existing or sensibly-new consolidated type, **stop and ask** rather than guessing.
 
 **Run this via the `content-model-analyst` agent** (`.claude/agents/content-model-analyst.md`,
-Phase 2 of [figma-to-development-workflow]) — it holds the full process (row-lookup, mapping,
+Step 3 of [figma-to-development-workflow]) — it holds the full process (row-lookup, mapping,
 the known source-sheet issues to not propagate) so it doesn't need restating here.
+
+## 12. Fields by migration, entries by hand — and always author two fixtures
+**Fields and content types are created ONLY by migration** (rules 3 and 8). Adding a field
+through the Contentful web UI desyncs the live model from `contentful/migrations/`, which is the
+source of truth — the next environment cannot then be rebuilt from code. If a field was added in
+the UI under time pressure, back-port it to a migration the same day.
+
+**Entries may be authored by hand.** When you do, author **two fixtures per section type**:
+
+1. **Fully populated** — every optional field filled.
+2. **Minimal** — only required fields.
+
+A single fixture makes optional fields invisible in the fetched JSON (rule 13), so components get
+built without them and break the first time an editor fills one in. The minimal fixture is also
+what proves empty-state handling in the validation step.
+
+Entries still follow the dependency order in rule 4: primitives (`media`, `link`, `richTextItem`)
+→ components (`button`, `card`) → sections → `page`.
+
+## 13. Fetch the page JSON as a dev input — but never derive types from it
+Before building a page, fetch its fully-resolved response:
+```bash
+node contentful/scripts/fetch-page-json.mjs <slug>
+```
+Read it. It removes guesswork about link resolution, optionality, nulls, and array-vs-single
+shape — real bugs that otherwise surface in QA.
+
+**It is not a type source.** A CDA response contains only fields that are *populated* in the
+entries you happened to fetch, and only the variant values that page uses. Types and props come
+from the **content model** (the migrations / `src/types/`); the response is for confirmation and
+edge cases. Deep references resolve to link stubs rather than objects past the include depth —
+treat those explicitly, and optional-chain everything per rule 5.
 
 See also: [nextjs-development] (rendering/registry), the content-model spec in
 `docs/03-content-model/`, and [figma-mcp-workflow] (design fidelity; assets originate from Figma).

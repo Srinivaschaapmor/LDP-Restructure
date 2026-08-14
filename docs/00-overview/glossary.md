@@ -10,5 +10,7 @@
 - **App Router** — Next.js routing model based on the `app/` directory (Server Components by default).
 - **Content model** — The set of Contentful content types and their fields.
 - **Design token** — A named design value (color, spacing, type scale) shared between Figma and code.
-- **MCP** — Model Context Protocol; how Claude connects to external tools (Figma, Contentful).
+- **MCP** — Model Context Protocol; how Claude connects to external tools. Currently Figma only
+  (`figma-dev-mode`) — Contentful MCP was removed, see ADR-0009; content is modeled via
+  `contentful-migration` CLI scripts instead.
 - **WCAG 2.2 AA** — Accessibility conformance level we target.

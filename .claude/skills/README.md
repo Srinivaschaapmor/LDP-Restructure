@@ -25,7 +25,7 @@ Claude loads automatically when its `description` matches the task.
 | `nextjs-development` | App Router layout (`src/`), CMS-driven routing, section registry, tooling gotchas |
 | `contentful-development` | Modeling, migrations, entries, assets, CDA fetching; key-by-`internalName` rule |
 | `figma-mcp-workflow` | Build from Figma: inspect all breakpoints, tokens, asset handling, verify fidelity |
-| `figma-to-development-workflow` | Mandatory phase-gated process (design → content model → CMS approval → plan → dev approval → build → validate) for every Figma page |
+| `figma-to-development-workflow` | Mandatory 8-step process (connect → design context → model mapping → author entries → fetch JSON → reuse + build → validate → review) for every Figma page |
 
 ## Planned (batch 2 — not yet created)
 `typescript-standards`, `bootstrap-development`, `performance-optimization`
@@ -36,17 +36,22 @@ Isolated, read-heavy analysis/audit tasks that would otherwise burn main-loop to
 whole skill's checklist or a large document in context. Each returns a report; none of them edit
 files or make approval decisions.
 
-| Agent | Purpose | Skill it implements |
-|---|---|---|
-| `code-reviewer` | Reviews a diff against the full standards stack, findings only | [code-review-standards] |
-| `dod-auditor` | Independently checks a finished change against every Definition of Done item | [definition-of-done] |
-| `figma-design-analyst` | Phase 1 (Design Analysis) for a Figma node | [figma-to-development-workflow] |
-| `content-model-analyst` | Phase 2 (Content Model Analysis) + the reference-doc mapping task | [figma-to-development-workflow], [contentful-development] rule 11 |
-| `technical-planner` | Phase 4 (Technical Planning) — codebase reuse analysis | [figma-to-development-workflow] |
-| `figma-fidelity-auditor` | Post-build design-fidelity report / Final Validation Checklist | [figma-to-development-workflow], [figma-mcp-workflow] rule 11 |
+| Agent | Step | Purpose | Skill it implements |
+|---|---|---|---|
+| `figma-design-analyst` | 2 | Extract complete design context for a Figma node, all breakpoints | [figma-to-development-workflow] |
+| `content-model-analyst` | 3 | Map sections onto content types; produce migration specs + the authoring list | [figma-to-development-workflow], [contentful-development] rules 11–12 |
+| `reuse-scout` | 6 | Reuse pass before writing — what exists, what extends, what's genuinely new | [figma-to-development-workflow], [figma-mcp-workflow] rule 6 |
+| `figma-fidelity-auditor` | 7 | Post-build design-fidelity report, incl. empty/overflow states | [figma-to-development-workflow], [figma-mcp-workflow] rule 11 |
+| `dod-auditor` | 7 | Independently checks a finished change against every Definition of Done item | [definition-of-done] |
+| `code-reviewer` | 8 | Reviews a diff against the full standards stack, findings only | [code-review-standards] |
 
-Phases 3 (CMS Approval) and 5 (Development Approval) are **not** agents — they're approval gates
-that must stay in the main conversation, since only it can wait for and act on your confirmation.
+**Step 4 (author entries) is human** — it is not an agent, and it gates everything after it:
+development cannot start until the page's content exists in Contentful. **Step 5 is a script**,
+not an agent: `node contentful/scripts/fetch-page-json.mjs "<slug>"`.
+
+> `technical-planner` was removed in ADR-0010. Its codebase-reuse analysis now runs as
+> `reuse-scout` at the top of Step 6, where the decision is actually made, instead of as a
+> separate planning phase behind an approval gate.
 
 ## Hooks (`.claude/settings.json` → `.claude/hooks/`)
 Mechanically-checkable rules enforced automatically, at zero model-token cost, instead of relying

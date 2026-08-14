@@ -36,3 +36,6 @@ coverage/
 
 # Claude Code local overrides
 .claude/settings.local.json
+
+# fetched page JSON (figma-to-development-workflow step 5)
+.cache/

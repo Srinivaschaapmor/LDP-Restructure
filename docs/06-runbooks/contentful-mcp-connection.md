@@ -1,4 +1,9 @@
-# Runbook · Contentful MCP connection
+# Runbook · Contentful MCP connection (deprecated)
+
+> **Deprecated — see ADR-0009.** The Contentful MCP server has been removed from `.mcp.json`.
+> Content types and entries are now created exclusively through `contentful-migration` /
+> `contentful/seed/*.mjs` scripts (see [contentful-development] rules 3/8). This runbook is kept
+> for historical reference only — do not follow it to reconnect the server.
 
 How to configure and verify the **Contentful MCP server** used to read/write the content
 model and entries from Claude Code. Configured in `.mcp.json` (project root).

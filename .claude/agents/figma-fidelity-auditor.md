@@ -26,6 +26,11 @@ implementation against the design — you did not build it, so verify cold.
    match the design's default and interactive states.
 7. **Accessibility** — alt text, heading levels, focus visibility, contrast.
 8. **Real Figma icons/assets** — no hand-drawn SVG substitutes.
+9. **Empty and overflow states** — render the page against the **minimal fixture** authored in
+   Step 4 ([contentful-development] rule 12), not just the fully-populated one. Every optional
+   field absent must degrade cleanly: no empty wrappers, no orphaned padding, no `undefined`
+   reaching the DOM. Then check the opposite end — long headings, long link labels, and more
+   collection items than the design shows — and confirm nothing clips or overlaps.
 
 ## Report format
 

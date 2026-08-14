@@ -44,7 +44,11 @@ TypeScript + Bootstrap 5 + SCSS**, with content from **Contentful** and designs 
 - Reusable Claude Skills → `.claude/skills/` (created in Phase 0 · Step 2)
 
 ## Working agreement
-- Work **one phase at a time**; wait for explicit approval before advancing.
+- Build pages via the **8 steps** in [figma-to-development-workflow] (ADR-0010), in order. Step 4
+  (author entries in Contentful) is human and gates the rest: **never write implementation code
+  before the page's content exists and its fetched JSON has been read.**
+- **The JSON never supplies a design value; the design never supplies a data shape.** Structure and
+  content come from Contentful, every pixel from Figma.
 - **Before writing or changing code, load the _relevant_ skill(s)** via the routing table in
   `enterprise-engineering-standards` (not all of them — just the ones that apply to the task).
 - **Run `definition-of-done`** before declaring any change complete or ready for PR.
