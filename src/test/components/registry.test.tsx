@@ -1,6 +1,6 @@
 import { registry } from "@/components/registry";
 
-const EXPECTED_SECTION_TYPES = ["banner", "mediaContentBlock", "cardCollection", "richTextItem", "accordion", "resourceLibrary"];
+const EXPECTED_SECTION_TYPES = ["hero", "banner", "mediaContentBlock", "cardCollection", "richTextItem", "accordion", "resourceLibrary"];
 
 describe("section registry contract", () => {
   it("has a component for every whitelisted section content-type id", () => {

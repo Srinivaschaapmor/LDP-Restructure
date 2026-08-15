@@ -32,8 +32,9 @@ the asset on the `media` entry. Move content+assets between environments with
 - **Whitelist every reference field** with `linkContentType`. Never "references all components".
 - Keep migrations versioned in `contentful/migrations/` — they are the source of truth (ADR-0003).
 
-**There is no Contentful MCP connection (ADR-0009) — this is the only way to create or change a
-content type.** Every migration file is `module.exports = function (migration) { ... }`, numbered
+**Migrations are the only way to create or change a content type (ADR-0009, still binding).** The
+Contentful MCP server is connected again (ADR-0011) but is a **read/inspection layer only** — never
+create, edit, or delete a content type or field through its tools, even though it exposes them. Every migration file is `module.exports = function (migration) { ... }`, numbered
 next in sequence (`contentful/migrations/0XX-short-name.js`):
 
 ```js

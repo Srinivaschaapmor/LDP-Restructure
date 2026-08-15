@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllPageSlugs, getPageBySlug } from "@/contentful/queries/page.queries";
+import { resolveSections } from "@/services/sections/resolveSections";
+import { LEAD_SECTION_TYPES } from "@/constants";
 import { ctId, type PageEntry } from "@/types";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -38,8 +40,8 @@ export default async function Page({ params }: { params: Promise<Params> }) {
   const page = (await getPageBySlug(pathFrom(slug))) as PageEntry | undefined;
   if (!page) notFound();
 
-  const sections = page.fields.sections ?? [];
-  const leadBanner = ctId(sections[0]) === "banner" ? sections[0] : undefined;
+  const sections = await resolveSections(page.fields.sections);
+  const leadBanner = LEAD_SECTION_TYPES.includes(ctId(sections[0])) ? sections[0] : undefined;
   const bodySections = leadBanner ? sections.slice(1) : sections;
 
   return (
@@ -52,10 +54,10 @@ export default async function Page({ params }: { params: Promise<Params> }) {
         <Header fields={page.fields.header.fields} primaryNav={page.fields.primaryNav} />
       ) : null}
       <main>
-        {leadBanner ? <SectionRenderer sections={[leadBanner]} /> : null}
+        {leadBanner ? <SectionRenderer sections={[leadBanner]} leadHeadingLevel={1} /> : null}
         <Breadcrumbs page={page} />
         <div className="ld-content">
-          <SectionRenderer sections={bodySections} />
+          <SectionRenderer sections={bodySections} leadHeadingLevel={leadBanner ? 2 : 1} />
         </div>
       </main>
       {page.fields.footer ? <Footer fields={page.fields.footer.fields} /> : null}

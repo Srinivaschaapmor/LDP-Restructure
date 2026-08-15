@@ -1,15 +1,14 @@
 // Verifies the Contentful MCP server starts and authenticates (stdio JSON-RPC handshake).
-// Not the same as it being wired into a Claude Code session — that needs a project-root launch.
+// Runs it through contentful/mcp-launch.mjs — the same entry point .mcp.json uses — so the
+// credentials come from .env exactly as they will inside Claude Code.
+// Not the same as it being wired into a session: that also needs a project-root launch.
 import { spawn } from "node:child_process";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const env = {
-  ...process.env,
-  CONTENTFUL_MANAGEMENT_ACCESS_TOKEN: process.env.CONTENTFUL_MANAGEMENT_ACCESS_TOKEN,
-  SPACE_ID: process.env.CONTENTFUL_SPACE_ID,
-  ENVIRONMENT_ID: process.env.CONTENTFUL_ENVIRONMENT_ID || "master",
-};
+const launcher = resolve(dirname(fileURLToPath(import.meta.url)), "mcp-launch.mjs");
 
-const child = spawn(process.execPath, ["node_modules/@contentful/mcp-server/dist/index.js"], { env });
+const child = spawn(process.execPath, [launcher], { env: process.env });
 let buf = "";
 const send = (m) => child.stdin.write(JSON.stringify(m) + "\n");
 const done = (code) => { try { child.kill(); } catch {} process.exit(code); };
@@ -29,9 +28,18 @@ child.stdout.on("data", (d) => {
     } else if (msg.id === 2 && msg.result) {
       const names = (msg.result.tools || []).map((t) => t.name);
       console.log(`tools (${names.length}):`, names.slice(0, 12).join(", "), names.length > 12 ? "…" : "");
+      send({ jsonrpc: "2.0", id: 3, method: "tools/call", params: { name: "get_initial_context", arguments: {} } });
+    } else if (msg.id === 3) {
       clearTimeout(timer);
-      console.log("✅ Contentful MCP server started and responded.");
-      done(0);
+      if (msg.error) {
+        console.error("get_initial_context failed:", JSON.stringify(msg.error).slice(0, 400));
+        done(1);
+      }
+      const text = (msg.result?.content || []).map((c) => c.text || "").join(" ");
+      const spaceLine = text.split("\n").find((l) => /space/i.test(l)) || text.slice(0, 200);
+      console.log("get_initial_context:", spaceLine.trim().slice(0, 200));
+      console.log(msg.result?.isError ? "❌ Server responded with an error." : "✅ Contentful MCP server started and authenticated.");
+      done(msg.result?.isError ? 1 : 0);
     }
   }
 });

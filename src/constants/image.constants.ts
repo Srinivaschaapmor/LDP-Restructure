@@ -4,4 +4,6 @@ export const IMAGE_SIZES = {
   card: "(max-width: 768px) 100vw, 400px",
   logo: "170px",
   icon: "24px",
+  chipIcon: "42px",
+  bulletIcon: "24px",
 } as const;

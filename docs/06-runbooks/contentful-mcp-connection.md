@@ -1,87 +1,90 @@
-# Runbook · Contentful MCP connection (deprecated)
+# Runbook · Contentful MCP connection
 
-> **Deprecated — see ADR-0009.** The Contentful MCP server has been removed from `.mcp.json`.
-> Content types and entries are now created exclusively through `contentful-migration` /
-> `contentful/seed/*.mjs` scripts (see [contentful-development] rules 3/8). This runbook is kept
-> for historical reference only — do not follow it to reconnect the server.
+How to configure and verify the **Contentful MCP server** used to read the live content model and
+entries from Claude Code. Configured in `.mcp.json` (project root).
 
-How to configure and verify the **Contentful MCP server** used to read/write the content
-model and entries from Claude Code. Configured in `.mcp.json` (project root).
+> **Read-only by convention (ADR-0011).** The server exposes write tools (`create_content_type`,
+> `delete_entry`, `publish_*`, …). Do not use them for the content model: content types and fields
+> are created and changed **exclusively** through `contentful-migration` scripts in
+> `contentful/migrations/` and seed scripts in `contentful/seed/*.mjs` — see
+> [contentful-development] rules 3/8/12 and ADR-0009, which still binds.
 
 ## Server
-Official **`@contentful/mcp-server`** (npm, maintained by Contentful), run via `npx`.
-Repo: https://github.com/contentful/contentful-mcp-server
+Official **`@contentful/mcp-server`** (npm, maintained by Contentful), pinned as a devDependency
+at **1.15.0**. Repo: https://github.com/contentful/contentful-mcp-server
 
-Exposes tools for content types, entries, assets, locales, tags, spaces/environments,
-and AI actions — e.g. `get_initial_context`, `list_spaces`, `list_content_types`,
-`search_entries`, `create_entry`, `publish_entry`.
+Exposes 70 tools across content types, entries, assets, locales, tags, spaces/environments and AI
+actions — e.g. `get_initial_context` (call this first; the server asks for it), `list_content_types`,
+`search_entries`, `get_entry`.
 
 ## Configuration (`.mcp.json`)
 ```json
 "contentful": {
-  "command": "npx",
-  "args": ["-y", "@contentful/mcp-server"],
-  "env": {
-    "CONTENTFUL_MANAGEMENT_ACCESS_TOKEN": "${CONTENTFUL_MANAGEMENT_ACCESS_TOKEN}",
-    "SPACE_ID": "${CONTENTFUL_SPACE_ID}",
-    "ENVIRONMENT_ID": "${CONTENTFUL_ENVIRONMENT_ID:-master}"
-  }
+  "command": "node",
+  "args": ["contentful/mcp-launch.mjs"]
 }
 ```
-**Secrets never live in the repo.** Every value is an env-var reference. The committed
-file contains no token and no space ID — those come from your environment at runtime.
 
-| Env var | Required | Secret? | Notes |
+**No secrets in the committed config, and no `${VAR}` substitution.** The launcher
+(`contentful/mcp-launch.mjs`) reads the gitignored `.env` at the project root itself. This is the
+fix for the failure recorded in ADR-0009: Claude Code substitutes `${VAR}` in `.mcp.json` only from
+the environment the host process was launched with — never from `.env` — so the old config started
+the server with an empty token and every call returned 401.
+
+The launcher maps this project's variable names onto the ones the server expects. Real
+process-environment values take precedence over `.env`, so an exported/CI value still wins.
+
+| `.env` variable | Passed to server as | Required | Secret? |
 |---|---|---|---|
-| `CONTENTFUL_MANAGEMENT_ACCESS_TOKEN` | ✅ | 🔒 **Yes** | Contentful **Content Management API** personal access token |
-| `CONTENTFUL_SPACE_ID` | ✅ | No | Your Space ID (Contentful → Settings → General) |
-| `CONTENTFUL_ENVIRONMENT_ID` | ❌ | No | Defaults to `master` |
+| `CONTENTFUL_MANAGEMENT_ACCESS_TOKEN` | same | ✅ | 🔒 **Yes** — CMA personal access token |
+| `CONTENTFUL_SPACE_ID` | `SPACE_ID` | ✅ | No |
+| `CONTENTFUL_ENVIRONMENT_ID` | `ENVIRONMENT_ID` | ❌ (defaults `master`) | No |
+| `CONTENTFUL_DELIVERY_ACCESS_TOKEN` | `CONTENTFUL_DELIVERY_TOKEN` | ❌ | 🔒 Yes |
 
-## Set the environment variables (you do this — never paste the token into chat or a file)
-Create the CMA token: Contentful → **Settings → API keys → Content management tokens →
-Generate personal token**. Then, in **PowerShell**, persist them for future processes:
-```powershell
-setx CONTENTFUL_MANAGEMENT_ACCESS_TOKEN "<your-CMA-token>"
-setx CONTENTFUL_SPACE_ID "<your-space-id>"
-# optional: setx CONTENTFUL_ENVIRONMENT_ID "master"
-```
-`setx` affects **new** processes only — open a fresh terminal (and restart Claude Code)
-afterward. Treat the token like a password; rotate it in Contentful if it ever leaks.
+Create the CMA token at Contentful → **Settings → API keys → Content management tokens → Generate
+personal token**, and put it in `.env` (already gitignored). Treat it like a password; rotate it in
+Contentful if it ever leaks. Never paste it into chat, `.mcp.json`, or any tracked file.
 
 ## Verify the connection
 ### A. Credential smoke-test (no Claude Code needed)
-In a shell where the env vars are set, confirm the token+space reach the CMA API. This
-prints the space name on success and never echoes the token:
+Confirms the token + space reach the CMA API. Prints the space name; never echoes the token:
 ```bash
-curl -s -H "Authorization: Bearer $CONTENTFUL_MANAGEMENT_ACCESS_TOKEN" \
-  "https://api.contentful.com/spaces/$CONTENTFUL_SPACE_ID" | grep -i '"name"'
+set -a && . ./.env && set +a && curl -s -H "Authorization: Bearer $CONTENTFUL_MANAGEMENT_ACCESS_TOKEN" "https://api.contentful.com/spaces/$CONTENTFUL_SPACE_ID" | grep -i '"name"'
 ```
 `200` + your space name = credentials good. `401` = bad/expired token. `404` = wrong space ID.
 
-### B. Inside Claude Code (the real integration check)
-1. Ensure the env vars are set (step above) and `npx`/Node are on PATH.
-2. Start Claude Code in the **project root** so it reads `.mcp.json`; approve the trust
-   prompt for the `contentful` server.
-3. Confirm with `/mcp` (interactive) — `contentful` should be **connected**, exposing
-   `mcp__contentful__*` tools.
-4. Call `get_initial_context` (the server asks you to run this first), then `list_spaces`
-   or `list_content_types` to confirm live reads.
+### B. Server handshake (the real integration check)
+```bash
+node contentful/verify-mcp.mjs
+```
+Spawns the server through the same launcher `.mcp.json` uses, performs the JSON-RPC `initialize`
+handshake, lists tools, and calls `get_initial_context`. Success prints `serverInfo`, the tool
+count, the resolved Space ID, and `✅ Contentful MCP server started and authenticated.`
+
+### C. Inside Claude Code
+1. Start Claude Code in the **project root** so `.mcp.json` loads (the launcher's `args` path is
+   relative to the project root).
+2. Approve the trust prompt for the `contentful` server on first run. It is listed in
+   `.claude/settings.json` → `enabledMcpjsonServers`.
+3. A session started before the server was added will not see it — **restart the session**.
+4. Confirm with `/mcp` (interactive) — `contentful` should be **connected**, exposing
+   `mcp__contentful__*` tools. Call `get_initial_context` first, then `list_content_types`.
 
 ## Common failures
-- **`connection closed` / server won't start** — Node/`npx` not on PATH, or first `npx`
-  run still downloading the package. Retry after it caches.
-- **`401 Unauthorized`** — token missing, wrong, or expired. Re-generate; re-run `setx`;
-  open a new terminal.
-- **`404` / empty results** — wrong `SPACE_ID` or `ENVIRONMENT_ID`.
-- **Env var not picked up** — set with `setx` but reusing an old terminal. `setx` only
-  affects new processes; restart the terminal and Claude Code.
+- **Tools absent in an existing session** — `.mcp.json` is read at session start. Restart Claude Code.
+- **`missing CONTENTFUL_MANAGEMENT_ACCESS_TOKEN, …`** — the launcher found no `.env` or no value.
+  Check the project root `.env`; confirm the cwd is the project root.
+- **`Cannot find module .../@contentful/mcp-server/dist/index.js`** — dependencies not installed.
+  Run `npm install`.
+- **`401 Unauthorized`** — token wrong, expired, or scoped to another org. Re-generate and update `.env`.
+- **`404` / empty results** — wrong `CONTENTFUL_SPACE_ID` or `CONTENTFUL_ENVIRONMENT_ID`.
 
 ## Verification log
-- **2026-07-07** — Server configured in `.mcp.json` (env-var based, no secrets committed).
-- **2026-07-07 — Credential smoke-test (check A) PASSED.** Sourced `.env` and called the CMA
-  API: `GET /spaces/{id}` → `200`, space name **"Development"**; environments `master` + `ready`
-  present; `master` currently has **0 content types** (empty content model — expected pre-modeling).
-  CMA token + Space ID + environment confirmed reachable. Token value never surfaced.
-  STILL PENDING (check B): loading the server *inside Claude Code* — requires the env vars in
-  Claude Code's process environment AND a session launched in the project root so `.mcp.json`
-  loads. Not yet exercised (this session's cwd is the Desktop).
+- **2026-07-07** — Server configured in `.mcp.json` (env-var references). Credential smoke-test
+  (check A) PASSED: `GET /spaces/{id}` → `200`, space **"Development"**; environments `master` +
+  `ready`. Check B never passed — see ADR-0009.
+- **2026-08-07** — Server removed from `.mcp.json` (ADR-0009); `${VAR}` substitution never resolved,
+  every call 401'd.
+- **2026-08-15** — Server restored via `contentful/mcp-launch.mjs` (ADR-0011). **Check B PASSED:**
+  `@contentful/mcp-server` handshake OK, **70 tools** listed, `get_initial_context` returned Space ID
+  `rkr4g3dq1bbc`. Token value never surfaced. Check C pending a session restart by the user.

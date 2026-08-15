@@ -5,6 +5,15 @@
   --ld-blue: #3352a3;
   --ld-deep-blue: #414195;
   --ld-body: #4c4c67;
+  /* The Home design uses two body colours and two heading blues rather than one of each.
+     Reproduced verbatim per section (user ruling, ADR-0012 "Body-colour ruling"): Figma
+     sections 4-6 use --ld-body, 7-10 use --ld-body-alt, and the 440 board lightens section
+     headings to --ld-heading-mobile. */
+  --ld-body-alt: #434869;
+  --ld-ink: #0f1042;
+  --ld-heading-mobile: #4763ac;
+  /* Calm-blue wash behind the provider and mobile-app blocks (Figma 30:503). */
+  --ld-calm-wash: rgba(114, 172, 194, 0.2);
   --ld-muted: rgba(15, 16, 66, 0.5);
   --ld-font: "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
 }
@@ -107,4 +116,77 @@ main {
   background: #fff;
   color: var(--ld-deep-blue);
   border-color: var(--ld-deep-blue);
+}
+
+/* ---- Interaction states (ADR-0012) ------------------------------------------
+   Figma specifies no hover/focus/active/disabled states anywhere, so these are
+   derived from the palette rather than designed: hover is --ld-blue x 0.90,
+   active is x 0.84, which keeps every state on the brand hue.
+
+   The focus ring is two concentric rings, not one, because no single color can
+   satisfy the 3:1 of WCAG SC 1.4.11 against both surfaces this app puts focus
+   on: navy on the blue button measures 2.10:1, and white on a white page is
+   invisible. With both rings, whichever surface sits behind the control, one
+   edge carries the contrast (white on --ld-blue = 7.30:1, navy on white =
+   15.36:1). :focus-visible, not :focus, so pointer users never see it. */
+:root {
+  --ld-blue-hover: #2e4a93;
+  --ld-blue-active: #2b4589;
+}
+
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 0;
+  box-shadow: 0 0 0 4px var(--ld-navy);
+}
+
+.ld-btn {
+  transition: background-color 150ms ease-out, color 150ms ease-out,
+    border-color 150ms ease-out;
+}
+.ld-btn--primary:hover {
+  background: var(--ld-blue-hover);
+}
+.ld-btn--primary:active {
+  background: var(--ld-blue-active);
+}
+.ld-btn--secondary:hover {
+  background: var(--ld-deep-blue);
+  color: #fff;
+}
+.ld-btn--secondary:active {
+  background: var(--ld-blue-active);
+  border-color: var(--ld-blue-active);
+  color: #fff;
+}
+
+/* aria-disabled rather than the disabled attribute: these render as <a> as often
+   as <button>, and <a disabled> is inert to assistive tech. */
+.ld-btn[aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ld-btn {
+    transition: none;
+  }
+}
+
+/* On a brand/inverse band a white-filled button loses its relationship to the surface, so
+   buttons inside those bands take the design's outline-on-blue treatment (Figma:
+   teledentistry "Schedule now"). Measured: white on #3352A3 = 7.30:1 for both the label
+   and the 2px border, clearing SC 1.4.3 and SC 1.4.11. Hover follows the ADR-0012 outline
+   rule — fill with the border colour, flip the label. Declared last so it wins over the
+   base variant's own hover/active rules. */
+.ld-btn--on-brand {
+  background: transparent;
+  color: #fff;
+  border-color: #fff;
+}
+.ld-btn--on-brand:hover,
+.ld-btn--on-brand:active {
+  background: #fff;
+  color: var(--ld-blue);
+  border-color: #fff;
 }

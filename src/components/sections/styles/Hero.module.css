@@ -1,0 +1,131 @@
+/* Full-bleed page hero. The base background colour is a deliberate fallback, not a
+   decorative choice: `media` entries can arrive with no `asset` attached (Figma binaries
+   not exported yet), in which case MediaImg renders nothing and the white hero copy would
+   otherwise sit on the page background. --ld-navy keeps it legible either way. */
+.hero {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background-color: var(--ld-navy);
+}
+
+/* Hero height is a FIXED pixel value in Figma, not a proportional one: the hero frame is
+   644px tall on BOTH the 1600 and 834 boards, and 901px on the 440 board. It was previously
+   sized with `clamp(360px, 40.25vw, 644px)`, which made the height — and therefore the crop
+   of the background image — move with the viewport, so the composition shifted as the user
+   zoomed and never matched the design except at exactly 1600px. Fixed heights keep the
+   framing identical at every zoom level and viewport width.
+   TODO(design): `sm` and `md` remain proportional derivations of `lg` — the Home hero is
+   `lg`, and no other hero height is specified anywhere in the design. */
+.heroSm {
+  height: 493px;
+}
+.heroMd {
+  height: 697px;
+}
+.heroLg {
+  height: 901px;
+}
+@media (min-width: 834px) {
+  .heroSm {
+    height: 352px;
+  }
+  .heroMd {
+    height: 498px;
+  }
+  .heroLg {
+    height: 644px;
+  }
+}
+
+/* object-position is stated explicitly rather than left to the 50% 50% default so the
+   framing is deterministic: the visible portion of the photo must not depend on how the
+   browser happens to round the container size.
+   `top` is the measured design crop, not a preference. The source photo is 1600x900 and the
+   Figma hero frame is 1600x644, i.e. the top 644 rows: the frame's bottom edge lands on the
+   sweater and hands, and the headroom above the group is preserved. Centring instead removed
+   128px from the top and clipped the hair. */
+.bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+/* `overlay` is the scrim shape, from content: flat = uniform wash, left/right = gradient.
+   `overlayColor` supplies only the hue (Contentful's Symbol regex has no alpha channel);
+   the opacity is a design value and therefore lives here, per CLAUDE.md "the JSON never
+   supplies a design value". Home hero: #0F1042 at 20%. */
+.overlay {
+  position: absolute;
+  inset: 0;
+  --ld-hero-overlay-alpha: 0.2;
+}
+.overlayFlat {
+  background: rgb(15 16 66 / var(--ld-hero-overlay-alpha));
+}
+.overlayLeft {
+  background: linear-gradient(90deg, rgba(15, 16, 66, 0.6), rgba(15, 16, 66, 0));
+}
+.overlayRight {
+  background: linear-gradient(270deg, rgba(15, 16, 66, 0.6), rgba(15, 16, 66, 0));
+}
+
+.inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+
+/* The 440 board overlays the copy on the TOP of the hero image, with the photo's subjects
+   filling the space beneath it; the 834 and 1600 boards centre the copy vertically instead
+   (200px of symmetric padding in a 644px frame). */
+@media (max-width: 833.98px) {
+  .hero {
+    align-items: flex-start;
+  }
+  .inner {
+    padding-top: 60px;
+  }
+}
+
+.logo {
+  max-width: 260px;
+  height: auto;
+}
+
+/* Avenir Next H1: 52/62 Demi (design-tokens.md). The mobile/tablet step-down is a
+   TODO(design): the Step 2 analysis carries no per-breakpoint type ramp. */
+.heading {
+  color: #fff;
+  /* Floor is the measured Figma value, not a derivation: both the 834 and 440 boards set the
+     hero H1 to 38px, and 3.25vw only overtakes 38px at ~1169px wide, so the floor holds across
+     both smaller reference frames and the ramp reaches exactly 52px at the 1600 anchor. */
+  font-size: clamp(2.375rem, 3.25vw, 3.25rem);
+  line-height: 1.19;
+  font-weight: 600;
+  margin: 0;
+  max-width: 20ch;
+}
+
+/* Paragraph1 / Regular 18/26. */
+.subheading {
+  color: #fff;
+  font-size: 1.125rem;
+  line-height: 1.44;
+  max-width: 46ch;
+}
+.subheading p {
+  margin: 0;
+}
+
+.cta {
+  margin-top: 8px;
+}

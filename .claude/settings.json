@@ -1,5 +1,5 @@
 {
-  "enabledMcpjsonServers": ["figma-dev-mode"],
+  "enabledMcpjsonServers": ["figma-dev-mode", "contentful"],
   "enabledPlugins": { "figma@claude-plugins-official": true },
   "hooks": {
     "PostToolUse": [

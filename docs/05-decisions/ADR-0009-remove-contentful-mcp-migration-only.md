@@ -1,6 +1,8 @@
 # ADR-0009: Remove the Contentful MCP server — content types are created via migrations only
 
-- **Status:** Accepted
+- **Status:** Superseded by [ADR-0011](ADR-0011-restore-contentful-mcp-via-env-launcher.md) —
+  the server is connected again via a `.env`-reading launcher. The migrations-only rule for
+  content-type writes, decided here, still stands.
 - **Date:** 2026-08-07
 - **Deciders:** sai_dev1@aapmor.com, Claude (mentor)
 

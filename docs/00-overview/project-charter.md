@@ -34,7 +34,7 @@
 - **RTL support required:** ‹CONFIRM› (default assumption: no)
 
 ## 5. Constraints
-- **Tech stack (fixed):** Next.js (App Router), TypeScript (strict), Bootstrap 5 + SCSS, Contentful (content), Figma (design). MCP-connected: Figma ✅ verified. Contentful MCP removed (ADR-0009) — content is modeled via `contentful-migration` CLI scripts, no live MCP connection.
+- **Tech stack (fixed):** Next.js (App Router), TypeScript (strict), Bootstrap 5 + SCSS, Contentful (content), Figma (design). MCP-connected: Figma ✅ verified; Contentful ✅ verified (ADR-0011, via `contentful/mcp-launch.mjs`) — read/inspection only, content types are still modeled via `contentful-migration` CLI scripts.
 - **Compliance (fixed):** WCAG 2.2 AA · SEO · SonarQube gates · SiteImprove. Standards mapped in `docs/01-standards/`.
 - **Timeline / milestones:** ‹CONFIRM›
 - **Budget / team size:** ‹CONFIRM›

@@ -8,10 +8,24 @@ not relocated — since that knowledge already lives elsewhere.
 
 ## Routing & page shell (`src/app/[[...slug]]/page.tsx`)
 
-- A leading `banner` section is treated specially: if the first section on a page is a `banner`,
-  it renders full-bleed *above* the breadcrumbs (per design); every other section renders below
-  the breadcrumbs, inside the shared `.ld-content` padding.
+- A leading `hero` or `banner` section is treated specially (`LEAD_SECTION_TYPES`): if the first
+  section on a page is one of those, it renders full-bleed *above* the breadcrumbs (per design);
+  every other section renders below the breadcrumbs, inside the shared `.ld-content` padding.
 - The JSON-LD `<script>` tag emits `Article` structured data for search engines (see [seo]).
+- `resolveSections` runs before render. Sections whose content is a *query* rather than authored
+  references (today: `cardCollection` with `source: "latestNews"`) are resolved here, in the route,
+  so every section component stays a synchronous, testable pure renderer and there is still exactly
+  one CDA client. It is a no-op — no extra request — for pages with no dynamic collection.
+
+### Heading levels are computed, never authored
+
+`contentful-development` rule 10 forbids an author-chosen heading level. The level is derived from
+position instead, in one place: `SectionRenderer` gives its *first* section `leadHeadingLevel` and
+every later section `2`; `page.tsx` passes `1` to the lead (hero/banner) renderer and, for the body
+list, `2` when a lead section exists or `1` when it does not. Each section then derives its children
+one step down via `nextHeadingLevel` (a collection with its own heading pushes card titles to h3;
+without one, cards sit directly under the page h1 and are h2). The Home page therefore emits exactly
+one h1 (the hero), eight h2 section headings, and h3 card titles.
 
 ## Layout & Navigation (`src/components/layout/`, `src/components/navigation/`)
 
@@ -51,9 +65,34 @@ not relocated — since that knowledge already lives elsewhere.
   a lightweight solid-color band (logo, or heading, never both) instead of the hero photo, to
   avoid shipping a large image as the mobile LCP element — it only swaps in when there's
   actually something to show instead, so a plain photo banner still shows its photo on mobile.
+- **`Hero.tsx`**: a separate type from `banner` (see migration 021), so a separate component. It
+  keeps the hero photo at every breakpoint — unlike `Banner`, which swaps to a solid mobile band —
+  because the Home design shows the photo on all three boards (440/834/1600). `overlay: "flat"` is
+  the uniform wash the Home hero uses; `overlayColor` carries only the hue, because the Contentful
+  field is a hex Symbol with no alpha channel and, per CLAUDE.md, *the JSON never supplies a design
+  value*. The opacity therefore lives in `Hero.module.css` as `--ld-hero-overlay-alpha`, and the
+  component emits `rgb(R G B / var(--ld-hero-overlay-alpha))` so the two compose. `.hero` also
+  carries a solid `--ld-navy` base colour: `media` entries can arrive with no `asset` attached, in
+  which case `MediaImg` renders nothing and the white hero copy would otherwise be invisible.
 - **`CardCollection.tsx`**: same heading-level-validity pattern as `Accordion` — an h2
   collection heading pushes card titles to h3; without one, cards sit under the page h1 and are
-  h2.
+  h2. Four rendering modes, not one: `source: "latestNews"` renders news teasers (date / title /
+  "Read more") from `newsItems` injected by `resolveSections`; `layout: "chips"` and
+  `layout: "logos"` are chrome-less list treatments (a centred icon+label row, and an image-only
+  logo strip) so neither is wrapped in `<article>` or given a per-item heading — they are lists of
+  labels, not sub-sections, and inventing headings for them would pollute the outline. Cards are
+  sorted by the `order` field rather than trusting array order. The three "Read more" links on the
+  page would otherwise be indistinguishable to a screen-reader link list, so each carries a
+  visually-hidden article title (SC 2.4.4).
+- **`MediaContentBlock.tsx`**: `bulletIcon` is one media entry per block (migration 020) while
+  `bullets` is a `richTextItem` whose node types are locked down, so the 24px glyph cannot be
+  authored inside the list. The component passes the resolved URL down as the
+  `--ld-bullet-icon` custom property and the stylesheet paints it as an `::before` marker; when the
+  media entry has no asset the class is not applied at all and the normal disc marker is kept.
+  `links` are *image* links (app-store badges), deliberately not rendered as `ld-btn` text buttons —
+  that is what `ctas` is for — and they fall back to their label text when the badge binary is
+  missing, so the anchor is never left without an accessible name. Content precedes media in the
+  DOM at every width; `mediaPlacement: "left"` only reverses the visual order of the desktop row.
 - **`ResourceLibrary.tsx`**: the dropdown option for a state is that state's accordion heading
   (e.g. "Alabama"). An empty-string select value means no state is chosen yet — the page opens
   on the placeholder with no accordion shown. The rendered `Accordion`'s `key` changes with the
@@ -78,11 +117,24 @@ not relocated — since that knowledge already lives elsewhere.
   `↗` glyph (decorative, `aria-hidden`) plus visually-hidden "(opens in a new tab)" text, since
   that's what actually carries the meaning for assistive tech.
 
+## Shared helpers (`src/lib/`)
+
+- **`color/overlay.ts`**: `hexToRgb` / `overlayGradient` used to live inside `Banner.tsx`; `Hero`
+  needs the same parsing, so they moved here rather than being duplicated. `overlayWash` builds the
+  uniform-scrim colour with the alpha left as a CSS custom property (see `Hero.tsx` above).
+- **`date/newsDate.ts`**: `publishDate` is a date-only Contentful field and the design shows
+  `MM/DD/YYYY`. The string is parsed with a regex instead of `new Date()` on purpose — constructing
+  a `Date` from `YYYY-MM-DD` and formatting it in local time shifts the day backwards for anyone
+  west of UTC, which would silently print the wrong date for US readers.
+- **`css/cx.ts`**: the class-joining helper each section component had its own private copy of.
+
 ## Contentful data layer (`src/contentful/`)
 
 - `client.ts` is a single CDA client reading published content; env vars come from `.env(.local)`.
 - `page.queries.ts`'s `getPageBySlug` passes `include: 10` to resolve the full
   Page → sections → cards → media reference tree in one call.
+- `news.queries.ts`'s `getLatestNews` is the query behind `cardCollection.source = "latestNews"`:
+  published `newsArticle` entries, `order: -fields.publishDate`, capped by the section's own `limit`.
 
 ## Types (`src/types/`)
 

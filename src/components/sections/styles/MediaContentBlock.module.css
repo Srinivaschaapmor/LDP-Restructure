@@ -1,6 +1,30 @@
 .mcb {
   padding: clamp(2rem, 5vw, 3.75rem) 0;
 }
+
+/* Figma: provider/broker/mobile-app are side-by-side on the 1600 board and stacked on both
+   834 and 440. Content is first in the DOM at every width; `mediaPlacement: left` only
+   reverses the visual order on the desktop row. */
+.split {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+@media (min-width: 992px) {
+  .split {
+    flex-direction: row;
+    align-items: center;
+    gap: 60px;
+  }
+  .split > * {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  .mcb[data-placement="left"] .split {
+    flex-direction: row-reverse;
+  }
+}
+
 .eyebrow {
   color: var(--ld-blue);
   font-weight: 500;
@@ -9,12 +33,22 @@
 }
 .heading {
   color: var(--ld-blue);
-  font-size: clamp(1.8rem, 4.5vw, 3.25rem);
-  font-weight: 500;
-  margin-bottom: 1.5rem;
+  /* 34px floor is the measured Figma section-heading size on both the 834 and 440 boards;
+     2.75vw overtakes it at ~1236px, reaching exactly 44px at the 1600 anchor. */
+  font-size: clamp(2.125rem, 2.75vw, 2.75rem);
+  line-height: 1.23;
+  font-weight: 600;
+  margin-bottom: 20px;
 }
+/* Figma uses a lighter heading blue on the 440 board. */
+@media (max-width: 767.98px) {
+  .heading {
+    color: var(--ld-heading-mobile);
+  }
+}
+
 /* Aspect-ratio wrapper so the height is controlled here (not by the image's
-   intrinsic size); next/image runs in fill mode inside it. Figma: 822×352. */
+   intrinsic size); next/image runs in fill mode inside it. Figma: 822x352. */
 .media {
   position: relative;
   width: 100%;
@@ -26,30 +60,121 @@
 .media img {
   object-fit: cover;
 }
+/* The side-by-side photos each have their own Figma ratio (555x568, 703x605, 426x449), so
+   this one keeps the image's intrinsic ratio rather than forcing a shared box.
+   TODO(design): 24px is the "layout block" radius token — the Step 2 analysis records no
+   explicit radius for these three photos. */
+.mediaSide {
+  display: flex;
+  justify-content: center;
+}
+.mediaSide img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 24px;
+}
+
 .body {
   color: var(--ld-body);
   font-size: 1.125rem;
-  line-height: 1.7;
+  line-height: 1.44;
   max-width: 820px;
 }
+.body p:last-child {
+  margin-bottom: 0;
+}
+
 .bullets {
   color: var(--ld-body);
   font-size: 1.125rem;
-  line-height: 1.7;
+  line-height: 1.44;
   max-width: 820px;
-  margin-top: 1rem;
+  margin-top: 16px;
 }
 .bullets ul,
 .bullets ol {
   padding-left: 1.25rem;
+  margin-bottom: 0;
+}
+
+/* `bulletIcon` is one media entry per block (migration 020) and `bullets` is a rich-text
+   document whose node types are locked down, so the glyph cannot be authored inside the
+   list. It is painted as the marker instead: the URL arrives as a custom property from the
+   component, the 24px box is the design value and stays here. Falls back to the normal
+   disc marker when the media entry has no asset attached yet. */
+.bulletsIconed ul {
+  list-style: none;
+  padding-left: 0;
+}
+.bulletsIconed li {
+  position: relative;
+  padding-left: 40px;
+  margin-bottom: 12px;
+}
+.bulletsIconed li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  width: 24px;
+  height: 24px;
+  background-image: var(--ld-bullet-icon);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+/* App-store badges: image links, not text buttons. */
+.badges {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 32px 0 0;
+  padding: 0;
+}
+.badge {
+  display: inline-flex;
+  border-radius: 8px;
+}
+.badgeImg {
+  max-width: 172px;
+  height: auto;
+}
+/* Shown only while the Figma badge binaries are unexported. */
+.badgeFallback {
+  color: var(--ld-blue);
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.toneSubtle {
+  background: var(--ld-calm-wash);
+}
+.toneBrand {
+  background: var(--ld-blue);
+  color: #fff;
 }
 .toneInverse {
   background: var(--ld-navy);
   color: #fff;
 }
-.toneInverse .heading {
+.toneBrand .heading,
+.toneInverse .heading,
+.toneBrand .body,
+.toneInverse .body,
+.toneBrand .bullets,
+.toneInverse .bullets {
   color: #fff;
 }
-.toneSubtle {
-  background: rgba(51, 82, 163, 0.05);
+.toneBrand .badgeFallback,
+.toneInverse .badgeFallback {
+  color: #fff;
 }

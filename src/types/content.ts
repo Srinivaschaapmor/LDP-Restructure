@@ -45,6 +45,12 @@ export interface CardFields {
 }
 export type Card = CFNode<CardFields>;
 
+export interface NewsArticleFields {
+  internalName?: string; title?: string; slug?: string; publishDate?: string;
+  excerpt?: string; media?: Media; body?: RichTextItem;
+}
+export type NewsArticle = CFNode<NewsArticleFields>;
+
 export interface DocumentEntryFields {
   internalName?: string;
   label?: string;

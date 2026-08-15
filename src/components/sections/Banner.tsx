@@ -1,11 +1,11 @@
-import { asFields, type BannerFields, type Section } from "@/types";
+import { asFields, type BannerFields, type SectionProps } from "@/types";
 import { MediaImg } from "@/components/media/MediaImg";
 import { RichText } from "@/components/common/RichText";
-import { Heading, type HeadingLevel } from "@/components/common/Heading";
+import { Heading } from "@/components/common/Heading";
 import { DEFAULTS, IMAGE_SIZES, UI_TEXT } from "@/constants";
+import { hexToRgb, overlayGradient } from "@/lib/color/overlay";
+import { cx } from "@/lib/css/cx";
 import styles from "@/components/sections/styles/Banner.module.css";
-
-const HEX_PATTERN = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i;
 
 const HEIGHT_CLASS: Record<string, string> = {
   sm: styles.bannerSm, md: styles.bannerMd, lg: styles.bannerLg,
@@ -14,32 +14,13 @@ const OVERLAY_CLASS: Record<string, string> = {
   left: styles.overlayLeft, right: styles.overlayRight,
 };
 
-function cx(...classes: Array<string | false | undefined>): string {
-  return classes.filter(Boolean).join(" ");
-}
-
-export function hexToRgb(value?: string): [number, number, number] | null {
-  const match = value?.trim().match(HEX_PATTERN);
-  if (!match) return null;
-  let hex = match[1];
-  if (hex.length === 3) hex = hex.split("").map((c) => c + c).join("");
-  return [Number.parseInt(hex.slice(0, 2), 16), Number.parseInt(hex.slice(2, 4), 16), Number.parseInt(hex.slice(4, 6), 16)];
-}
-
-export function overlayGradient(direction: string, rgb: [number, number, number]): string {
-  const [r, g, b] = rgb;
-  const angle = direction === "right" ? 270 : 90;
-  return `linear-gradient(${angle}deg, rgba(${r},${g},${b},.6), rgba(${r},${g},${b},0))`;
-}
-
-export function Banner({ fields }: { fields: Section["fields"] }) {
+export function Banner({ fields, headingLevel = 2 }: SectionProps) {
   const f = asFields<BannerFields>(fields);
   if (!f.backgroundImage) return null;
 
   const height = f.height ?? DEFAULTS.bannerHeight;
   const direction = f.overlay ?? DEFAULTS.bannerOverlay;
   const customRgb = direction !== "none" ? hexToRgb(f.overlayColor) : null;
-  const headingLevel: HeadingLevel = 2;
 
   const hasLogo = Boolean(f.logo);
   const mobileContent = hasLogo ? (

@@ -91,4 +91,5 @@ gate can be reinstated at 3→4 without disturbing the rest.
 
 **Note.** The CDA is reachable from scripts via `CONTENTFUL_DELIVERY_ACCESS_TOKEN`; ADR-0009
 removed the Contentful **MCP server**, not delivery access. Step 5 depends on this and was
-verified against `/providers/resource-library`.
+verified against `/providers/resource-library`. The MCP server has since been restored
+(ADR-0011) as a read layer — Step 5 still fetches page JSON via the CDA script, unchanged.

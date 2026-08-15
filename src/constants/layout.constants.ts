@@ -11,4 +11,6 @@ export const UI_TEXT = {
   searchLabel: "Search",
   searchPlaceholder: "Search",
   breadcrumbNavLabel: "Breadcrumb",
+  readMoreLabel: "Read more",
+  readMoreContextPrefix: "about",
 } as const;

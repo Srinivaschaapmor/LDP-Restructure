@@ -391,6 +391,6 @@ No modal primitive exists in `src/components/` today either.
 
 ---
 
-**Nothing here has been created in Contentful.** There is no live Contentful connection
-(ADR-0009); entries are created by seed scripts under `contentful/seed/`, which is a human step
+**Nothing here has been created in Contentful.** The Contentful MCP server reads the live space
+(ADR-0011) but never writes it; entries are created by seed scripts under `contentful/seed/`, which is a human step
 after CMS approval. Migration `020` must run first — the fields marked 🆕 do not exist yet.

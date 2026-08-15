@@ -1,5 +1,6 @@
 import { render } from "@testing-library/react";
-import { Banner, hexToRgb, overlayGradient } from "@/components/sections/Banner";
+import { Banner } from "@/components/sections/Banner";
+import { hexToRgb, overlayGradient } from "@/lib/color/overlay";
 import styles from "@/components/sections/styles/Banner.module.css";
 import type { Media, Section } from "@/types";
 
